@@ -23,6 +23,7 @@ export default function Home() {
   });
 
   const messageEnd = useRef();
+  const inputRef = useRef();
   
   useEffect(() => {
     if (messages.length > 1) {
@@ -54,8 +55,12 @@ export default function Home() {
         <div ref={messageEnd} />
       </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(event) => {
+          handleSubmit(event);
+          inputRef.current.blur();
+        }}>
           <input
+            ref={inputRef}
             className='py-[10px] px-[10px] w-full outline-none text-slate-900'
             value={input}
             onChange={handleInputChange}
