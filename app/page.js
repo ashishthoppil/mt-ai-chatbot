@@ -30,14 +30,14 @@ export default function Home() {
 
   return (
     <main className={`h-screen ${poppins.className}`}>
-      <header className='flex gap-5 items-center h-[50px] bg-purple-900 p-[25px]'>
+      <header className='flex gap-5 items-center h-[5%] bg-purple-900 p-[25px]'>
         <span className='bg-gray-100 text-gray-500 rounded-full py-[5px] px-[12px] h-[31px]'>L</span>
         <h1>Lumi.ai</h1>
       </header>
       <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
           This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistance only deals with text responses at the moment.
       </div>
-      <div className='p-[25px] h-[65%] shadow-md' style={{ margin: '1rem 0', overflowY: 'auto' }}>
+      <div className='p-[25px] h-[55%] shadow-md' style={{ margin: '1rem 0', overflowY: 'auto' }}>
         
         {messages.map((msg, idx) => (
           <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem' }}>
