@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <main className={`h-screen ${poppins.className}`}>
-      <header className='flex gap-5 items-center h-[5%] bg-purple-900 p-[25px]'>
+      <header className='flex gap-5 items-center h-[5%] bg-purple-900 p-[25px] sticky top-0 '>
         <span className='bg-gray-100 text-gray-500 rounded-full py-[5px] px-[12px] h-[31px]'>L</span>
         <h1>Lumi.ai</h1>
       </header>
