@@ -25,7 +25,9 @@ export default function Home() {
   const messageEnd = useRef();
   
   useEffect(() => {
-    messageEnd.current.scrollIntoView({ behavior: "smooth" });
+    if (messages.length > 1) {
+      messageEnd.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   return (
