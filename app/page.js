@@ -40,7 +40,7 @@ export default function Home() {
       <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
           This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistance only deals with text responses at the moment.
       </div>
-      <div className='p-[25px] h-[55%] shadow-md' style={{ margin: '1rem 0', overflowY: 'auto' }}>
+      <div className='p-[25px] h-[55%] shadow-md' style={{ overflowY: 'auto' }}>
         
         {messages.map((msg, idx) => (
           <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem' }}>
@@ -55,13 +55,14 @@ export default function Home() {
         <div ref={messageEnd} />
       </div>
 
-        <form onSubmit={(event) => {
+        <form className='sticky bottom-0 border-2' onSubmit={(event) => {
           handleSubmit(event);
           inputRef.current.blur();
         }}>
-          <input
+
+          <textarea
             ref={inputRef}
-            className='py-[10px] px-[10px] w-full outline-none text-slate-900'
+            className='py-[10px] px-[10px] w-full outline-none text-purple-700 placeholder-purple-700 border-2 border-purple-700 bg-purple-100 rounded-lg h-[150px]'
             value={input}
             onChange={handleInputChange}
             placeholder="Ask me anything..."
