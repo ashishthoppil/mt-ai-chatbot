@@ -4,6 +4,9 @@ import { useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useChat } from 'ai/react';
 import { Poppins } from 'next/font/google'
+import Image from 'next/image'
+
+import sendIcon from '../public/icons/send.png';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -12,7 +15,7 @@ const poppins = Poppins({
 
 export default function Home() {
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
     initialMessages: [
       {
         id: 'assistant-1',
@@ -33,8 +36,15 @@ export default function Home() {
 
   return (
     <main className={`h-screen ${poppins.className}`}>
-      <header className='flex gap-5 items-center h-[5%] bg-purple-900 p-[25px] sticky top-0 '>
-        <span className='bg-gray-100 text-gray-500 rounded-full py-[5px] px-[12px] h-[31px]'>L</span>
+      <header className='flex gap-2 items-center h-[75px] bg-purple-900 px-[25px] py-[10px] sticky top-0 '>
+        <span className='bg-gray-100 text-gray-500 rounded-full p-[5px]'>
+          <Image
+            src="/icons/chatbot.png"
+            width={20}
+            height={20}
+            alt="Send Message"
+          />
+        </span>
         <h1>Lumi.ai</h1>
       </header>
       <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
@@ -52,21 +62,45 @@ export default function Home() {
               </div>}</>
           </div>
         ))}
+
+        {isLoading && (
+          <div className='flex gap-2'><Image
+            src="/icons/loader.svg"
+            width={30}
+            height={30}
+            alt="Send Message"
+          />
+          <span className='text-purple-800'>Thinking</span>
+          </div>
+        )}
+
         <div ref={messageEnd} />
       </div>
 
-        <form className='sticky bottom-0 border-2' onSubmit={(event) => {
+        <form className='sticky bottom-0 border-2 px-[10px]' onSubmit={(event) => {
           handleSubmit(event);
           inputRef.current.blur();
         }}>
-
-          <textarea
-            ref={inputRef}
-            className='py-[10px] px-[10px] w-full outline-none text-purple-700 placeholder-purple-700 border-2 border-purple-700 bg-purple-100 rounded-lg h-[150px]'
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Ask me anything..."
-          />
+          <div className='text-purple-700 border-2 border-purple-700 bg-purple-100 rounded-lg h-[100px] py-[10px] px-[10px]'>
+            <textarea
+              ref={inputRef}
+              className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none'
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={(event) => { if (event.key === 'Enter') handleSubmit(event) }}
+              placeholder="Ask me anything..."
+            />
+            <div className='flex justify-end'>
+              <button type='submit' className={`bg-purple-500 rounded-full py-[8px] pl-[10px] pr-[6px] relative bottom-4 ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
+              <Image
+                src="/icons/send.png"
+                width={20}
+                height={20}
+                alt="Send Message"
+              />
+              </button>
+            </div>
+          </div>
         </form>
     </main>
   );
