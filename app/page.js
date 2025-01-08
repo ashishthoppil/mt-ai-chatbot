@@ -50,7 +50,7 @@ export default function Home() {
       <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
           This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistance only deals with text responses at the moment.
       </div>
-      <div className='p-[25px] h-[55%] shadow-md' style={{ overflowY: 'auto' }}>
+      <div className='p-[25px] h-[55%]' style={{ overflowY: 'auto' }}>
         
         {messages.map((msg, idx) => (
           <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem' }}>
