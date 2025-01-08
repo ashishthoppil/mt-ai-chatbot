@@ -87,7 +87,8 @@ export default function Home() {
               className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none'
               value={input}
               onChange={handleInputChange}
-              onKeyDown={(event) => { if (event.key === 'Enter') handleSubmit(event) }}
+              onKeyDown={(event) => { if (event.key === 'Enter') { handleSubmit(event); 
+                inputRef.current.blur();} }}
               placeholder="Ask me anything..."
             />
             <div className='flex justify-end'>
