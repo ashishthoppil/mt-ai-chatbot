@@ -6,8 +6,6 @@ import { useChat } from 'ai/react';
 import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 
-import sendIcon from '../public/icons/send.png';
-
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
@@ -53,7 +51,7 @@ export default function Home() {
       <div className='p-[25px] h-[55%]' style={{ overflowY: 'auto' }}>
         
         {messages.map((msg, idx) => (
-          <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem' }}>
+          <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
             <>{msg.role === 'user' ? 
               <ReactMarkdown className='bg-purple-100 text-purple-800 text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg'>{msg.content}</ReactMarkdown> : 
               <div className='flex bg-gray-200 text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px]'>
@@ -77,7 +75,7 @@ export default function Home() {
         <div ref={messageEnd} />
       </div>
 
-        <form className='sticky bottom-0 border-2 px-[10px]' onSubmit={(event) => {
+        <form className='sticky bottom-0 px-[10px]' onSubmit={(event) => {
           handleSubmit(event);
           inputRef.current.blur();
         }}>
