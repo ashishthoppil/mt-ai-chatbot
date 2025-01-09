@@ -54,7 +54,7 @@ export const TextChat = () => {
                 <div ref={messageEnd} />
             </div>
         </div>
-        <form className='fixed bottom-0 flex w-[100%] flex-col items-center space-y-4 p-3 pb-3 sm:px-0' onSubmit={(event) => {
+        <form className='fixed bottom-0 flex w-[100%] md:w-[45%] flex-col items-center space-y-4 p-3 pb-3 sm:px-0' onSubmit={(event) => {
             handleSubmit(event);
             inputRef.current.blur();
             }}>
