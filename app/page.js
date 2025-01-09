@@ -12,7 +12,7 @@ export const poppins = Poppins({
 export default function Home() {
   return (
     <main className={`flex flex-col items-center justify-between pb-32 gap-4 flex-grow overflow-y-auto ${poppins.className}`}>
-      <header className='fixed top-0 z-50 flex justify-between px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px] bg-purple-900 '>
+      <header className='fixed top-0 z-50 flex justify-between px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px] bg-purple-700 '>
         <div className='flex items-center gap-3 w-full'>
           <span className='bg-gray-100 text-gray-500 rounded-full p-[5px]'>
             <Image

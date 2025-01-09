@@ -30,7 +30,7 @@ export const TextChat = () => {
             <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
                 This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistant only deals with text responses at the moment.
             </div>
-            <div className='p-[25px] h-[55%]' style={{ overflowY: 'auto' }}>
+            <div className='h-[55%]' style={{ overflowY: 'auto' }}>
                 {messages.map((msg, idx) => (
                 <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                     <>{msg.role === 'user' ? 
@@ -42,7 +42,8 @@ export const TextChat = () => {
                 </div>
                 ))}
                 {isLoading && (
-                <div className='flex gap-2'><Image
+                <div className='flex gap-2'>
+                <Image
                     src="/icons/loader.svg"
                     width={30}
                     height={30}
@@ -58,10 +59,10 @@ export const TextChat = () => {
             handleSubmit(event);
             inputRef.current.blur();
             }}>
-            <div className='text-purple-700 border-2 border-purple-700 bg-purple-100 rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
+            <div className='shadow-lg text-purple-700 border-[1px] border-purple-700 bg-purple-100 rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
                 <textarea
                 ref={inputRef}
-                className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none'
+                className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none text-sm'
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(event) => { if (event.key === 'Enter') { handleSubmit(event); 
