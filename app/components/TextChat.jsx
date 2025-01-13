@@ -9,6 +9,7 @@ export const TextChat = () => {
     const inputRef = useRef();
 
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+        api: '/api/chat',
         initialMessages: [
         {
             id: 'assistant-1',
@@ -55,9 +56,12 @@ export const TextChat = () => {
                 <div ref={messageEnd} />
             </div>
         </div>
-        <form className='fixed bottom-0 flex w-[100%] md:w-[45%] flex-col items-center space-y-4 p-3 pb-3 sm:px-0' onSubmit={(event) => {
-            handleSubmit(event);
-            inputRef.current.blur();
+        <form className='fixed bottom-0 flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0' 
+            onSubmit={(event) => {
+                if (!isLoading) {
+                    handleSubmit(event);
+                    inputRef.current.blur();
+                }
             }}>
             <div className='text-purple-700 border-1 border-purple-700 bg-purple-100 rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
                 <textarea

@@ -12,8 +12,8 @@ export const poppins = Poppins({
 export default function Home() {
   return (
     <main className={`flex flex-col items-center justify-between pb-32 gap-4 flex-grow overflow-y-auto ${poppins.className}`}>
-      <header className='fixed top-0 z-50 flex justify-between px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px] bg-purple-700 '>
-        <div className='flex items-center gap-3 w-full'>
+      <header className='fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px] bg-purple-700 '>
+        <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto px-[25px]'>
           <span className='bg-gray-100 text-gray-500 rounded-full p-[5px]'>
             <Image
               src="/icons/chatbot.png"
@@ -22,7 +22,7 @@ export default function Home() {
               alt="Send Message"
             />
           </span>
-          <h1>Lumi.ai</h1>
+          <h1>LUMI.ai</h1>
         </div>
       </header>
       <TextChat />
