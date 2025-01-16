@@ -1,11 +1,12 @@
 import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import { generateObject, streamText } from 'ai';
 
 export const runtime = 'edge'
 
 export async function POST(request) {
-  let { messages } = await request.json();
-
+  const response = await request.json();
+  let { messages } = response;
+console.log('responseresponse', response);
   const result = await streamText({
     model: openai('gpt-4o-mini'),
     messages,

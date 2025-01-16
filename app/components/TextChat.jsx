@@ -2,22 +2,32 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useChat } from 'ai/react';
+import { useSearchParams } from 'next/navigation'
 
 export const TextChat = () => {
 
     const messageEnd = useRef();
     const inputRef = useRef();
-
+    const [initialMessages, setInitialMessages] = useState([]);
+    const searchParams = useSearchParams()
+ 
+    const clientId = searchParams.get('clientId')
+    
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: '/api/chat',
-        initialMessages: [
-        {
-            id: 'assistant-1',
-            role: 'assistant',
-            content: "Hello! I'm Lumi AI Assistant. How can I help you today?",
+        body: {
+            clientId
         },
-        ],
+        initialMessages
     });
+
+    // [
+    //     {
+    //         id: 'initial',
+    //         role: 'assistant',
+    //         content: "Hello! I'm Lumi AI Assistant. How can I help you today?",
+    //     },
+    // ]
 
     useEffect(() => {
         if (messages.length > 1) {
@@ -28,9 +38,9 @@ export const TextChat = () => {
     return (
         <>
         <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-4 pb-4 pt-20 md:px-4 md:pb-4 md;pt-20 lg:px-4 xl:px-4 2xl:px-4'>
-            <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
+            {/* <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
                 This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistant only deals with text responses at the moment.
-            </div>
+            </div> */}
             <div className='h-[55%]' style={{ overflowY: 'auto' }}>
                 {messages.map((msg, idx) => (
                 <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
@@ -85,6 +95,13 @@ export const TextChat = () => {
                 </div>
             </div>
             </form>
+            <button onClick={async () => {
+                const response = await fetch('/api/company-info', {
+                    method: 'POST',
+                  });
+                  const result = await response.json();
+                  console.log(result);
+            }}>INFOOO</button>
             </>
     )
 }
