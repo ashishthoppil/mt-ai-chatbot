@@ -8,7 +8,6 @@ export const TextChat = () => {
 
     const messageEnd = useRef();
     const inputRef = useRef();
-    const [initialMessages, setInitialMessages] = useState([]);
     const searchParams = useSearchParams()
  
     const clientId = searchParams.get('clientId')
@@ -18,16 +17,16 @@ export const TextChat = () => {
         body: {
             clientId
         },
-        initialMessages
+        initialMessages: [
+            {
+                id: 'initial',
+                role: 'assistant',
+                content: "Hello! I'm Lumi AI Assistant. How can I help you today?",
+            },
+        ]
     });
 
-    // [
-    //     {
-    //         id: 'initial',
-    //         role: 'assistant',
-    //         content: "Hello! I'm Lumi AI Assistant. How can I help you today?",
-    //     },
-    // ]
+
 
     useEffect(() => {
         if (messages.length > 1) {
@@ -41,7 +40,7 @@ export const TextChat = () => {
             {/* <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
                 This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistant only deals with text responses at the moment.
             </div> */}
-            <div className='h-[55%]' style={{ overflowY: 'auto' }}>
+            <div className='h-[55%] mt-[20px]' style={{ overflowY: 'auto' }}>
                 {messages.map((msg, idx) => (
                 <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                     <>{msg.role === 'user' ? 
