@@ -50,7 +50,6 @@ export const TextChat = () => {
                     height={30}
                     alt="Send Message"
                 />
-                <span className='text-purple-800'>Thinking</span>
                 </div>
                 )}
                 <div ref={messageEnd} />
@@ -85,13 +84,6 @@ export const TextChat = () => {
                 </div>
             </div>
             </form>
-            <button onClick={async () => {
-                const response = await fetch('/api/company-info', {
-                    method: 'POST',
-                  });
-                  const result = await response.json();
-                  console.log(result);
-            }}>INFOOO</button>
             </>
     )
 }
