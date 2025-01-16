@@ -27,11 +27,11 @@ export const TextChat = () => {
 
     return (
         <>
-        <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-4 pb-4 pt-20 md:px-4 md:pb-4 md;pt-20 lg:px-4 xl:px-4 2xl:px-4'>
+        <div className='message-container max-w-screen-md mx-auto w-full flex flex-col gap-4 px-4 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto'>
             {/* <div className='w-[80%] bg-purple-100 text-purple-600 text-[10px] text-center rounded-lg mx-auto mt-[10px] p-[15px]'>
                 This is Lumi.ai, a prototype AI that mimics the functionality of ChatGPT. This assistant only deals with text responses at the moment.
             </div> */}
-            <div className='h-[55%] mt-[20px]' style={{ overflowY: 'auto' }}>
+            <div>
                 {messages.map((msg, idx) => (
                 <div className={msg.role === 'user' ? 'flex justify-end' : 'flex'} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                     <>{msg.role === 'user' ? 
