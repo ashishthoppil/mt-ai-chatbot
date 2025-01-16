@@ -2,21 +2,14 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useChat } from 'ai/react';
-import { useSearchParams } from 'next/navigation'
 
 export const TextChat = () => {
 
     const messageEnd = useRef();
     const inputRef = useRef();
-    const searchParams = useSearchParams()
  
-    const clientId = searchParams.get('clientId')
-    
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: '/api/chat',
-        body: {
-            clientId
-        },
         initialMessages: [
             {
                 id: 'initial',
@@ -25,8 +18,6 @@ export const TextChat = () => {
             },
         ]
     });
-
-
 
     useEffect(() => {
         if (messages.length > 1) {
