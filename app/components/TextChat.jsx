@@ -65,7 +65,7 @@ export const TextChat = () => {
             <div className='text-purple-700 border-1 border-purple-700 bg-purple-100 rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
                 <textarea
                 ref={inputRef}
-                className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none'
+                className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none text-[13px]'
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(event) => { if (event.key === 'Enter') { handleSubmit(event); 
