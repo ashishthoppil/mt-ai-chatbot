@@ -1,19 +1,23 @@
-import fs from 'fs';
-import { NextResponse } from 'next/server';
-import path from 'path';
+import clientPromise from "@/lib/mongodb";
+import { NextResponse } from "next/server";
 
-export async function POST(request)  {
-    const data = { name: 'Adam', age: '22' };
-    
-    const fileContent = `export const info = ${JSON.stringify(data, null, 2)};\n`;
+export async function POST(req, res) {
+  const client = await clientPromise;
+  const db = client.db('kulfi'); // Replace with your database name
 
-    const filePath = path.join(process.cwd(), 'lib', '123.js');
+  
+  const data = await req.json();
+      // try {
+      //   const posts = await db.collection('clients').find({}).toArray();
+      //   res.status(200).json({ success: true, data: posts });
+      // } catch (error) {
+      //   res.status(500).json({ success: false, message: error.message });
+      // }
 
-    try {
-      fs.writeFileSync(filePath, fileContent);
-      
-      return NextResponse.json({ success: true, path: filePath });
-    } catch (err) {
-      return NextResponse.json({ error: 'Could not write file.' + err });
-    }
+      try {
+        const result = await db.collection('clients').insertOne(data);
+        return NextResponse.json({ success: true, data: result.ops[0] });
+      } catch (error) {
+        return NextResponse.json({ success: false, message: error.message });
+      }
 }

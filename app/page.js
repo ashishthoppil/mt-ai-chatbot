@@ -1,31 +1,16 @@
 'use client';
 
 import { Poppins } from 'next/font/google'
-import Image from 'next/image'
-import { TextChat } from './components/TextChat';
-
-export const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], 
-})
+import { Header } from './components/layout/Header';
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 
 export default function Home() {
   return (
-    <main className={`flex flex-col items-center justify-between gap-4 flex-grow ${poppins.className}`}>
-      <header className='fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px] bg-purple-700 '>
-        <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto px-[25px]'>
-          <span className='bg-gray-100 text-gray-500 rounded-full p-[5px]'>
-            <Image
-              src="/icons/chatbot.png"
-              width={20}
-              height={20}
-              alt="Send Message"
-            />
-          </span>
-          <h1>LUMI.ai</h1>
-        </div>
-      </header>
-      <TextChat />
-    </main>
+    <div className='flex flex-col gap-10 items-center justify-center bg-purple-800 w-full rounded-[30px] h-[88vh]'>
+      <h1 className='text-[26px]'>Transform Interactions with a Customized AI Chatbot</h1>
+      <h1 className='text-[4rem] font-bold text-center'>In just 10 minutes,<br/>for 1/2 the price.</h1>
+      <h1 className='text-[16px]'>Enhance customer engagement with our intelligent AI chatbot.</h1>
+      <button href="/" className='bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>See how it works</span></button>
+    </div>
   );
 }
