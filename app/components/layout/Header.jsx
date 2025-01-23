@@ -14,7 +14,7 @@ export const Header = () => {
         }
     }, [pathname]);
     return (
-        <header className={`flex items-center ${currentLoc !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[75px]`}>
+        currentLoc !== '/chat' && <header className={`flex items-center ${currentLoc !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[75px]`}>
             <div className='flex gap-2'>
                 <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Kulfi.</Link>
             </div>
