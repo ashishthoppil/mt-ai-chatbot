@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowCircleLeftRounded, ArrowCircleRightOutlined, ArrowLeftOutlined, ArrowLeftRounded, CheckBox, CheckCircle, CheckCircleOutline, CheckOutlined, SelectAllRounded } from '@mui/icons-material';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const Step1 = ({ formData, setFormData, nextStep }) => {
@@ -8,10 +9,13 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
     return (
         <div className='flex flex-col gap-[5rem] justify-center  w-full h-[55vh]'>
             <div className='flex items-center justify-between w-full'>
-                <div className='flex flex-col gap-4'>
-                    <h1 className='font-semibold text-2xl text-purple-800'>What is your organization called?</h1>
-                    <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
-                </div> 
+                <div className='flex gap-5 items-start'>
+                    <Link href='/'><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></Link>
+                    <div className='flex flex-col gap-4'>
+                        <h1 className='font-semibold text-2xl text-purple-800'>What is your organization called?</h1>
+                        <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                    </div> 
+                </div>
                 <button onClick={() => {
                     if(formData.organization === '') {
                         setError(true)
@@ -33,7 +37,7 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
     <div className='flex flex-col gap-[5rem] justify-center items-center w-full h-[55vh]'>
         <div className='flex items-center justify-between w-full'>
         <div className='flex gap-5 items-start'>
-        <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
+            <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
                 <h1 className='font-semibold text-2xl text-purple-800'>What is your email address?</h1>
                 <h1 className='font-normal text-md text-gray-500'>We will use this email address for updates and future support.</h1>
