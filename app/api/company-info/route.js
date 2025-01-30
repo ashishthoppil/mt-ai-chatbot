@@ -4,12 +4,13 @@ import { NextResponse } from "next/server";
 export async function POST(req, res) {
   const client = await clientPromise;
   const db = client.db('kulfi');
+  const ZAPIER_WEBHOOK = process.env.ZAPIER_WEBHOOK;
   const data = await req.json();
 
   try {
     const result = await db.collection('clients').insertOne(data);
     if (result.acknowledged) {
-      const zapierRes = await fetch('https://hooks.zapier.com/hooks/catch/18083815/2fkc6qh/', {
+      const zapierRes = await fetch(ZAPIER_WEBHOOK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

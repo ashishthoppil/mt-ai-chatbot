@@ -244,15 +244,9 @@ const MultiStepForm = () => {
         },
         body: JSON.stringify(formData),
     });
-    // https://hooks.zapier.com/hooks/catch/18083815/2fkqz86/
     const data = await res.json();
-    // {
-    //     acknowledged: true,
-    //     insertedId: new ObjectId('679b1cd6a82bedc3035d5838')
-    //   }
     if (data.success && data.data.acknowledged) {
-console.log('data', data);
-
+        console.log('data', data);
     } else {
         console.log('data', data)
     }
