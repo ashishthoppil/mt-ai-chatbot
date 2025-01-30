@@ -16,7 +16,6 @@ export default function Dashboard() {
             method: 'GET',
         });
         const data = await res.json();
-        console.log('data', data);
     }
 
     useEffect(() => {

@@ -8,7 +8,6 @@ export async function POST(req, res) {
   const data = await req.json();
       try {
         const exists = await db.collection('clients').find({ email: data.email }).toArray();
-        console.log('existsexists', exists);
         return NextResponse.json({ success: true, data: exists });
       } catch (error) {
         return NextResponse.json({ success: false, message: error.message });

@@ -62,7 +62,7 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
                         const data = await response.json();
                         if (data.success) {
                             if (data.data.length > 0) {
-                                setError('This email address already exists!');
+                                setError('<div>This email address already exists! <a class="underline text-purple-800" href="/">Click here to Login.</a></div>');
                             } else {
                                 nextStep()
                             }
@@ -73,7 +73,7 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input placeholder='Example: www.web-address.com' onChange={(e) => setFormData({ ...formData, email: e.target.value })} value={formData.email} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
-            {error && <span className='text-red-700'>{error}</span>}
+            {error && <span dangerouslySetInnerHTML={{ __html: error }} className='text-red-700' />}
         </div>
     </div>
 )};
@@ -244,9 +244,19 @@ const MultiStepForm = () => {
         },
         body: JSON.stringify(formData),
     });
+    // https://hooks.zapier.com/hooks/catch/18083815/2fkqz86/
     const data = await res.json();
-    window.location.href = '/dashboard';
-    // Handle form submission logic here (e.g., send to API)
+    // {
+    //     acknowledged: true,
+    //     insertedId: new ObjectId('679b1cd6a82bedc3035d5838')
+    //   }
+    if (data.success && data.data.acknowledged) {
+console.log('data', data);
+
+    } else {
+        console.log('data', data)
+    }
+    // window.location.href = '/dashboard';
   };
 
   const renderStep = () => {
@@ -275,98 +285,3 @@ const MultiStepForm = () => {
 };
 
 export default MultiStepForm;
-
-
-// import { Poppins } from 'next/font/google'
-// import { Header } from '../components/layout/Header';
-// import { ArrowCircleRightOutlined } from '@mui/icons-material';
-// import { useEffect, useState } from 'react';
-
-// export const poppins = Poppins({
-//   subsets: ['latin'],
-//   weight: ['400', '500', '600', '700'], 
-// })
-
-// export default function GetStarted() {
-
-//     const [companyInfo, setCompanyInfo] = useState({
-        // companyName: '',
-        // website: '',
-        // employees: '',
-        // domain: '',
-        // botName: '',
-        // color: '',
-//     });
-
-//     const [index, setIndex] = useState(0);
-
-//     const formSaver = () => {
-//         const element = document.getElementById(`value_${index}`)
-//         if (index === 0) {
-//             setCompanyInfo(prev => { return { ...prev, companyName: element.value } });
-//         } else if (index === 1) {
-//             setCompanyInfo(prev => { return { ...prev, website: element.value } });
-//         } else if (index === 2) {
-//             setCompanyInfo(prev => { return { ...prev, employees: element.value } });
-//         } else if (index === 3) {
-//             setCompanyInfo(prev => { return { ...prev, domain: element.value } });
-//         } else if (index === 4) {
-//             setCompanyInfo(prev => { return { ...prev, botName: element.value } });
-//         }
-//         setIndex(prev => prev + 1);
-//     }
-
-//     useEffect(() => {
-//         if (index > 4) {
-//             console.log('companyInfo', companyInfo);
-//         }
-//     }, [index])
-
-//     return (
-//             <div className='flex flex-col gap-10 items-center justify-center bg-purple-800 w-full h-screen'>
-//                 <h1 className='text-white font-bold text-[3rem]'>Help us customize your AI Chatbot!</h1>
-                // <div className='flex flex-col items-center gap-10 bg-white rounded-[20px] w-[25%] px-5 py-10 shadow-xl'>
-                    // {index === 0 && <div className='flex flex-col gap-4 justify-center items-center'>
-                    //     <h1 className='font-bold text-[16px] text-purple-800'>What is your organization called?</h1>
-                    //     <input id='value_0' type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-2 py-5 rounded-lg shadow-md w-full' />
-                    // </div>}
-//                     {index === 1 && <div className='flex flex-col gap-4 justify-center items-center'>
-//                         <h1 className='font-bold text-[16px] text-purple-800'>What is your website?</h1>
-//                         <input id='value_1' type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-2 py-5 rounded-lg shadow-md w-full' />
-//                     </div>}
-//                     {index === 2 && <div className='flex flex-col gap-4 justify-center items-center'>
-//                         <h1 className='font-bold text-[16px] text-purple-800'>How many employees are there in your organization?</h1>
-//                         <input id='value_2' type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-2 py-5 rounded-lg shadow-md w-full' />
-//                     </div>}
-//                     {index === 3 && <div className='flex flex-col gap-4 justify-center items-center'>
-//                         <h1 className='font-bold text-[16px] text-purple-800'>What is your domain?</h1>
-//                         <input id='value_3' type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-2 py-5 rounded-lg shadow-md w-full' />
-//                     </div>}
-//                     {index === 4 && <div className='flex flex-col gap-4 justify-center items-center'>
-//                         <h1 className='font-bold text-[16px] text-purple-800'>What would you like to call your chatbot?</h1>
-//                         <input id='value_4' type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-2 py-5 rounded-lg shadow-md w-full' />
-//                     </div>}
-//                     {index === 5 && <div className='flex flex-col gap-4 justify-center items-start'>
-//                         <h1 className='font-bold text-[24px] text-purple-800'>Choose a color for your chat bot.</h1>
-//                         <div className='flex justify-between w-full'>
-//                             <button className='bg-purple-800 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-orange-500 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-emerald-400 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-sky-800 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-indigo-500 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-yellow-400 h-8 w-8 rounded-sm'></button>
-//                         </div>
-//                         <div className='flex justify-between w-full'>
-//                             <button className='bg-indigo-800 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-slate-500 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-gray-400 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-green-800 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-red-500 h-8 w-8 rounded-sm'></button>
-//                             <button className='bg-blue-400 h-8 w-8 rounded-sm'></button>
-//                         </div>
-//                     </div>}
-                    // <button onClick={() => formSaver()} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
-//                 </div>
-//             </div>
-//     );
-// }

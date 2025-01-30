@@ -64,13 +64,13 @@ export const TextChat = () => {
             }}>
             <div className='text-purple-700 border-1 border-purple-700 bg-purple-100 rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
                 <textarea
-                ref={inputRef}
-                className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none text-[14px]'
-                value={input}
-                onChange={handleInputChange}
-                onKeyDown={(event) => { if (event.key === 'Enter') { handleSubmit(event); 
-                    inputRef.current.blur();} }}
-                placeholder="Ask me anything..."
+                    ref={inputRef}
+                    className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none text-[14px]'
+                    value={input}
+                    onChange={handleInputChange}
+                    onKeyDown={(event) => { if (event.key === 'Enter') { handleSubmit(event); 
+                        inputRef.current.blur();} }}
+                    placeholder="Ask me anything..."
                 />
                 <div className='flex justify-end'>
                 <button type='submit' className={`bg-purple-500 rounded-full py-[8px] pl-[10px] pr-[6px] relative bottom-4 ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>

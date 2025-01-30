@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <main className={`main-container flex flex-col items-center justify-between flex-grow px-[25px] ${poppins.className}`}>
+        <main className={`main-container flex flex-col items-center justify-between flex-grow ${poppins.className}`}>
           <Header />
           {children}
         </main>

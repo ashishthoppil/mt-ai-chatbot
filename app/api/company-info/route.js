@@ -3,21 +3,25 @@ import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
   const client = await clientPromise;
-  const db = client.db('kulfi'); // Replace with your database name
-
-  
+  const db = client.db('kulfi');
   const data = await req.json();
-      // try {
-      //   const posts = await db.collection('clients').find({}).toArray();
-      //   res.status(200).json({ success: true, data: posts });
-      // } catch (error) {
-      //   res.status(500).json({ success: false, message: error.message });
-      // }
 
-      try {
-        const result = await db.collection('clients').insertOne(data);
-        return NextResponse.json({ success: true, data: result.ops[0] });
-      } catch (error) {
-        return NextResponse.json({ success: false, message: error.message });
-      }
+  try {
+    const result = await db.collection('clients').insertOne(data);
+    if (result.acknowledged) {
+      const zapierRes = await fetch('https://hooks.zapier.com/hooks/catch/18083815/2fkc6qh/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: result.insertedId.toString(),
+          email: data.email,
+        }),
+      });
+    }
+    return NextResponse.json({ success: true, data: result });
+  } catch (error) {
+    return NextResponse.json({ success: false, message: error.message });
+  }
 }

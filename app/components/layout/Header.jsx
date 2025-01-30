@@ -26,7 +26,7 @@ export const Header = () => {
                 </ul>
             </nav>}
             {currentLoc !== '/get-started' && <div className='flex gap-2'>
-                <Link href="/" className='bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Login</Link>
+                <Link href="/login" className='bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Login</Link>
                 <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Get started</Link>
             </div>}
         </header>
