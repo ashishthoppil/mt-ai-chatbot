@@ -78,6 +78,36 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
     </div>
 )};
 
+const PasswordStep = ({ formData, setFormData, nextStep, prevStep }) => {
+    const [error, setError] = useState(false);
+    return (
+        <div className='flex flex-col gap-[5rem] justify-center  w-full h-[55vh]'>
+            <div className='flex items-center justify-between w-full'>
+                <div className='flex gap-5 items-start'>
+                    <Link href='/'><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></Link>
+                    <div className='flex flex-col gap-4'>
+                        <h1 className='font-semibold text-2xl text-purple-800'>Type your password</h1>
+                        <h1 className='font-normal text-md text-gray-500'>Please keep your password confidential.</h1>
+                    </div> 
+                </div>
+                <button onClick={() => {
+                    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+                    if(formData.password === '') {
+                        setError('Please fill this field!')
+                    } else if (!regex.test(formData.password)) {
+                        setError('The password should consist of one digit, one lowercase letter, one uppercase letter, one special character (@$!%*?&) and atleast 8 characters long.')
+                    }else {
+                        nextStep()
+                    }
+                }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+            </div>
+            <div className='flex flex-col gap-4  w-full'>
+                <input placeholder='Enter you password here.' onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type='password' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+                {error && <span className='text-red-700'>{error}</span>}
+            </div>
+        </div>
+)};
+
 const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
     const [error, setError] = useState(false);
     return (
@@ -224,6 +254,7 @@ const MultiStepForm = () => {
   const [formData, setFormData] = useState({
     organization: '',
     email: '',
+    password: '',
     website: '',
     domain: '',
     botName: '',
@@ -246,13 +277,14 @@ const MultiStepForm = () => {
     });
     const data = await res.json();
     if (data.success && data.data.acknowledged) {
-        console.log('data', data);
+        const id = data.data.insertedId;
+        localStorage.setItem('objectID', id)
+        window.location.href = `/dashboard`;
     } else {
-        console.log('data', data)
+        console.log('Error: ', data)
     }
-    // window.location.href = '/dashboard';
   };
-
+//   PasswordStep
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -260,12 +292,14 @@ const MultiStepForm = () => {
       case 2:
         return <Step2 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
       case 3:
-        return <Step3 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
+        return <PasswordStep formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
       case 4:
-        return <Step4 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />; 
+        return <Step3 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
       case 5:
-        return <Step5 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
+        return <Step4 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />; 
       case 6:
+        return <Step5 formData={formData} setFormData={setFormData} nextStep={nextStep} prevStep={prevStep} />;
+      case 7:
         return <Step6 formData={formData} setFormData={setFormData} prevStep={prevStep} submitForm={submitForm} isLoading={isLoading} />;
       default:
         return <Error reset={reset} />;

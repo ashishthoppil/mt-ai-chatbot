@@ -1,16 +1,21 @@
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
-  const client = await clientPromise;
-  const db = client.db('kulfi');
-  const ZAPIER_WEBHOOK = process.env.ZAPIER_WEBHOOK;
-  const data = await req.json();
+const bcrypt = require('bcrypt');
 
+export async function POST(req, res) {
+  const DB_NAME = process.env.DB_NAME
+  const ZAPIER_WEBHOOK = process.env.ZAPIER_WEBHOOK;
+  const client = await clientPromise;
+  const db = client.db(DB_NAME);
+  const data = await req.json();
+  const salt = bcrypt.genSaltSync(10);
+  const hashedpass = bcrypt.hashSync(data.password, salt);
+  const formattedData = {...data, password: hashedpass}
   try {
-    const result = await db.collection('clients').insertOne(data);
+    const result = await db.collection('clients').insertOne(formattedData);
     if (result.acknowledged) {
-      const zapierRes = await fetch(ZAPIER_WEBHOOK, {
+      await fetch(ZAPIER_WEBHOOK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
