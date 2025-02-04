@@ -22,7 +22,9 @@ export default function Home() {
               alt="Send Message"
             />
           </span>
-          <h1 className='font-bold text-[20px] text-white'>Kulfi.</h1>
+          {/* <h1 className='font-bold text-[20px] text-white'>Kulfi.</h1> */}
+          <h1 className='font-bold text-[20px] text-white'>Lumi.Ai</h1>
+
         </div>
       </header>
       <TextChat />

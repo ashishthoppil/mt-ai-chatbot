@@ -3,7 +3,7 @@ import { Header } from "./components/layout/Header";
 import "./globals.css";
 
 export const metadata = {
-  title: 'Kulfi AI',
+  title: 'Lumi AI',
   description: 'Customized AI Chatbots',
 };
 

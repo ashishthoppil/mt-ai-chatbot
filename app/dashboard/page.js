@@ -130,7 +130,6 @@ export default function Dashboard() {
     }
 
     const faqsUpdate = async () => {
-        const updatedFAQs = [...faqList, { question: faq.question, answer: faq.answer }];
         const res = await fetch('/api/add-question', {
             method: 'POST',
             body: JSON.stringify({
@@ -275,7 +274,7 @@ export default function Dashboard() {
                                             <div className='w-[90%]'>
                                                 {item.answer}
                                             </div>
-                                            <button onClick={() => deleteFaq(item.id)} className='px-4 py-2 bg-red-500 rounded-md shadow-md'><TrashIcon className='text-white' /></button>
+                                            <button onClick={() => deleteFaq(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'><TrashIcon className='text-white w-[16px]' /></button>
                                         </div>
                                     </AccordionContent>
                                 </AccordionItem>

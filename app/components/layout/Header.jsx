@@ -3,7 +3,7 @@
 import { checkAuth } from '@/lib/helper';
 import { AccountCircleOutlined, VerifiedUserOutlined } from '@mui/icons-material';
 import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
     Dialog,
     DialogContent,
@@ -23,7 +23,6 @@ export const poppins = Poppins({
 
 export const Header = () => {
     const pathname = usePathname();
-    const searchParams = useSearchParams()
     const [credentials, setCredentials] = useState({
         email: '',
         password: ''
@@ -52,22 +51,24 @@ export const Header = () => {
     }
 
     useEffect(() => {
-        if (loginRef.current && searchParams.get('loginRedirect') === 'true') {
-            loginRef.current.click();
-        }
+        // if (loginRef.current && searchParams.get('loginRedirect') === 'true') {
+        //     loginRef.current.click();
+        // }
     }, [loginRef.current]);
 
     return (
         pathname !== '/chat' && <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[75px]`}>
             <div className='flex gap-2'>
-                <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Kulfi.</Link>
+                {/* <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Kulfi.</Link> */}
+                <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Lumi.Ai</Link>
+
             </div>
             {pathname !== '/get-started' && 
             <div className='flex items-center gap-16'>
                 <nav>
                     <ul className='flex gap-[5rem] justify-between items-center'>
                         <Link href="/" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Home</Link>
-                        <Link href="/pricing" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Pricing</Link>
+                        {/* <Link href="/pricing" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Pricing</Link> */}
                         <Link href="/contact" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Contact</Link>
                     </ul>
                 </nav>
