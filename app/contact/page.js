@@ -64,7 +64,7 @@ export default function Contact() {
 
     return (
         <div className='flex gap-10 items-center justify-center bg-purple-800 w-full rounded-[30px] py-[5rem]'>
-            <div className='flex flex-col gap-10 items-center text-center w-[50%]'>
+            <div className='flex flex-col gap-10 items-center text-center w-[50%]  text-white'>
                 <h1 className='text-[42px] font-bold'>Got a business requirement <br/>or perhaps a grievance?</h1>
                 <h1 className='text-[42px] font-bold'>We'd love to hear from you!</h1>
             </div>

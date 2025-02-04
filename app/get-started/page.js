@@ -62,7 +62,7 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
                         const data = await response.json();
                         if (data.success) {
                             if (data.data.length > 0) {
-                                setError('<div>This email address already exists! <a class="underline text-purple-800" href="/">Click here to Login.</a></div>');
+                                setError('<div>This email address already exists! <a class="underline text-purple-800" href="/?loginRedirect=true">Click here to Login.</a></div>');
                             } else {
                                 nextStep()
                             }
