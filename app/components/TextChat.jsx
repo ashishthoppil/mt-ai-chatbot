@@ -14,7 +14,7 @@ export const TextChat = ({ data }) => {
             {
                 id: 'initial',
                 role: 'assistant',
-                content: "Hello! I'm Lumi AI Assistant. How can I help you today?",
+                content: `Hello! I'm ${data && data.botName} Assistant. How can I help you today?`,
             },
         ]
     });
