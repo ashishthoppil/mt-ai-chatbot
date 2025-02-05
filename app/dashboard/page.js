@@ -56,7 +56,8 @@ export default function Dashboard() {
         if (data.data) {
             setData(data.data);
         } else {
-            router.push('/');
+            console.log('/')
+            // router.push('/');
         }
         loadFaqs();
     }

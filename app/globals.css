@@ -16,7 +16,7 @@ body {
 } */
 
 .message-container {
-  height: 73vh;
+  height: 60vh;
   overflow-y: auto;
 }
 

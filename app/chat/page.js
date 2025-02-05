@@ -24,9 +24,10 @@ export default function Home() {
       const data = await res.json();
       if (data.data) {
         setData(data.data);
-      } else {
-        router.push('/');
-      }
+      } 
+      // else {
+      //   router.push('/');
+      // }
     }
   
     useEffect(() => {
