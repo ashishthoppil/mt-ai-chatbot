@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useChat } from 'ai/react';
 
-export const TextChat = () => {
+export const TextChat = ({ data }) => {
 
     const messageEnd = useRef();
     const inputRef = useRef();
@@ -68,11 +68,15 @@ export const TextChat = () => {
                     className='w-full outline-none bg-purple-100 placeholder-purple-700 resize-none text-[14px]'
                     value={input}
                     onChange={handleInputChange}
-                    onKeyDown={(event) => { if (event.key === 'Enter') { handleSubmit(event); 
-                        inputRef.current.blur();} }}
+                    onKeyDown={(event) => { 
+                        if (event.key === 'Enter') { 
+                            handleSubmit(event); 
+                            inputRef.current.blur();} 
+                        }
+                    }
                     placeholder="Ask me anything..."
                 />
-                <div className='flex justify-end'>
+                <div className='flex justify-end'>  
                 <button type='submit' className={`bg-purple-500 rounded-full py-[8px] pl-[10px] pr-[6px] relative bottom-4 ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
                 <Image
                     src="/icons/send.png"

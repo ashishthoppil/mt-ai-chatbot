@@ -219,14 +219,14 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
         </div>
         
         <div className='flex justify-between w-full'>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-yellow-500' })} className={`h-8 w-8 bg-yellow-500 shadow-md`}>{formData.color === 'bg-yellow-500' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-purple-800' })} className={`h-8 w-8 bg-purple-800 shadow-md`}>{formData.color === 'bg-purple-800' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-red-800' })} className={`h-8 w-8 bg-red-800 shadow-md`}>{formData.color === 'bg-red-800' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-emerald-800' })} className={`h-8 w-8 bg-emerald-800 shadow-md`}>{formData.color === 'bg-emerald-800' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-sky-800' })} className={`h-8 w-8 bg-sky-800 shadow-md`}>{formData.color === 'bg-sky-800' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-indigo-800' })} className={`h-8 w-8 bg-indigo-800 shadow-md`}>{formData.color === 'bg-indigo-800' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-orange-400' })} className={`h-8 w-8 bg-orange-400 shadow-md`}>{formData.color === 'bg-orange-400' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: 'bg-gray-900' })} className={`h-8 w-8 bg-gray-900 shadow-md`}>{formData.color === 'bg-gray-900' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#E3A008' })} className={`h-8 w-8 bg-[#E3A008] shadow-md`}>{formData.color === '#E3A008' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#4A1D96' })} className={`h-8 w-8 bg-[#4A1D96] shadow-md`}>{formData.color === '#4A1D96' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#9B1C1C' })} className={`h-8 w-8 bg-[#9B1C1C] shadow-md`}>{formData.color === '#9B1C1C' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#03543F' })} className={`h-8 w-8 bg-[#03543F] shadow-md`}>{formData.color === '#03543F' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#1E429F' })} className={`h-8 w-8 bg-[#1E429F] shadow-md`}>{formData.color === '#1E429F' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#362F78' })} className={`h-8 w-8 bg-[#362F78] shadow-md`}>{formData.color === '#362F78' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#9F580A' })} className={`h-8 w-8 bg-[#9F580A] shadow-md`}>{formData.color === '#9F580A' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#6B7280' })} className={`h-8 w-8 bg-[#6B7280] shadow-md`}>{formData.color === '#6B7280' && <CheckOutlined/>}</button>
         </div>
         {error && <span className='text-red-700'>Please select a color!</span>}
 

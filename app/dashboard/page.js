@@ -211,16 +211,16 @@ export default function Dashboard() {
                             </label>
                             <div className='flex gap-2'>
                                 <select value={data.color} onChange={(e) => setData((prev) => { return { ...prev, color: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
-                                    <option value='bg-yellow-500'>Yellow</option>
-                                    <option value='bg-purple-800'>Purple</option>
-                                    <option value='bg-red-700'>Red</option>
-                                    <option value='bg-emerald-700'>Green</option>
-                                    <option value='bg-sky-500'>Sky</option>
-                                    <option value='bg-indigo-800'>Indigo</option>
-                                    <option value='bg-orange-500'>Orange</option>
-                                    <option value='bg-gray-500'>Gray</option>
+                                    <option value='#E3A008'>Yellow</option>
+                                    <option value='#4A1D96'>Purple</option>
+                                    <option value='#9B1C1C'>Red</option>
+                                    <option value='#03543F'>Green</option>
+                                    <option value='#1E429F'>Blue</option>
+                                    <option value='#362F78'>Indigo</option>
+                                    <option value='#9F580A'>Orange</option>
+                                    <option value='#6B7280'>Gray</option>
                                 </select>
-                                <span className={`w-[15%] rounded-md ${data.color}`}></span>
+                                <span className={`w-[15%] rounded-md bg-[${data.color}]`}></span>
                             </div>
                         </div>
                     </div>
