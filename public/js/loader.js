@@ -1,4 +1,5 @@
 (function() {
+    var urlObject = new URL(loaderScriptURL);
     var id = urlObject.searchParams.get('id');
     localStorage.setItem('objectID', id);
     setTimeout(() => {
