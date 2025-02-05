@@ -52,7 +52,7 @@
 
         const iframe = document.createElement('iframe');
 
-        iframe.src = 'https://mt-ai-chatbot-git-main-ashishs-projects-33ba2137.vercel.app/';
+        iframe.src = 'https://mt-ai-chatbot-git-main-ashishs-projects-33ba2137.vercel.app/chat';
         iframe.style.overflow = 'none';
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
