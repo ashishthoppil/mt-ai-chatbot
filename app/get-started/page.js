@@ -123,15 +123,17 @@ const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
             <button onClick={() => {
                 const re = /^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/;
                 const websiteFormat = re.test(formData.website); 
-                if(formData.website === '') {
-                    setError('Please enter your website url!');
-                } else {
-                    if (!websiteFormat) {
-                        setError('Please enter a valid website url!')
-                    } else {
-                        nextStep()
-                    }
-                }
+                // if(formData.website === '') {
+                //     setError('Please enter your website url!');
+                // } else {
+                //     if (!websiteFormat) {
+                //         setError('Please enter a valid website url!')
+                //     } else {
+                //         nextStep()
+                //     }
+                // }
+                nextStep()
+
             }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>

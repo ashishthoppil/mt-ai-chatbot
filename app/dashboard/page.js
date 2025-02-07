@@ -11,6 +11,15 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
+  import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 import { TrashIcon } from 'lucide-react';
 
 export const poppins = Poppins({
@@ -27,6 +36,7 @@ export default function Dashboard() {
         answer: ''
     });
     const [faqList, setFaqList] = useState([]);
+    const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
     const router = useRouter();
 
@@ -56,8 +66,7 @@ export default function Dashboard() {
         if (data.data) {
             setData(data.data);
         } else {
-            console.log('/')
-            // router.push('/');
+            router.push('/');
         }
         loadFaqs();
     }
@@ -284,16 +293,6 @@ export default function Dashboard() {
                     </Accordion> : <div className='flex justify-center items-center min-h-[10rem]'><h1>No FAQs added at the moment</h1></div>}
                 </>
             )
-        } else if (section === 'Logout') {
-            return (
-                <>
-                    <h3 className="text-[32px] font-bold text-gray-900 mb-2">Logout?</h3>
-                    <div className='flex flex-col gap-10'>
-                        <p>Do you really wish to logout?</p>
-                        <button onClick={() => logout()} className='flex gap-1 px-3 py-2 bg-purple-800 hover:bg-purple-700 rounded-lg text-white w-[7%]'><LogoutOutlined />Yes</button>
-                    </div>
-                </>
-            )
         }
     }
 
@@ -302,12 +301,34 @@ export default function Dashboard() {
             <div className="md:flex w-full">
                 <ul className="flex-column space-y space-y-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0">
                     {sideMenu.map(({ Icon, ...item}) => (
-                        <li key={item.id}>
+                        item.title !== 'Logout' ? <li key={item.id}>
                             <button onClick={() => setActiveSection(item.title)} className={`inline-flex items-center px-4 py-3 rounded-lg  ${activeSection === item.title ? 'bg-purple-800 text-white hover:bg-purple-700 hover:text-gray-100 border-2 border-purple-800' : 'border-2 border-slate-200 hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
                                 <Icon />
                                 {item.title}
                             </button>
-                        </li>
+                        </li>:
+                        <Dialog open={logoutModalOpen} key={item.id}>
+                            <DialogTrigger asChild>
+                            <li>
+                                <button onClick={() => { setLogoutModalOpen(true); }} className={`inline-flex items-center px-4 py-3 rounded-lg  ${activeSection === item.title ? 'bg-purple-800 text-white hover:bg-purple-700 hover:text-gray-100 border-2 border-purple-800' : 'border-2 border-slate-200 hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
+                                    <Icon />
+                                    {item.title}
+                                </button>
+                            </li>
+                            </DialogTrigger>
+                            <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                                <DialogHeader className='flex flex-col gap-2'>
+                                    <DialogTitle className='text-[32px]'>Logout?</DialogTitle>
+                                    <DialogDescription>
+                                        Are you sure you want to logout?
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <DialogFooter className='flex gap-2 justify-end pt-[25px]'>
+                                    <button onClick={() => logout()} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Yes</button>  
+                                    <button onClick={() => setLogoutModalOpen(false)} className='bg-white border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-purple-500 py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>No</button>  
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                     ))}
                 </ul>
                 <div className="p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-lg w-full">

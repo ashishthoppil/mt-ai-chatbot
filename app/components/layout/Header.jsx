@@ -67,8 +67,8 @@ export const Header = () => {
                 <nav>
                     <ul className='flex gap-[5rem] justify-between items-center'>
                         <Link href="/" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Home</Link>
-                        {/* <Link href="/pricing" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Pricing</Link> */}
-                        <Link href="/contact" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Contact</Link>
+                        <Link href="/pricing" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Pricing</Link>
+                        <Link href="/contact" className='text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'>Demo</Link>
                     </ul>
                 </nav>
                 {!checkAuth() ? <div className='flex gap-5'>
