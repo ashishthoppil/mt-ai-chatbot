@@ -1,10 +1,10 @@
 import { openai } from '@ai-sdk/openai';
-import { OpenAI } from 'openai'
+// import { OpenAI } from 'openai'
 import { generateObject, streamText } from 'ai';
-import clientPromise from '@/lib/mongodb';
-import { ObjectId } from 'mongodb';
-import { NextResponse } from 'next/server';
-import { cosineSimilarity, findRelevantChunks } from '@/lib/utils';
+// import clientPromise from '@/lib/mongodb';
+// import { ObjectId } from 'mongodb';
+// import { NextResponse } from 'next/server';
+// import { cosineSimilarity, findRelevantChunks } from '@/lib/utils';
 
 export const runtime = 'edge'
 
