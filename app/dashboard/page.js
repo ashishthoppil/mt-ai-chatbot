@@ -1,10 +1,10 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, Logout, LogoutOutlined, Newspaper, QuestionAnswer, Recycling, Settings, Source } from '@mui/icons-material';
+import { AccountCircleOutlined, Logout, LogoutOutlined, Newspaper, QuestionAnswer, Recycling, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Accordion,
     AccordionContent,
@@ -20,7 +20,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { TrashIcon } from 'lucide-react';
+import { CopyIcon, TrashIcon, UploadCloudIcon } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -29,7 +30,7 @@ export const poppins = Poppins({
 
 export default function Dashboard() {
     const [data, setData] = useState();
-    const [activeSection, setActiveSection] = useState('Profile');
+    const [activeSection, setActiveSection] = useState('News');
     const [isLoading, setIsLoading] = useState();
     const [faq, setFaq] = useState({
         question: '',
@@ -38,6 +39,7 @@ export default function Dashboard() {
     const [faqList, setFaqList] = useState([]);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
+    const botLink = useRef();
     const router = useRouter();
 
     const loadFaqs = async () => {
@@ -176,6 +178,20 @@ export default function Dashboard() {
                 <>
                     <h3 className="font-bold text-gray-900 mb-2 text-[32px]">Profile</h3>
                     <p>An overview of the information that you provided during the registration process. You can manage your information from this section by editing the fields below.</p>
+                    <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg'>
+                        <p>Copy and paste this code snippet in the <span className='font-bold'>{'<head><head/>'}</span> section of your code.</p>
+                        <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
+                            <div className='flex justify-between items-start text-yellow-500 px-1'>
+                                <span ref={botLink}>https://mt-ai-chatbot-git-main-ashishs-projects-33ba2137.vercel.app/js/loader.js?id=679d07708d8d780b96ab7106</span>
+                                <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
+                                    navigator.clipboard.writeText(botLink.current.innerHTML);
+                                    toast("Code snippet has been copied!", {
+                                        progressStyle: { backgroundColor: "red" }
+                                    });
+                                }}><CopyIcon className='h-4 w-4' /></button>
+                            </div>
+                        </div>
+                    </div>
                     {data && <div className='flex flex-col gap-4 pt-10'>
                         <div className='flex justify-between gap-4'>
                             <div className="flex flex-col gap-4 w-[50%]">
@@ -243,12 +259,89 @@ export default function Dashboard() {
             return (
                 <>
                     <h3 className="text-[32px] font-bold text-gray-900 mb-2">Source</h3>
+                    <p>Manage your Knowledge bases.</p>
+                    <div className='flex gap-3 pt-10'>
+                        <div className='flex flex-col gap-2 w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
+                            <h1>Links</h1>
+                            <textarea placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                        </div>
+                        
+                        <div className='flex flex-col gap-2 w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
+                            <h1>Documents</h1>
+                            
+                        <div className="flex items-center justify-center w-full">
+                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <UploadFileTwoTone />
+                                    <p className="mt-2 mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">The file must be in PDF format.</p>
+                                </div>
+                                <input id="dropzone-file" type="file" className="hidden" />
+                            </label>
+                        </div> 
+
+                        </div>
+                    </div>
                 </>
             )
         } else if (section === 'News') {
             return (
                 <>
-                    <h3 className="text-[32px] font-bold text-gray-900 mb-2">News</h3>
+                    <h3 className="text-[32px] font-bold text-gray-900 mb-2">News (Blog)</h3>
+                    <p>You can add the blogs posted in your website here.</p>
+                    <div className='flex flex-col gap-5 pt-10'>
+                        <div className='flex gap-2'>
+                            <div className="flex flex-col gap-4 w-[50%]">
+                                <label className="text-left">
+                                    Blog Title
+                                </label>
+                                <input onChange={(e) => setFaq((prev) => { return { ...prev, question: e.target.value } })} value={faq.question} id='question' placeholder='Enter the title of the blog here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            </div>
+                            <div className="flex flex-col gap-4 w-[50%]">
+                                <label className="text-left">
+                                    Blog Link
+                                </label>
+                                <input onChange={(e) => setFaq((prev) => { return { ...prev, question: e.target.value } })} value={faq.question} id='question' placeholder='Enter the title of the blog here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-4 w-[50%]">
+                            <label htmlFor="botname" className="text-left">
+                                Blog description
+                            </label>
+                            <textarea onChange={(e) => setFaq((prev) => { return {...prev, answer: e.target.value }})} value={faq.answer} placeholder="Type your answer here." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                        </div>
+                        <div className='flex justify-end items-end'>
+                            <button onClick={faqsUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
+                        </div>
+                    </div>
+                    <div className='flex flex-col gap-5 mt-2 border-2 border-gray-400 pt-5 rounded-lg mt-12'>
+                        <h1 className='text-center'>Blog list</h1>
+                        <table className='w-full'>
+                            <thead>
+                                <tr className='text-left'>
+                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Title</th>
+                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Description</th>
+                                    <th className='p-4 border-t-2 border-gray-400'>Link</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className='text-left'>
+                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Title</td>
+                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Description</td>
+                                    <td className='p-4 border-t-2 border-gray-400'>Link</td>
+                                </tr>
+                                <tr className='text-left'>
+                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Title</td>
+                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Description</td>
+                                    <td className='p-4 border-t-2 border-gray-400'>Link</td>
+                                </tr>
+                                <tr className='text-center'>
+                                    <td colSpan={3} className='p-4 border-t-2 border-gray-400'>No records to show</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </>
             )
         } else if (section === 'FAQs') {

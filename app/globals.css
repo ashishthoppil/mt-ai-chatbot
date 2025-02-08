@@ -16,7 +16,7 @@ body {
 } */
 
 .message-container {
-  height: 60vh;
+  height: 52vh;
   overflow-y: auto;
 }
 
@@ -37,6 +37,10 @@ body {
 
 .message-container::-webkit-scrollbar-thumb:hover {
   background-color: #a3a3a3;   /* color changes on hover */
+}
+
+.Toastify__progress-bar {
+  background: rgb(107 33 168);
 }
 
 @layer base {

@@ -59,7 +59,7 @@ export const Header = () => {
     return (
         pathname !== '/chat' && <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[75px]`}>
             <div className='flex gap-2'>
-                <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Lumi.Ai</Link>
+                <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Kulfi.</Link>
 
             </div>
             {pathname !== '/get-started' && 

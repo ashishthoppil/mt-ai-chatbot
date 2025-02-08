@@ -1,9 +1,11 @@
 import { Poppins } from "next/font/google";
 import { Header } from "./components/layout/Header";
+import { ToastContainer } from "react-toastify";
+
 import "./globals.css";
 
 export const metadata = {
-  title: 'Lumi AI',
+  title: 'Kulfi AI',
   description: 'Customized AI Chatbots',
 };
 
@@ -19,6 +21,7 @@ export default function RootLayout({ children }) {
         <main className={`main-container flex flex-col items-center justify-between flex-grow md:px-[25px] ${poppins.className}`}>
           <Header />
           {children}
+          <ToastContainer />
         </main>
         <footer></footer>
       </body>
