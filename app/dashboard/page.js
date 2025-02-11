@@ -4,6 +4,7 @@ import { logout } from '@/lib/helper';
 import { AccountCircleOutlined, Logout, LogoutOutlined, Newspaper, QuestionAnswer, Recycling, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
+
 import { useEffect, useRef, useState } from 'react';
 import {
     Accordion,
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/dialog"
 import { CopyIcon, TrashIcon, UploadCloudIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
+import tinycolor from 'tinycolor2';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -38,6 +40,13 @@ export default function Dashboard() {
     });
     const [faqList, setFaqList] = useState([]);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    const [urlParams, setUrlParams] = useState({
+        id: '',
+        botName: '',
+        color: '',
+        lColor: '',
+        mColor: ''
+    });
 
     const botLink = useRef();
     const router = useRouter();
@@ -69,6 +78,7 @@ export default function Dashboard() {
             setData(data.data);
         } else {
             router.push('/');
+            logout();
         }
         loadFaqs();
     }
@@ -172,6 +182,31 @@ export default function Dashboard() {
         }
     }
 
+    useEffect(() => {
+        const pathname = window.location.href;
+        var url = new URL(pathname);
+        const id = url.searchParams.get('id');
+        const botName = url.searchParams.get('bn');
+        const color = url.searchParams.get('cc');
+        
+        const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
+        const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
+
+        
+        if (id && botName && color) {
+            setUrlParams({
+                id,
+                botName,
+                color,
+                lColor,
+                mColor
+            });
+        } else {
+            router.push('/');
+            logout();
+        }
+    }, [])
+
     const getContent = (section) => {
         if (section === 'Profile') {
             return (
@@ -182,7 +217,7 @@ export default function Dashboard() {
                         <p>Copy and paste this code snippet in the <span className='font-bold'>{'<head><head/>'}</span> section of your code.</p>
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-yellow-500 px-1'>
-                                <span ref={botLink}>https://mt-ai-chatbot-git-main-ashishs-projects-33ba2137.vercel.app/js/loader.js?id=679d07708d8d780b96ab7106</span>
+                                <span ref={botLink}>{`<script src='https://mt-ai-chatbot-git-main-ashishs-projects-33ba2137.vercel.app/js/loader.js?id=${urlParams.id}&bn=${urlParams.botName}&cc=${urlParams.color}&lc=${urlParams.lColor}&mc=${urlParams.mColor}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerHTML);
                                     toast("Code snippet has been copied!", {

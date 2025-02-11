@@ -11,7 +11,7 @@ export const poppins = Poppins({
 export default function Pricing() {
     return (
         <div className='flex flex-col gap-10 items-center justify-center bg-purple-800 w-full rounded-[30px] py-[5rem]'>
-            <h1 className='text-[32px] font-bold'>Select a plan that's right for you</h1>
+            <h1 className='text-[32px] font-normal text-white'>Select a plan that's right for you</h1>
             <div className='flex flex-col gap-10'>
                 <div className='flex items-center bg-orange-100 text-gray-600 rounded rounded-lg py-[1.5rem] duration-300 hover:scale-[1.01] hover:cursor-pointer'>
                     <div className='flex flex-col border-r-[1px] border-gray-400 px-[2rem] w-[25%]'>

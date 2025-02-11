@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowCircleLeftRounded, ArrowCircleRightOutlined, ArrowLeftOutlined, ArrowLeftRounded, CheckBox, CheckCircle, CheckCircleOutline, CheckOutlined, SelectAllRounded } from '@mui/icons-material';
+import { LucideEye, LucideEyeClosed } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -25,7 +26,11 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
                 }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
             </div>
             <div className='flex flex-col gap-4  w-full'>
-                <input placeholder='Example: Acme Pvt Ltd' onChange={(e) => setFormData({ ...formData, organization: e.target.value })} value={formData.organization} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+                <input autoFocus placeholder='Example: Acme Pvt Ltd' onChange={(e) => setFormData({ ...formData, organization: e.target.value })} onKeyDown={(e) => {
+                    if (e.key === 'Enter' && formData.organization !== '') {
+                        nextStep()
+                    }
+                }} value={formData.organization} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
                 {error && <span className='text-red-700'>Please fill this field!</span>}
             </div>
         </div>
@@ -72,7 +77,11 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
             }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
-            <input placeholder='Example: www.web-address.com' onChange={(e) => setFormData({ ...formData, email: e.target.value })} value={formData.email} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+            <input autoFocus placeholder='Example: www.web-address.com' onKeyDown={(e) => {
+                if (e.key === 'Enter' && formData.email !== '') {
+                    nextStep()
+                }
+            }} onChange={(e) => setFormData({ ...formData, email: e.target.value })} value={formData.email} type='email' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
             {error && <span dangerouslySetInnerHTML={{ __html: error }} className='text-red-700' />}
         </div>
     </div>
@@ -80,6 +89,7 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
 
 const PasswordStep = ({ formData, setFormData, nextStep, prevStep }) => {
     const [error, setError] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <div className='flex flex-col gap-[5rem] justify-center  w-full h-[55vh]'>
             <div className='flex items-center justify-between w-full'>
@@ -102,7 +112,18 @@ const PasswordStep = ({ formData, setFormData, nextStep, prevStep }) => {
                 }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
             </div>
             <div className='flex flex-col gap-4  w-full'>
-                <input placeholder='Enter you password here.' onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type='password' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+                {/* <div className='flex items-center'> */}
+                    <input autoFocus onKeyDown={(e) => {
+                        if (e.key === 'Enter' && formData.password !== '') {
+                            nextStep()
+                        }
+                    }} placeholder='Enter you password here.' onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type={showPassword ? 'text' : 'password'} className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+                    <div className='flex justify-end'>
+                        <button onClick={() => setShowPassword(prev => !prev)}>
+                            {!showPassword ? <LucideEye className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' /> :<LucideEyeClosed className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' />} 
+                        </button>
+                    </div>
+                {/* </div> */}
                 {error && <span className='text-red-700'>{error}</span>}
             </div>
         </div>
@@ -137,7 +158,11 @@ const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
             }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
-            <input placeholder='Example: www.web-address.com' onChange={(e) => setFormData({ ...formData, website: e.target.value })} value={formData.website} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+            <input autoFocus onKeyDown={(e) => {
+                if (e.key === 'Enter' && formData.website !== '') {
+                    nextStep()
+                }
+            }} placeholder='Example: www.web-address.com' onChange={(e) => setFormData({ ...formData, website: e.target.value })} value={formData.website} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
             {error && <span className='text-red-700'>{error}</span>}
         </div>
     </div>
@@ -164,7 +189,11 @@ const Step4 = ({ formData, setFormData, nextStep, prevStep }) => {
                 }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
-            <input placeholder='Example: Automobiles, Real Estate, Restaurant etc.' onChange={(e) => setFormData({ ...formData, domain: e.target.value })} value={formData.domain} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+            <input autoFocus onKeyDown={(e) => {
+                if (e.key === 'Enter' && formData.domain !== '') {
+                    nextStep()
+                }
+            }} placeholder='Example: Automobiles, Real Estate, Restaurant etc.' onChange={(e) => setFormData({ ...formData, domain: e.target.value })} value={formData.domain} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
             {error && <span className='text-red-700'>Please fill this field!</span>}
         </div>
     </div>
@@ -191,7 +220,11 @@ const Step5 = ({ formData, setFormData, nextStep, prevStep }) => {
                 }} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
         </div>
         <div className='flex flex-col gap-4  w-full'>
-            <input placeholder='Example: Eyecart AI, Hello Luna etc.' onChange={(e) => setFormData({ ...formData, botName: e.target.value })} value={formData.botName} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
+            <input autoFocus onKeyDown={(e) => {
+                if (e.key === 'Enter' && formData.botName !== '') {
+                    nextStep()
+                }
+            }} placeholder='Example: Eyecart AI, Hello Luna etc.' onChange={(e) => setFormData({ ...formData, botName: e.target.value })} value={formData.botName} type='text' className='text-[#343434] border-2 border-gray-200 outline-none px-4 py-5 rounded-lg shadow-md w-full' />
             {error && <span className='text-red-700'>Please fill this field!</span>}
         </div>
     </div>
@@ -221,14 +254,14 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
         </div>
         
         <div className='flex justify-between w-full'>
-            <button onClick={() => setFormData({ ...formData, color: '#E3A008' })} className={`h-8 w-8 bg-[#E3A008] shadow-md`}>{formData.color === '#E3A008' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#046e00' })} className={`h-8 w-8 bg-[#046e00] shadow-md`}>{formData.color === '#046e00' && <CheckOutlined/>}</button>
             <button onClick={() => setFormData({ ...formData, color: '#4A1D96' })} className={`h-8 w-8 bg-[#4A1D96] shadow-md`}>{formData.color === '#4A1D96' && <CheckOutlined/>}</button>
             <button onClick={() => setFormData({ ...formData, color: '#9B1C1C' })} className={`h-8 w-8 bg-[#9B1C1C] shadow-md`}>{formData.color === '#9B1C1C' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: '#03543F' })} className={`h-8 w-8 bg-[#03543F] shadow-md`}>{formData.color === '#03543F' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#004b5c' })} className={`h-8 w-8 bg-[#004b5c] shadow-md`}>{formData.color === '#004b5c' && <CheckOutlined/>}</button>
             <button onClick={() => setFormData({ ...formData, color: '#1E429F' })} className={`h-8 w-8 bg-[#1E429F] shadow-md`}>{formData.color === '#1E429F' && <CheckOutlined/>}</button>
             <button onClick={() => setFormData({ ...formData, color: '#362F78' })} className={`h-8 w-8 bg-[#362F78] shadow-md`}>{formData.color === '#362F78' && <CheckOutlined/>}</button>
             <button onClick={() => setFormData({ ...formData, color: '#9F580A' })} className={`h-8 w-8 bg-[#9F580A] shadow-md`}>{formData.color === '#9F580A' && <CheckOutlined/>}</button>
-            <button onClick={() => setFormData({ ...formData, color: '#6B7280' })} className={`h-8 w-8 bg-[#6B7280] shadow-md`}>{formData.color === '#6B7280' && <CheckOutlined/>}</button>
+            <button onClick={() => setFormData({ ...formData, color: '#000000' })} className={`h-8 w-8 bg-[#000000] shadow-md`}>{formData.color === '#000000' && <CheckOutlined/>}</button>
         </div>
         {error && <span className='text-red-700'>Please select a color!</span>}
 
@@ -260,7 +293,7 @@ const MultiStepForm = () => {
     website: '',
     domain: '',
     botName: '',
-    color: 'bg-purple-800',
+    color: '#9B1C1C',
   });
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);
@@ -280,13 +313,14 @@ const MultiStepForm = () => {
     const data = await res.json();
     if (data.success && data.data.acknowledged) {
         const id = data.data.insertedId;
-        localStorage.setItem('objectID', id)
-        window.location.href = `/dashboard`;
+        localStorage.setItem('objectID', id);
+
+        window.location.href = `/dashboard?id=${id}&cc=${formData.color.slice(1)}&bn=${formData.botName}`;
     } else {
         console.log('Error: ', data)
     }
   };
-//   PasswordStep
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -309,7 +343,7 @@ const MultiStepForm = () => {
   };
 
   return <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] w-[75%] px-5 py-10'>
-            <hr style={{ width: `${(currentStep / 6) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
+            <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
             {renderStep()}
         </div>;
 };
