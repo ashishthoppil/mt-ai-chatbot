@@ -314,8 +314,10 @@ const MultiStepForm = () => {
     if (data.success && data.data.acknowledged) {
         const id = data.data.insertedId;
         localStorage.setItem('objectID', id);
+        localStorage.setItem('color', formData.color.slice(1));
+        localStorage.setItem('botname', formData.botName);
 
-        window.location.href = `/dashboard?id=${id}&cc=${formData.color.slice(1)}&bn=${formData.botName}`;
+        window.location.href = `/dashboard`;
     } else {
         console.log('Error: ', data)
     }

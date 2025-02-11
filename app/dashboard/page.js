@@ -32,7 +32,7 @@ export const poppins = Poppins({
 
 export default function Dashboard() {
     const [data, setData] = useState();
-    const [activeSection, setActiveSection] = useState('News');
+    const [activeSection, setActiveSection] = useState('Profile');
     const [isLoading, setIsLoading] = useState();
     const [faq, setFaq] = useState({
         question: '',
@@ -183,11 +183,9 @@ export default function Dashboard() {
     }
 
     useEffect(() => {
-        const pathname = window.location.href;
-        var url = new URL(pathname);
-        const id = url.searchParams.get('id');
-        const botName = url.searchParams.get('bn');
-        const color = url.searchParams.get('cc');
+        const id = localStorage.getItem('objectID');
+        const botName = localStorage.getItem('botname');
+        const color = localStorage.getItem('color');
         
         const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
         const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)

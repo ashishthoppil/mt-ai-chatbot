@@ -44,6 +44,8 @@ export const Header = () => {
         if (data.success) {
             if (data.message._id) {
                 localStorage.setItem('objectID', data.message._id)
+                localStorage.setItem('color', data.message.color.slice(1))
+                localStorage.setItem('botname', data.message.botName)
                 router.push('/dashboard');
             } else {
                 setError(data.message);
