@@ -12,7 +12,7 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
-  import {
+import {
     Dialog,
     DialogContent,
     DialogDescription,
@@ -21,7 +21,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { CopyIcon, TrashIcon, UploadCloudIcon } from 'lucide-react';
+import { CopyIcon, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 
@@ -186,7 +186,6 @@ export default function Dashboard() {
         const id = localStorage.getItem('objectID');
         const botName = localStorage.getItem('botname');
         const color = localStorage.getItem('color');
-        
         const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
         const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
 
