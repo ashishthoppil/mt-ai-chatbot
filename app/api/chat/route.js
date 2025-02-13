@@ -25,7 +25,7 @@ export async function POST(request) {
   // Retrieve embeddings
   const mongoClient = await clientPromise
   const db = mongoClient.db('kulfi')
-  const clientDoc = await db.collection('clients').findOne({ _id: new ObjectId('67ab337d739e450095424ad7') })
+  const clientDoc = await db.collection('clients').findOne({ _id: new ObjectId('67ae32492903e9802c69831e') })
   const embeddingsArray = clientDoc?.scrapedData || []
 
   if (!embeddingsArray.length) {

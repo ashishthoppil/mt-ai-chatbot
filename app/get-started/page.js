@@ -284,17 +284,19 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
                 </DialogTrigger>
                 <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
                     <DialogHeader className='flex flex-col gap-2'>
-                        {/* <DialogTitle className='text-[32px] text-center'>{isLoading ? 'Processing' : 'Successfully completed!'}</DialogTitle> */}
-                        <DialogDescription className='flex items-center justify-center text-center'>
-                            {isLoading ? <div className='flex flex-col items-center justify-center gap-2'>
-                                <Timer width={150} height={150} className='text-purple-800' />
-                                <span className='text-[22px] font-semibold mt-2'>Processing</span>
-                                <span className='mt-1'>Your data is being processed, this might take a while. Please do not move away from this tab or window.</span>
-                            </div> : <div className='flex flex-col items-center justify-center gap-2'>
-                                    <CheckCircleOutline width={150} height={150} className='text-emerald-500' />
-                                    <span className='text-[22px] font-semibold mt-2'>Successfully completed!</span  >
-                                    <span className='mt-1'>Your data has been saved successfully. You will be redirected to the dasboard in 5 seconds.</span>
-                                </div>}
+                        <DialogTitle className='text-[32px] text-center'></DialogTitle>
+                        <DialogDescription asChild>
+                            <div className='flex items-center justify-center text-center'>
+                                {isLoading ? <div className='flex flex-col items-center justify-center gap-2'>
+                                    <Timer width={150} height={150} className='text-purple-800' />
+                                    <span className='text-[22px] font-semibold mt-2'>Processing</span>
+                                    <span className='mt-1'>Your data is being processed, this might take a while. Please do not move away from this tab or window.</span>
+                                </div> : <div className='flex flex-col items-center justify-center gap-2'>
+                                        <CheckCircleOutline width={150} height={150} className='text-emerald-500' />
+                                        <span className='text-[22px] font-semibold mt-2'>Successfully completed!</span  >
+                                        <span className='mt-1'>Your data has been saved successfully. You will be redirected to the dasboard in 5 seconds.</span>
+                                    </div>}
+                            </div>
                         </DialogDescription>
                     </DialogHeader>
                 </DialogContent>

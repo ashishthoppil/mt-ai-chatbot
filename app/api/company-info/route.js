@@ -4,13 +4,13 @@ import { OpenAI } from 'openai'
 
 import { chunkText } from "@/lib/chunkText";
 import { load } from "cheerio";
-import puppeteer from "puppeteer";
 
 const bcrypt = require('bcrypt');
 
 export async function POST(req, res) {
   const DB_NAME = process.env.DB_NAME
   const ZAPIER_WEBHOOK = process.env.ZAPIER_WEBHOOK;
+  const LAMBDA_ENDPOINT = process.env.LAMBDA_ENDPOINT; 
   const client = await clientPromise;
   const db = client.db(DB_NAME);
   const data = await req.json();
@@ -22,20 +22,33 @@ export async function POST(req, res) {
   const hashedpass = bcrypt.hashSync(data.password, salt);
   try {
 
-    const browser = await puppeteer.launch({
-      headless: 'new', 
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    })
+    const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
+    const endpoint = `https://chrome.browserless.io/scrape?token=${BROWSERLESS_TOKEN}`;
+  
+    const payload = {
+      url: data.website,
+      gotoOptions: { waitUntil: "networkidle2" },
+      elements: [
+        {
+          "selector": "html",
+        }
+      ]
+    };
 
-    const page = await browser.newPage()
+    const resp = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!resp.ok) {
+      const scrapeErr = await resp.json();
+      throw new Error(`Browserless error: ${scrapeErr}`);
+    }
 
-    await page.goto(data.website, {
-      waitUntil: 'networkidle2', 
-    })
-
-    const html = await page.content()
-    await browser.close()
-
+    const scrapedData = await resp.json();
+    const renderedHTML = scrapedData.data;
+    const html = renderedHTML[0].results[0].html;
+    console.log('htmlhtmlhtml', html);
     const $ = load(html)
     
     const text = $('body').text()

@@ -39,6 +39,12 @@ export default function Dashboard() {
         answer: ''
     });
     const [faqList, setFaqList] = useState([]);
+    const [article, setArticle] = useState({
+        title: '',
+        description: '',
+        link: ''
+    });
+    const [articlesList, setArticlesList] = useState([]);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [urlParams, setUrlParams] = useState({
         id: '',
@@ -66,6 +72,21 @@ export default function Dashboard() {
         }
     }
 
+    const loadArticles = async () => {
+        const res = await fetch('/api/get-articles', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID')
+            })
+        });
+        const data = await res.json();
+        if (data.data) {
+            setArticlesList(data.data);
+        } else {
+            setArticlesList([]);
+        }
+    }
+
     const loadData = async () => {
         const res = await fetch('/api/dashboard', {
             method: 'POST',
@@ -81,6 +102,7 @@ export default function Dashboard() {
             logout();
         }
         loadFaqs();
+        loadArticles();
     }
 
     useEffect(() => {
@@ -164,6 +186,26 @@ export default function Dashboard() {
         if (response) {
             loadFaqs();
             setFaq({
+                question: '',
+                answer: ''
+            });
+        }
+    }
+
+    const articlesUpdate = async () => {
+        const res = await fetch('/api/add-article', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID'),
+                title: article.title, 
+                description: article.description,
+                link: article.link
+            })
+        });
+        const response = await res.json();
+        if (response) {
+            loadArticles();
+            setArticle({
                 question: '',
                 answer: ''
             });
@@ -319,32 +361,32 @@ export default function Dashboard() {
         } else if (section === 'News') {
             return (
                 <>
-                    <h3 className="text-[32px] font-bold text-gray-900 mb-2">News (Blog)</h3>
-                    <p>You can add the blogs posted in your website here.</p>
+                    <h3 className="text-[32px] font-bold text-gray-900 mb-2">Articles (Blog)</h3>
+                    <p>You can add the articles posted in your website here.</p>
                     <div className='flex flex-col gap-5 pt-10'>
                         <div className='flex gap-2'>
                             <div className="flex flex-col gap-4 w-[50%]">
                                 <label className="text-left">
-                                    Blog Title
+                                    Title
                                 </label>
-                                <input onChange={(e) => setFaq((prev) => { return { ...prev, question: e.target.value } })} value={faq.question} id='question' placeholder='Enter the title of the blog here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                <input onChange={(e) => setArticle((prev) => { return { ...prev, title: e.target.value } })} value={article.title} id='title' placeholder='Enter the title of the article here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
                             </div>
                             <div className="flex flex-col gap-4 w-[50%]">
                                 <label className="text-left">
-                                    Blog Link
+                                    Link
                                 </label>
-                                <input onChange={(e) => setFaq((prev) => { return { ...prev, question: e.target.value } })} value={faq.question} id='question' placeholder='Enter the title of the blog here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                <input onChange={(e) => setArticle((prev) => { return { ...prev, link: e.target.value } })} value={article.link} id='link' placeholder='Enter the link to the article here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-4 w-[50%]">
                             <label htmlFor="botname" className="text-left">
-                                Blog description
+                                Description
                             </label>
-                            <textarea onChange={(e) => setFaq((prev) => { return {...prev, answer: e.target.value }})} value={faq.answer} placeholder="Type your answer here." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                            <textarea onChange={(e) => setArticle((prev) => { return {...prev, description: e.target.value }})} value={article.description} placeholder="Type the description here." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
                         </div>
                         <div className='flex justify-end items-end'>
-                            <button onClick={faqsUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
+                            <button onClick={articlesUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
                         </div>
                     </div>
                     <div className='flex flex-col gap-5 mt-2 border-2 border-gray-400 pt-5 rounded-lg mt-12'>
@@ -358,19 +400,16 @@ export default function Dashboard() {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className='text-left'>
-                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Title</td>
-                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Description</td>
-                                    <td className='p-4 border-t-2 border-gray-400'>Link</td>
-                                </tr>
-                                <tr className='text-left'>
-                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Title</td>
-                                    <td className='p-4 border-t-2 border-r-2 border-gray-400'>Description</td>
-                                    <td className='p-4 border-t-2 border-gray-400'>Link</td>
-                                </tr>
-                                <tr className='text-center'>
-                                    <td colSpan={3} className='p-4 border-t-2 border-gray-400'>No records to show</td>
-                                </tr>
+                                {articlesList.length > 0 ? articlesList.map((item, index) => (
+                                    <tr key={index} className='text-left text-[14px]'>
+                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.title}</td>
+                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.description}</td>
+                                        <td className='p-4 border-t-2 border-gray-400'>{item.link}</td>
+                                    </tr>
+                                )) : <tr className='text-center'>
+                                        <td colSpan={3} className='p-4 border-t-2 border-gray-400'>No records to show</td>
+                                    </tr>}
+                                
                             </tbody>
                         </table>
                     </div>
