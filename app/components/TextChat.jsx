@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useChat } from 'ai/react';
 import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
-import { Newspaper } from 'lucide-react';
+import { ExternalLinkIcon, Newspaper } from 'lucide-react';
 import {
     Accordion,
     AccordionContent,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/accordion"
 import tinycolor from 'tinycolor2';
 
-export const TextChat = ({ data, botInfo }) => {
+export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
 
     const [section, setSection] = useState(0);
     const messageEnd = useRef();
@@ -35,13 +35,22 @@ export const TextChat = ({ data, botInfo }) => {
         }
     }, [messages]);
 
+    const getWidth = () => {
+        if (articlesList.length > 0 && faqList.length > 0) {
+            return 'w-1/3'
+        } else if (articlesList.length > 0 || faqList.length > 0) {
+            return 'w-1/2'
+        }
+        return ''
+    }
+
     return (
         <>
             {section === 0 && <>
-                <div className='message-container max-w-screen-md mx-auto w-full flex flex-col gap-4 px-4 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto'>
+                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'h-[70vh]' : 'h-[52vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
                     <div>
                         {messages.map((msg, idx) => (
-                        <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'}`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
+                        <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[20px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                             <>{msg.role === 'user' ? 
                             <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg' style={{ backgroundColor: botInfo.mColor, color: 'white' }}>
                                 <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -53,7 +62,7 @@ export const TextChat = ({ data, botInfo }) => {
                         </div>
                         ))}
                         {isLoading && (
-                            <div className='flex gap-2'>
+                            <div className='flex gap-2 px-[20px]'>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="256px" height="64px" viewBox="0 0 512 128" xmlSpace="preserve">
                                     <circle fill={botInfo.color} cx="0" cy="0" r="11" transform="translate(16 16)">
                                         <animateTransform attributeName="transform" type="scale" additive="sum" values="1;1.42;1;1;1;1;1;1;1;1" dur="1050ms" repeatCount="indefinite"></animateTransform>
@@ -70,7 +79,7 @@ export const TextChat = ({ data, botInfo }) => {
                         <div ref={messageEnd} />
                     </div>
                 </div>
-                <form className='flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0' 
+                <form className={`${articlesList.length === 0 && faqList.length === 0 ? 'fixed bottom-0' : ''} flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
                     onSubmit={(event) => {
                         if (!isLoading) {
                             handleSubmit(event);
@@ -106,166 +115,61 @@ export const TextChat = ({ data, botInfo }) => {
                 </form>
             </>}
             {section === 1 && 
-                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-4 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
+                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <Newspaper /><h1 className='font-bold text-[32px]'>Articles</h1>
                     </div>
-                    <div className='flex flex-col gap-2 border-[2px] border-gray-300 rounded-lg shadow-md p-2'>
-                        <img className='h-[10rem] rounded-lg object-cover' src='https://its.ucsc.edu/news/images/iot-image.png' />
-                        <h1 className='text-[24px] font-semibold'>Lorem ipsum dolor sit?</h1>
-                        <p className='line-clamp-3'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                            eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                            eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                        </p>
-                        <div className='flex justify-end'>
-                            <a href='#'>Read more <ArrowRight /></a>
+                    {articlesList.map((item, index) => (
+                        <div key={index} className='flex flex-col gap-2 border-[2px] border-gray-300 rounded-lg shadow-md p-2'>
+                            {item.img ? <img className='h-[10rem] rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}
+                            <h1 className='text-[16px] font-bold' style={{ color: botInfo.color }}>{item.title}</h1>
+                            <p className='line-clamp-3'>
+                                {item.description}
+                            </p>
+                            <div className='flex justify-end'>
+                                <a style={{ color: botInfo.mColor }} className='flex gap-1' target='_blank' href={item.link}>Read more <ExternalLinkIcon height={20} /></a>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className='flex flex-col gap-2 border-[2px] border-gray-300 rounded-lg shadow-md p-2'>
-                        <img className='h-[10rem] rounded-lg object-cover' src='https://its.ucsc.edu/news/images/iot-image.png' />
-                        <h1 className='text-[24px] font-semibold'>Lorem ipsum dolor sit?</h1>
-                        <p className='line-clamp-3'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                            eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                            eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                        </p>
-                        <div className='flex justify-end'>
-                            <a href='#'>Read more <ArrowRight /></a>
-                        </div>
-                    </div>
-
-                    <div className='flex flex-col gap-2 border-[2px] border-gray-300 rounded-lg shadow-md p-2'>
-                        <img className='h-[10rem] rounded-lg object-cover' src='https://its.ucsc.edu/news/images/iot-image.png' />
-                        <h1 className='text-[24px] font-semibold'>Lorem ipsum dolor sit?</h1>
-                        <p className='line-clamp-3'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                            eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                            eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                        </p>
-                        <div className='flex justify-end'>
-                            <a href='#'>Read more <ArrowRight /></a>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             }
 
             {section === 2 && 
-                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-4 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
+                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <QuestionAnswer /><h1 className='font-bold text-[32px]'>FAQs</h1>
                     </div>
                     <Accordion type="single" collapsible className="w-full border-[2px] border-gray-300 p-3 rounded-md">
-                        <AccordionItem key={1} value={`item-${1}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`How can I start using the chatbot?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
+                        {faqList.map((item, index) => (
+                            <AccordionItem key={index} value={`item-${index}`}>
+                                <AccordionTrigger className='text-[16px] text-gray-600'>{item.question}</AccordionTrigger>
+                                <AccordionContent className='border-b-[2px] border-gray-300'>
+                                    <div className='flex justify-between items-start'>
+                                        <div className='w-[90%]'>
+                                        {item.answer}
+                                        </div>
                                     </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem key={2} value={`item-${2}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`Is the chatbot available 24/7?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem key={3} value={`item-${3}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`Can the chatbot handle complex queries or only simple questions?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem key={4} value={`item-${4}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`What if the chatbot doesn’t understand my question?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        
-                    <AccordionItem key={5} value={`item-${5}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`Are my conversations with the chatbot private?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem key={6} value={`item-${6}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`Can the chatbot learn over time?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem key={7} value={`item-${7}`}>
-                            <AccordionTrigger className='text-[16px] text-gray-600'>{`Does the chatbot cost money to use?`}</AccordionTrigger>
-                            <AccordionContent className='border-b-[2px] border-gray-300'>
-                                <div className='flex justify-between items-start'>
-                                    <div className='w-[90%]'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam massa turpis, 
-                                        eleifend a pharetra et, fermentum eu urna. Suspendisse porttitor facilisis nunc
-                                        eu luctus. Maecenas sollicitudin condimentum massa, ut faucibus purus sodales et.
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
                     </Accordion>
 
                 </div>
             }
-            <div className='flex fixed bottom-0 bg-white shadow-lg w-full border-t-2 border-gray-300 rounded-md'>
-                <div style={{ color: section === 0 ? botInfo.color : '' }} onClick={() => setSection(0)} className={`flex flex-col items-center gap-2 p-5 w-1/3 ${section === 0 ? 'bg-gray-100 font-semibold' : ''}`}>
+            {articlesList.length || faqList.length ? <div className='flex fixed bottom-0 bg-white shadow-lg w-full border-t-2 border-gray-300 rounded-md'>
+                <div style={{ color: section === 0 ? botInfo.color : '' }} onClick={() => setSection(0)} className={`flex flex-col items-center gap-2 p-5 ${getWidth()} ${section === 0 ? 'bg-gray-100 font-semibold' : ''}`}>
                     <Message />
                     <span>Message</span>
                 </div>
-                <div style={{ color: section === 1 ? botInfo.color : '' }} onClick={() => setSection(1)} className={`flex flex-col items-center gap-2 p-5 border-l-2 border-r-2 border-gray-300 w-1/3 ${section === 1 ? 'bg-gray-100 font-semibold' : ''}`}>
+                {articlesList.length > 0 ? <div style={{ color: section === 1 ? botInfo.color : '' }} onClick={() => setSection(1)} className={`flex flex-col items-center gap-2 p-5 border-l-2 border-r-2 border-gray-300 ${getWidth()} ${section === 1 ? 'bg-gray-100 font-semibold' : ''}`}>
                     <Newspaper />
                     <span>Articles</span>
-                </div>
-                <div style={{ color: section === 2 ? botInfo.color : '' }} onClick={() => setSection(2)} className={`flex flex-col items-center gap-2 p-5 w-1/3 ${section === 2 ? 'bg-gray-100 font-semibold' : ''}`}>
+                </div> : <></>}
+                {faqList.length > 0 ? <div style={{ color: section === 2 ? botInfo.color : '' }} onClick={() => setSection(2)} className={`flex flex-col items-center gap-2 p-5 ${getWidth()} ${section === 2 ? 'bg-gray-100 font-semibold' : ''}`}>
                     <QuestionAnswer />
                     <span>FAQs</span>
-                </div>
-            </div>
+                </div> : <></>}
+            </div> : <></>}
             </>
     )
 }

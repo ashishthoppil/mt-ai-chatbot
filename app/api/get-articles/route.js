@@ -11,7 +11,7 @@ export async function POST(req) {
         const data = await db.collection('articles').find({ id: request.id }).toArray();
         if (data.length > 0) {
             const responseData = data.map(item => {
-                return { id: item._id.toString(), title: item.title, link: item.link, description: item.description }
+                return { id: item._id.toString(), title: item.title, link: item.link, description: item.description, img: item.img }
             })
             return NextResponse.json({ success: true, data: responseData });
         } else {

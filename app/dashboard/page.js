@@ -1,7 +1,7 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, Logout, LogoutOutlined, Newspaper, QuestionAnswer, Recycling, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { AccountCircleOutlined, InfoRounded, LabelImportantOutlined, Logout, LogoutOutlined, Newspaper, QuestionAnswer, Recycling, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
@@ -21,7 +21,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { CopyIcon, TrashIcon } from 'lucide-react';
+import { CopyIcon, ExternalLinkIcon, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 
@@ -31,8 +31,10 @@ export const poppins = Poppins({
 });
 
 export default function Dashboard() {
+    const [articleFile, setArticleFile] = useState(null);
+    const [links, setLinks] = useState('');
     const [data, setData] = useState();
-    const [activeSection, setActiveSection] = useState('Profile');
+    const [activeSection, setActiveSection] = useState('Source');
     const [isLoading, setIsLoading] = useState();
     const [faq, setFaq] = useState({
         question: '',
@@ -97,13 +99,33 @@ export default function Dashboard() {
         const data = await res.json();
         if (data.data) {
             setData(data.data);
+            let updatedLinks = '';
+            if (data.data.links) {
+                data.data.links.forEach((element, index) => {
+                    if (element !== "") {
+                        if (index !== data.data.links.length - 1) {
+                            updatedLinks += element + '\n';
+                        } else {
+                            updatedLinks += element;
+                        }
+                    }
+                });
+                setLinks(updatedLinks);
+            }
         } else {
             router.push('/');
             logout();
         }
         loadFaqs();
         loadArticles();
+        
     }
+
+    const handleArticleFileChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          setArticleFile(e.target.files[0]);
+        }
+    };
 
     useEffect(() => {
         loadData();
@@ -127,7 +149,7 @@ export default function Dashboard() {
         },
         {
             id: 4,
-            title: 'News',
+            title: 'Articles',
             Icon: Newspaper
         },
         {
@@ -155,7 +177,10 @@ export default function Dashboard() {
         const response = await res.json();
         if (response) {
             setIsLoading(false);
-        } 
+            toast("Profile updated!", {
+                progressStyle: { backgroundColor: "red" }
+            });  
+        }
     }
 
     const settingsUpdate = async () => {
@@ -169,7 +194,23 @@ export default function Dashboard() {
         });
         const response = await res.json();
         if (response) {
+            const botName = data.botName;
+            const color = data.color.slice(1);
+            const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
+            const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
+            setUrlParams(prev => ({
+                ...prev,
+                botName,
+                color,
+                lColor,
+                mColor
+            }));
+            localStorage.setItem('botname', botName);
+            localStorage.setItem('color', color);
             setIsLoading(false);
+            toast("Settings updated!", {
+                progressStyle: { backgroundColor: "red" }
+            });            
         } 
     }
 
@@ -192,23 +233,40 @@ export default function Dashboard() {
         }
     }
 
-    const articlesUpdate = async () => {
+    const saveArticle = async (base64) => {
         const res = await fetch('/api/add-article', {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
                 title: article.title, 
                 description: article.description,
-                link: article.link
+                link: article.link,
+                img: base64
             })
         });
         const response = await res.json();
         if (response) {
             loadArticles();
             setArticle({
-                question: '',
-                answer: ''
+                title: '',
+                description: '',
+                link: ''
             });
+        }
+    }
+
+    const articlesUpdate = async () => {
+        let base64Image = "";
+        if (articleFile) {
+          const reader = new FileReader();
+          reader.readAsDataURL(articleFile);
+          // onloadend is called when reading is finished
+          reader.onloadend = async () => {
+            base64Image = reader.result.split(",")[1]; // remove "data:image/*;base64,"
+            saveArticle(base64Image)
+          };
+        } else {
+            saveArticle(base64Image);
         }
     }
 
@@ -221,6 +279,18 @@ export default function Dashboard() {
         });
         if (res) {
             loadFaqs();
+        }
+    }
+
+    const deleteArticle = async (id) => {
+        const res = await fetch('/api/remove-article', {
+            method: 'POST',
+            body: JSON.stringify({
+                articleId: id, 
+            })
+        });
+        if (res) {
+            loadArticles();
         }
     }
 
@@ -244,14 +314,32 @@ export default function Dashboard() {
             router.push('/');
             logout();
         }
-    }, [])
+    }, []);
 
-    const getContent = (section) => {
+    const linkSync = async () => {
+        setIsLoading(true);
+        const splitLinks = links.split('\n');
+        const res = await fetch('/api/sync-links', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID'),
+                links: splitLinks, 
+            })
+        });
+        if (res) {
+            setIsLoading(false);
+            toast("Links have been synced!", {
+                progressStyle: { backgroundColor: "red" }
+            });
+        }
+    }
+
+    const getContent = (section, data) => {
         if (section === 'Profile') {
             return (
                 <>
-                    <h3 className="font-bold text-gray-900 mb-2 text-[32px]">Profile</h3>
-                    <p>An overview of the information that you provided during the registration process. You can manage your information from this section by editing the fields below.</p>
+                    <h3 className="font-bold text-gray-900 mb-2 text-[32px]">Welcome {data && data.organization}, </h3>
+                    <p>This is an overview of the information that you provided during the registration process. You can manage your information from this section by editing the fields below.</p>
                     <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg'>
                         <p>Copy and paste this code snippet in the <span className='font-bold'>{'<head><head/>'}</span> section of your code.</p>
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
@@ -272,7 +360,7 @@ export default function Dashboard() {
                                 <label htmlFor="organization" className="text-left">
                                     Organization
                                 </label>
-                                <input onChange={(e) => setData((prev) => { return { ...prev, organization: e.target.value } })} value={data.organization} id='organization' placeholder='Ex: Acme Pvt Ltd' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                <input disabled onChange={(e) => setData((prev) => { return { ...prev, organization: e.target.value } })} value={data.organization} id='organization' placeholder='Ex: Acme Pvt Ltd' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg bg-gray-300'></input>
                             </div>
                             <div className="flex flex-col gap-4 w-[50%]">
                                 <label htmlFor="website" className="text-left">
@@ -311,16 +399,16 @@ export default function Dashboard() {
                             </label>
                             <div className='flex gap-2'>
                                 <select value={data.color} onChange={(e) => setData((prev) => { return { ...prev, color: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
-                                    <option value='#E3A008'>Yellow</option>
+                                    <option value='#046e00'>Yellow</option>
                                     <option value='#4A1D96'>Purple</option>
                                     <option value='#9B1C1C'>Red</option>
-                                    <option value='#03543F'>Green</option>
+                                    <option value='#004b5c'>Green</option>
                                     <option value='#1E429F'>Blue</option>
                                     <option value='#362F78'>Indigo</option>
                                     <option value='#9F580A'>Orange</option>
-                                    <option value='#6B7280'>Gray</option>
+                                    <option value='#000000'>Gray</option>
                                 </select>
-                                <span className={`w-[15%] rounded-md bg-[${data.color}]`}></span>
+                                <span style={{ backgroundColor: data.color }} className={`w-[15%] rounded-md`}></span>
                             </div>
                         </div>
                     </div>
@@ -337,7 +425,11 @@ export default function Dashboard() {
                     <div className='flex gap-3 pt-10'>
                         <div className='flex flex-col gap-2 w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
                             <h1>Links</h1>
-                            <textarea placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                            <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                            <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                            <div className='flex justify-end w-full mt-10'>
+                                <button onClick={linkSync} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Sync'}</button>  
+                            </div>
                         </div>
                         
                         <div className='flex flex-col gap-2 w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
@@ -358,7 +450,7 @@ export default function Dashboard() {
                     </div>
                 </>
             )
-        } else if (section === 'News') {
+        } else if (section === 'Articles') {
             return (
                 <>
                     <h3 className="text-[32px] font-bold text-gray-900 mb-2">Articles (Blog)</h3>
@@ -385,18 +477,25 @@ export default function Dashboard() {
                             </label>
                             <textarea onChange={(e) => setArticle((prev) => { return {...prev, description: e.target.value }})} value={article.description} placeholder="Type the description here." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
                         </div>
+
+                        <div className="flex flex-col gap-4 w-[50%]">
+                            <label className="text-left">Upload Image</label>
+                            <input type="file" onChange={handleArticleFileChange} />
+                        </div>
                         <div className='flex justify-end items-end'>
                             <button onClick={articlesUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
                         </div>
                     </div>
-                    <div className='flex flex-col gap-5 mt-2 border-2 border-gray-400 pt-5 rounded-lg mt-12'>
-                        <h1 className='text-center'>Blog list</h1>
+                    <div className='flex flex-col gap-5 mt-2 border-2 border-gray-400 pt-5 rounded-lg mt-[50px]'>
+                        <h1 className='text-center text-lg font-semibold'>Articles</h1>
                         <table className='w-full'>
                             <thead>
                                 <tr className='text-left'>
                                     <th className='p-4 border-t-2 border-r-2 border-gray-400'>Title</th>
                                     <th className='p-4 border-t-2 border-r-2 border-gray-400'>Description</th>
-                                    <th className='p-4 border-t-2 border-gray-400'>Link</th>
+                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Link</th>
+                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Image</th>
+                                    <th className='p-4 border-t-2 border-gray-400'>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -404,10 +503,12 @@ export default function Dashboard() {
                                     <tr key={index} className='text-left text-[14px]'>
                                         <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.title}</td>
                                         <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.description}</td>
-                                        <td className='p-4 border-t-2 border-gray-400'>{item.link}</td>
+                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'><a className='flex gap-1 text-blue-400' href={item.link} target='_blank'>{item.link}<ExternalLinkIcon height={20} /></a></td>
+                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.img ? <img className='h-[5rem] w-full  rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}</td>
+                                        <td className='flex justify-center item-center p-4 border-t-2 border-gray-400'><button onClick={() => deleteArticle(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'><TrashIcon className='text-white w-[16px]' /></button></td>
                                     </tr>
                                 )) : <tr className='text-center'>
-                                        <td colSpan={3} className='p-4 border-t-2 border-gray-400'>No records to show</td>
+                                        <td colSpan={5} className='p-4 border-t-2 border-gray-400'>No records to show</td>
                                     </tr>}
                                 
                             </tbody>
@@ -496,7 +597,7 @@ export default function Dashboard() {
                     ))}
                 </ul>
                 <div className="p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-lg w-full">
-                    {getContent(activeSection)}
+                    {getContent(activeSection, data)}
                 </div>
             </div>
         </main>

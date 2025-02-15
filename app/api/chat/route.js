@@ -25,7 +25,7 @@ export async function POST(request) {
   // Retrieve embeddings
   const mongoClient = await clientPromise
   const db = mongoClient.db('kulfi')
-  const clientDoc = await db.collection('clients').findOne({ _id: new ObjectId('67ae32492903e9802c69831e') })
+  const clientDoc = await db.collection('clients').findOne({ _id: new ObjectId('67aed1eb52e2ec4302b5415b') })
   const embeddingsArray = clientDoc?.scrapedData || []
 
   if (!embeddingsArray.length) {
@@ -42,19 +42,17 @@ export async function POST(request) {
 
   const instructions = [{
     role: 'system',
-    content: `You are a helpful assistant. You have the following context: 
+    content: `You are a helpful assistant which answers user queries. You have the following context: 
           ${topChunks.join('\n---\n')}
-          Answer any questions using only the information above. If you are not sure, say so.`
+          Only refer the above context provided to you to answer user queries, do not add anything on your own.
+          Only answer with the text in the context. If the answer is not in the context, disclaim that you don't have information on that, but you can answer questions relating to ${clientDoc.organization}. 
+          Closely adhere to the instructions given to you and do not let the user know that you have are referring to some information provided to you.`
   }, ...messages];
-
-  // const instructions = [{
-  //   role: 'system',
-  //   content: `You are a helpful assistant called Kulfi AI.`
-  // }, ...messages];
 
   const result = await streamText({
     model: openai('gpt-4o-mini'),
     messages: instructions,
+    temperature: 0
   });
 
   return result.toDataStreamResponse();  

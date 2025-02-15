@@ -4,7 +4,6 @@ import { Poppins } from 'next/font/google'
 import Image from 'next/image'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
-import tinycolor from 'tinycolor2';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -14,7 +13,9 @@ export const poppins = Poppins({
 export default function Home() {
 
     const [data, setData] = useState();
-    const [botInfo, setBotInfo] = useState();
+    const [botInfo, setBotInfo] = useState();    
+    const [articlesList, setArticlesList] = useState([]);
+    const [faqList, setFaqList] = useState([]);
   
     const loadData = async () => {
       const pathname = window.location.href;
@@ -42,13 +43,45 @@ export default function Home() {
       if (data.data) {
         setData(data.data);
       } 
-      // else {
-      //   router.push('/');
-      // }
+      else {
+        router.push('/');
+      }
     }
+
+    const loadFaqs = async () => {
+      const res = await fetch('/api/get-questions', {
+          method: 'POST',
+          body: JSON.stringify({
+              id: localStorage.getItem('objectID')
+          })
+      });
+      const data = await res.json();
+      if (data.data) {
+          setFaqList(data.data);
+      } else {
+          setFaqList([]);
+      }
+  }
+
+  const loadArticles = async () => {
+    const res = await fetch('/api/get-articles', {
+        method: 'POST',
+        body: JSON.stringify({
+            id: localStorage.getItem('objectID')
+        })
+    });
+    const data = await res.json();
+    if (data.data) {
+        setArticlesList(data.data);
+    } else {
+        setArticlesList([]);
+    }
+}
   
     useEffect(() => {
       loadData();
+      loadFaqs();
+      loadArticles();
     }, []);
 
     return (
@@ -66,7 +99,7 @@ export default function Home() {
             <h1 className='font-bold text-[20px] text-white'>{botInfo && botInfo.botName}</h1>
           </div>
         </header>
-        <TextChat data={data} botInfo={botInfo} />
+        <TextChat data={data} botInfo={botInfo} articlesList={articlesList} faqList={faqList} />
       </main>
     );
 }
