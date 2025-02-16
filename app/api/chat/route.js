@@ -12,6 +12,10 @@ export async function POST(request) {
 
   const BASE_URL = process.env.BASE_URL
 
+  if (!messages?.length) {
+    return NextResponse.json({ success: false, message: 'No messages provided' });
+  }
+  
   // Create embeddings
   const embedAI = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,

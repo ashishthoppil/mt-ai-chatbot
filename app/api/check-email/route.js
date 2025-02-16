@@ -1,7 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
-export async function POST(req, res) {
+export async function POST(req) {
   const client = await clientPromise;
   const DB_NAME = process.env.DB_NAME;
   const db = client.db(DB_NAME);
