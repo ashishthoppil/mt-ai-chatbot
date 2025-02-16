@@ -1,52 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
-import puppeteer from "puppeteer";
 
 const bcrypt = require('bcrypt');
-
-async function crawlWithPuppeteer(startUrl, baseDomain) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
-  const visited = new Set();
-  const toVisit = [startUrl];
-  const foundUrls = [];
-
-  while (toVisit.length > 0) {
-    const currentUrl = toVisit.shift();
-    if (visited.has(currentUrl)) continue;
-    visited.add(currentUrl);
-
-    try {
-      await page.goto(currentUrl, { waitUntil: 'networkidle2' });
-
-      foundUrls.push(currentUrl);
-
-      // Extract all 'a' tags
-      const links = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('a'))
-          .map(a => a.getAttribute('href'))
-          .filter(Boolean);
-      });
-
-      for (let href of links) {
-        // Skip anchors or external links
-        if (href.startsWith('#')) continue;
-        if (href.startsWith('/')) {
-          href = baseDomain + href;
-        }
-        if (href.startsWith(baseDomain)) {
-          toVisit.push(href);
-        }
-      }
-    } catch (err) {
-      console.error(`Error crawling ${currentUrl}:`, err);
-    }
-  }
-
-  await browser.close();
-  return foundUrls;
-}
 
 export async function POST(req, res) {
   const DB_NAME = process.env.DB_NAME
