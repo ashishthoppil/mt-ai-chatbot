@@ -1,7 +1,6 @@
 'use client';
 
 import { Poppins } from 'next/font/google'
-import Image from 'next/image'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
 

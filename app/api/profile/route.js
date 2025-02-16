@@ -6,7 +6,6 @@ export async function POST(req) {
   const client = await clientPromise;
   const DB_NAME = process.env.DB_NAME;
   const db = client.db(DB_NAME);
-//   botName: request.botName, color: request.color
   const request = await req.json();
     try {
         const result = await db.collection('clients').updateOne(

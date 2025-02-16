@@ -1,9 +1,5 @@
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
-import { OpenAI } from 'openai'
-
-import { chunkText } from "@/lib/chunkText";
-import { load } from "cheerio";
 import puppeteer from "puppeteer";
 
 const bcrypt = require('bcrypt');

@@ -1,7 +1,7 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, InfoRounded, LabelImportantOutlined, Logout, LogoutOutlined, Newspaper, QuestionAnswer, Recycling, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { AccountCircleOutlined, InfoRounded, Logout, Newspaper, NoAccounts, QuestionAnswer, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
@@ -21,7 +21,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { CopyIcon, ExternalLinkIcon, TrashIcon } from 'lucide-react';
+import { CopyIcon, ExternalLinkIcon, File, FileX, Tag, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 
@@ -32,10 +32,12 @@ export const poppins = Poppins({
 
 export default function Dashboard() {
     const [articleFile, setArticleFile] = useState(null);
+    const [KB, setKB] = useState(null);
     const [links, setLinks] = useState('');
     const [data, setData] = useState();
     const [activeSection, setActiveSection] = useState('Source');
     const [isLoading, setIsLoading] = useState();
+    const [isKBLoading, setIsKBLoading] = useState();
     const [faq, setFaq] = useState({
         question: '',
         answer: ''
@@ -127,6 +129,17 @@ export default function Dashboard() {
         }
     };
 
+    const handleKBChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            if (e.target.files[0].type !== 'application/pdf') {
+                alert('Please upload a valid PDF file.');
+                e.target.value = '';
+                return;
+            }
+            setKB(e.target.files[0]);
+        }
+    }
+
     useEffect(() => {
         loadData();
     }, []);
@@ -157,9 +170,14 @@ export default function Dashboard() {
             title: 'FAQs',
             Icon: QuestionAnswer
         },
-        
         {
             id: 6,
+            title: 'Plan',
+            Icon: Tag
+        },
+        
+        {
+            id: 7,
             title: 'Logout',
             Icon: Logout
         },
@@ -334,6 +352,32 @@ export default function Dashboard() {
         }
     }
 
+    const handleKBSubmit = async (e) => {
+        e.preventDefault();
+        if (!KB) return
+    
+        try {
+          setIsKBLoading(true)
+          const formData = new FormData()
+          formData.append('file', KB)
+          formData.append('id', localStorage.getItem('objectID'))
+    
+          const response = await fetch('/api/kb-upload', {
+            method: 'POST',
+            body: formData,
+          })
+    
+          if (response) {
+            loadData()
+          }
+        } catch (error) {
+          console.error('Upload error:', error)
+          alert('Failed to upload or parse PDF.')
+        } finally {
+          setIsKBLoading(false)
+        }
+      }
+
     const getContent = (section, data) => {
         if (section === 'Profile') {
             return (
@@ -428,24 +472,30 @@ export default function Dashboard() {
                             <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
                             <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
                             <div className='flex justify-end w-full mt-10'>
-                                <button onClick={linkSync} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Sync'}</button>  
+                                <button onClick={linkSync} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Sync Links'}</button>  
                             </div>
                         </div>
                         
-                        <div className='flex flex-col gap-2 w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
-                            <h1>Documents</h1>
-                            
-                        <div className="flex items-center justify-center w-full">
-                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <UploadFileTwoTone />
-                                    <p className="mt-2 mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">The file must be in PDF format.</p>
+                        <div className='flex flex-col justify-between gap-2 w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
+                            <h1>Knowldge Base PDF Document</h1>  
+                            <div className="flex flex-col gap-10 items-start justify-between w-full">
+                                <div className='flex flex-col gap-3 border-2 border-gray-500 border-dashed rounded-lg p-4 w-full'>
+                                    <strong>Current knowledge base:</strong>
+                                    {data && data.fileName ? 
+                                    <p className='flex gap-1 mt-4'><File /> {data.fileName}</p> :
+                                    <p className='flex gap-1'><FileX /> No documents uploaded</p>}
                                 </div>
-                                <input id="dropzone-file" type="file" className="hidden" />
-                            </label>
-                        </div> 
-
+                                
+                                <form onSubmit={handleKBSubmit}>
+                                    <div className='flex flex-col gap-1'>
+                                        <input accept="application/pdf" id="kb-doc" type="file" onChange={handleKBChange} />
+                                        <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                                    </div>
+                                    <div className='flex justify-end w-full'>
+                                        <button type='submit' className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isKBLoading ? 'Processing...' : 'Sync Document'}</button>  
+                                    </div>
+                                </form>
+                            </div> 
                         </div>
                     </div>
                 </>
@@ -556,6 +606,13 @@ export default function Dashboard() {
                             )
                         })}
                     </Accordion> : <div className='flex justify-center items-center min-h-[10rem]'><h1>No FAQs added at the moment</h1></div>}
+                </>
+            )
+        } else if (section === 'Plan') {
+            return (
+                <>
+                    <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plan</h3>
+                    <p>You are currently subscribed to the <strong>Basic</strong> plan. If you wish to cancel this plan please email us at <a className='underline text-blue-600' href='mailto:contact@kulfi.com'>contact@kulfi.com</a></p>
                 </>
             )
         }
