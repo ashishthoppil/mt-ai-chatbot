@@ -31,18 +31,18 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
     }
 
     return (
-        <div className='flex flex-col gap-[5rem] justify-center  w-full h-[55vh]'>
+        <div className='flex flex-col gap-[5rem] justify-center w-full h-[55vh]'>
             <div className='flex items-center justify-between w-full'>
                 <div className='flex gap-5 items-start'>
                     <Link href='/'><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></Link>
                     <div className='flex flex-col gap-4'>
-                        <h1 className='font-semibold text-2xl text-purple-800'>What is your organization called?</h1>
-                        <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                        <h1 className='font-semibold md:text-2xl text-purple-800'>What is your organization called?</h1>
+                        <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
                     </div> 
                 </div>
-                <button onClick={submitHandler} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
             </div>
-            <div className='flex flex-col gap-4  w-full'>
+            <div className='flex flex-col gap-4 w-full'>
                 <input autoFocus placeholder='Example: Acme Pvt Ltd' onChange={(e) => setFormData({ ...formData, organization: e.target.value })} onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                         submitHandler()
@@ -90,11 +90,11 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
         <div className='flex gap-5 items-start'>
             <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
-                <h1 className='font-semibold text-2xl text-purple-800'>What is your email address?</h1>
-                <h1 className='font-normal text-md text-gray-500'>We will use this email address for updates and future support.</h1>
+                <h1 className='font-semibold md:text-2xl text-purple-800'>What is your email address?</h1>
+                <h1 className='font-normal text-sm md:text-md text-gray-500'>We will use this email address for updates and future support.</h1>
             </div>
             </div>
-            <button onClick={submitHandler} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input autoFocus placeholder='Example: www.web-address.com' onKeyDown={(e) => {
@@ -128,11 +128,11 @@ const PasswordStep = ({ formData, setFormData, nextStep, prevStep }) => {
                 <div className='flex gap-5 items-start'>
                     <Link href='/'><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></Link>
                     <div className='flex flex-col gap-4'>
-                        <h1 className='font-semibold text-2xl text-purple-800'>Type your password</h1>
-                        <h1 className='font-normal text-md text-gray-500'>Please keep your password confidential.</h1>
+                        <h1 className='font-semibold md:text-2xl text-purple-800'>Type your password</h1>
+                        <h1 className='font-normal text-sm md:text-md text-gray-500'>Please keep your password confidential.</h1>
                     </div> 
                 </div>
-                <button onClick={submitHandler} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
             </div>
             <div className='flex flex-col gap-4  w-full'>
                     <input autoFocus onKeyDown={(e) => {
@@ -173,11 +173,11 @@ const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
         <div className='flex gap-5 items-start'>
         <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
-                <h1 className='font-semibold text-2xl text-purple-800'>What is your website url?</h1>
-                <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                <h1 className='font-semibold md:text-2xl text-purple-800'>What is your website url?</h1>
+                <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
             </div>
             </div>
-            <button onClick={submitHandler} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input autoFocus onKeyDown={(e) => {
@@ -207,11 +207,11 @@ const Step4 = ({ formData, setFormData, nextStep, prevStep }) => {
         <div className='flex gap-5 items-start'>
         <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
-                <h1 className='font-semibold text-2xl text-purple-800'>What is your organization about?</h1>
-                <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                <h1 className='font-semibold md:text-2xl text-purple-800'>What is your organization about?</h1>
+                <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
             </div>
             </div>
-            <button onClick={submitHandler} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input autoFocus onKeyDown={(e) => {
@@ -241,11 +241,11 @@ const Step5 = ({ formData, setFormData, nextStep, prevStep }) => {
             <div className='flex gap-5 items-start'>
             <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
                 <div className='flex flex-col gap-4'>
-                    <h1 className='font-semibold text-2xl text-purple-800'>What would you like to call your AI chatbot?</h1>
-                    <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                    <h1 className='font-semibold md:text-2xl text-purple-800'>What would you like to call your AI chatbot?</h1>
+                    <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
                 </div>
             </div>
-            <button onClick={submitHandler} className='flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold'><span>Next</span><ArrowCircleRightOutlined /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4  w-full'>
             <input autoFocus onKeyDown={(e) => {
@@ -266,8 +266,8 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
             <div className='flex items-start gap-5'>
                 <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
                 <div className='flex flex-col gap-4'>
-                    <h1 className='font-semibold text-2xl text-purple-800'>Choose a color for your chatbot.</h1>
-                    <h1 className='font-normal text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                    <h1 className='font-semibold md:text-2xl text-purple-800'>Choose a color for your chatbot.</h1>
+                    <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
                 </div>
             </div>
             <Dialog>
@@ -280,7 +280,7 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
                                 submitForm()
                             }
                         }
-                    }} className={`flex justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold ${isLoading ? 'pointer-events-none bg-purple-300': ''}`}><span>{isLoading ? 'Loading..': 'Next'}</span><ArrowCircleRightOutlined /></button>
+                    }} className={`flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md ${isLoading ? 'pointer-events-none bg-purple-300': ''}`}><span>{isLoading ? 'Loading..': 'Submit'}</span><ArrowCircleRightOutlined  className='text-xs md:text-md' /></button>
                 </DialogTrigger>
                 <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
                     <DialogHeader className='flex flex-col gap-2'>
@@ -396,7 +396,7 @@ const MultiStepForm = () => {
     }
   };
 
-  return <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] w-[75%] px-5 py-10'>
+  return <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10'>
             <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
             {renderStep()}
         </div>;

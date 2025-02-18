@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import { OpenAI } from 'openai'
-import { streamText } from 'ai';
+import { generateText, streamText } from 'ai';
 import { NextResponse } from 'next/server';
 import { cosineSimilarity } from '@/lib/utils';
 
@@ -59,6 +59,44 @@ export async function POST(request) {
     messages: instructions,
     temperature: 0
   });
+
+  const systemMessage = {
+    role: 'system',
+    content: `You are a helpful assistant. Please classify the user query
+              as 'Complaint', 'Feedback', or 'General query' only.`
+  };
+
+  const userMessage = {
+    role: 'user',
+    content: messages[messages.length - 1].content // or however you store it
+  };
+
+  const queryTypeInstructions = [systemMessage, userMessage];
+
+
+  const queryTypeRes = await generateText({
+    model: openai('gpt-4o-mini'), // or however your model is specified
+    messages: queryTypeInstructions,
+    temperature: 0
+  });
+
+  if (queryTypeRes.text && messages[messages.length - 1].content) {
+    const saveQueryType = await fetch(`${BASE_URL}/api/query-type`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: '67aed1eb52e2ec4302b5415b',
+        queryType: queryTypeRes.text,
+        query: messages[messages.length - 1].content
+      }),
+    });
+
+    const saveQueryRes = await saveQueryType.json();
+    console.log('info: ', saveQueryRes);
+  }
+
 
   return result.toDataStreamResponse();  
 }

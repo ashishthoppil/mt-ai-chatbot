@@ -9,7 +9,7 @@ export const poppins = Poppins({
   weight: ['400', '500', '600', '700'], 
 })
 
-export default function Home() {
+export default function Chat() {
 
     const [data, setData] = useState();
     const [botInfo, setBotInfo] = useState();    

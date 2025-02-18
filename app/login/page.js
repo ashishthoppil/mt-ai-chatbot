@@ -11,7 +11,7 @@ export const poppins = Poppins({
 export default function Login() {
 
     const loginHandler = () => {
-        console.log(123);
+        console.log('Nothing to see here');
     }
 
     return (
