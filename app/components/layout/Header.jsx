@@ -61,6 +61,10 @@ export const Header = () => {
         // setIsOpen(false);
     // }, [loginRef.current]);
 
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname])
+
     return (
         pathname !== '/chat' && 
         <div className='flex flex-col md:flex-row w-full z-[10]'>
