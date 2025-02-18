@@ -54,12 +54,12 @@ export const Header = () => {
         }
     }
 
-    useEffect(() => {
+    // useEffect(() => {
         // if (loginRef.current && searchParams.get('loginRedirect') === 'true') {
         //     loginRef.current.click();
         // }
         // setIsOpen(false);
-    }, [loginRef.current]);
+    // }, [loginRef.current]);
 
     return (
         pathname !== '/chat' && 
