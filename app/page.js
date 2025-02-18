@@ -2,7 +2,7 @@
 
 export default function Home() {
   return (
-        <div className='flex flex-col gap-10 items-center justify-center bg-purple-800 w-full rounded-[30px] h-[88vh] text-white px-[15px]'>
+        <div className='flex flex-col gap-10 items-center justify-center bg-purple-800 w-full rounded-[30px] md:h-[88vh] py-[3rem] text-white px-[15px]'>
           <h1 className='text-[20px] md:text-[26px] text-center'>Transform Interactions with a Customized AI Chatbot</h1>
           <h1 className='text-[24px] md:text-[4rem] font-bold text-center'>In just 10 minutes,<br/>for 1/2 the price.</h1>
           <h1 className='text-[18px] text-center'>Enhance customer engagement with our intelligent AI chatbot.</h1>
