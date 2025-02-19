@@ -70,11 +70,13 @@
         chatButton.style.border = `2px solid #${cc}`;
         chatButton.style.backgroundColor = `#ffffff`;
         chatButton.style.boxShadow = `rgba(0, 0, 0, 0.24) 0px 3px 8px`;
+        chatButton.style.display = `flex`;
+        chatButton.style.justifyContent = `center`;
+        chatButton.style.alignItems = `center`;
 
         const img = document.createElement('img');
-        img.src = '../icons/chatbot-1.png'
-
-        chatButton.innerText = img;
+        img.src = `https://www.kulfi-ai.com/icons/${cc}.png`;
+        chatButton.appendChild(img);
     
         chatButton.onclick = () => {
         isOpen = !isOpen;
