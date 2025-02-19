@@ -48,7 +48,7 @@
     
         // 3. Create the chatbot popup (hidden initially)
         const popup = document.createElement('div');
-        popup.style.maxHeight = `${(0.65 * viewPortHeight)}px`;
+        popup.style.maxHeight = `${(0.75 * viewPortHeight)}px`;
         popup.style.width = `25rem`;
         popup.className = 'my-chatbot-popup';
         popup.style.display = 'none'; // hide by default
@@ -76,6 +76,7 @@
 
         const img = document.createElement('img');
         img.src = `https://www.kulfi-ai.com/icons/${cc}.png`;
+        img.style.width = '35px';
         chatButton.appendChild(img);
     
         chatButton.onclick = () => {
