@@ -36,6 +36,15 @@
             overflow: hidden;
         }
         `;
+
+        var loaderScriptURL = document.currentScript.src;
+        var urlObject = new URL(loaderScriptURL);
+        var id = urlObject.searchParams.get('id');
+        var bn = urlObject.searchParams.get('bn');
+        var cc = urlObject.searchParams.get('cc');
+        var lc = urlObject.searchParams.get('lc');
+        var mc = urlObject.searchParams.get('mc');
+
         document.head.appendChild(style);
         
         const viewPortHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
@@ -52,7 +61,7 @@
 
         const iframe = document.createElement('iframe');
 
-        iframe.src = 'https://kulfi-ai.com/chat';
+        iframe.src = `https://kulfi-ai.com/chat?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}`;
         iframe.style.overflow = 'none';
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
