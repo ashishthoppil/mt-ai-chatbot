@@ -467,7 +467,7 @@ export default function Dashboard() {
                             <div className='flex justify-between items-start text-[14px] md:text-[16px] text-yellow-500 px-1'>
                                 <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&bn=${urlParams.botName}&cc=${urlParams.color}&lc=${urlParams.lColor}&mc=${urlParams.mColor}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
-                                    navigator.clipboard.writeText(botLink.current.innerHTML);
+                                    navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");
                                 }}><CopyIcon className='h-4 w-4' /></button>
                             </div>
