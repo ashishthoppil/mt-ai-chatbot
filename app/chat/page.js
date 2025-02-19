@@ -51,7 +51,7 @@ export default function Chat() {
       const res = await fetch('/api/get-questions', {
           method: 'POST',
           body: JSON.stringify({
-              id: localStorage.getItem('objectID')
+              id: botInfo.id
           })
       });
       const data = await res.json();
@@ -66,7 +66,7 @@ export default function Chat() {
     const res = await fetch('/api/get-articles', {
         method: 'POST',
         body: JSON.stringify({
-            id: localStorage.getItem('objectID')
+            id: botInfo.id
         })
     });
     const data = await res.json();

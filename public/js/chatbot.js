@@ -49,6 +49,7 @@
         // 3. Create the chatbot popup (hidden initially)
         const popup = document.createElement('div');
         popup.style.maxHeight = `${(0.65 * viewPortHeight)}px`;
+        popup.style.width = `25rem`;
         popup.className = 'my-chatbot-popup';
         popup.style.display = 'none'; // hide by default
 
