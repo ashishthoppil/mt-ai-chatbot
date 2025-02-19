@@ -79,9 +79,14 @@ export default function Chat() {
   
     useEffect(() => {
       loadData();
-      loadFaqs();
-      loadArticles();
     }, []);
+
+    useEffect(() => {
+      if (botInfo) {
+        loadFaqs();
+        loadArticles();
+      }
+    }, [botInfo])
 
     return (
       botInfo && <main className={`flex flex-col items-center justify-between gap-4 flex-grow w-full ${poppins.className}`}>
