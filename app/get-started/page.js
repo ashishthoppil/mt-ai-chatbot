@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowCircleLeftRounded, ArrowCircleRightOutlined, ArrowLeftOutlined, ArrowLeftRounded, CheckBox, CheckCircle, CheckCircleOutline, CheckOutlined, SelectAllRounded, Timer } from '@mui/icons-material';
-import { LucideEye, LucideEyeClosed } from 'lucide-react';
+import { CopyrightIcon, LucideEye, LucideEyeClosed } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import {
@@ -396,10 +396,12 @@ const MultiStepForm = () => {
     }
   };
 
-  return <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10'>
+  return <><div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10 h-[80vh]'>
             <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
             {renderStep()}
-        </div>;
+        </div>
+        <footer className={`bottom-0 flex gap-2 justify-center text-gray-500 py-[20px] w-full`}>Copyright <CopyrightIcon /> 2025 Kulfi AI.</footer> : <></>
+        </>
 };
 
 export default MultiStepForm;

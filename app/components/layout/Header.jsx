@@ -73,7 +73,7 @@ export const Header = () => {
     return (
         pathname !== '/chat' && 
         <div className='flex flex-col md:flex-row w-full z-[10] '>
-            <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-purple-100 w-full py-[2px] px-[10px] md:px-[75px]`}>
+            <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[10px] md:px-[75px]`}>
                 <div className='flex gap-2'>
                     <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Kulfi.</Link>
                 </div>

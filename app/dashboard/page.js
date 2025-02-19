@@ -643,13 +643,13 @@ export default function Dashboard() {
                     <p className='text-[14px] md:text-[16px]'>You can add the articles posted in your website here.</p>
                     <div className='flex flex-col gap-5 pt-10 text-[14px] md:text-[16px]'>
                         <div className='flex gap-2'>
-                            <div className="flex flex-col gap-4 w-[50%]">
+                            <div className="flex flex-col gap-4 md:w-[50%]">
                                 <label className="text-left">
                                     Title
                                 </label>
                                 <input onChange={(e) => setArticle((prev) => { return { ...prev, title: e.target.value } })} value={article.title} id='title' placeholder='Enter the title of the article here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
                             </div>
-                            <div className="flex flex-col gap-4 w-[50%]">
+                            <div className="flex flex-col gap-4 md:w-[50%]">
                                 <label className="text-left">
                                     Link
                                 </label>

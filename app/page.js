@@ -1,7 +1,7 @@
 'use client';
 
 import { AppRegistrationRounded, ContentPaste, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
-import { CircleCheckBigIcon, Copy, Database, LucidePartyPopper } from 'lucide-react';
+import { CircleCheckBigIcon, Copy, CopyrightIcon, Database, LucidePartyPopper } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 
@@ -44,7 +44,7 @@ export default function Home() {
               <p className='text-center text-[16px] md:text-[22px] text-gray-500'>A streamlined process in 6 simple steps.</p>
             </div>
             <div className='flex flex-col md:flex-row gap-5'>
-              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3'>
+              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3 border-[1px] border-purple-300'>
                 <h1 className='flex gap-2 items-center text-purple-500 font-bold text-[24px] md:text-[2rem]'><AppRegistrationRounded /> Register</h1>
                 <p className='text-[16px] text-gray-600'>
                   Create an account with us by clicking on the 'Get Started' button.
@@ -52,14 +52,14 @@ export default function Home() {
               </div>
 
               
-              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3'>
+              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3 border-[1px] border-purple-300'>
                 <h1 className='flex gap-2 items-center text-purple-500 font-bold text-[24px] md:text-[2rem]'><NextPlanSharp /> Plan</h1>
                 <p className='text-[16px] text-gray-600'>
                   Select a plan that suits you business requirements.
                 </p>
               </div>
 
-              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3'>
+              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3 border-[1px] border-purple-300'>
                 <h1 className='flex gap-2 items-center text-purple-500 font-bold text-[24px] md:text-[2rem]'><Database /> Data</h1>
                 <p className='text-[16px] text-gray-600'>
                   Add the url's or documents that you want as the reference for your AI Chatbot and sync the data.
@@ -68,7 +68,7 @@ export default function Home() {
             </div>
 
             <div className='flex flex-col md:flex-row gap-5'>
-              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3'>
+              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3 border-[1px] border-purple-300'>
                 <h1 className='flex gap-2 items-center text-purple-500 font-bold text-[24px] md:text-[2rem]'><Copy /> Copy</h1>
                 <p className='text-[16px] text-gray-600'>
                   After successfully syncing the data, copy the code snippet from your dashboard.
@@ -76,14 +76,14 @@ export default function Home() {
               </div>
 
               
-              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3'>
+              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3 border-[1px] border-purple-300'>
                 <h1 className='flex gap-2 items-center text-purple-500 font-bold text-[24px] md:text-[2rem]'><ContentPaste /> Paste</h1>
                 <p className='text-[16px] text-gray-600'>
                   Paste the code snippet inside the {'<head></head>'} tag of your website.
                 </p>
               </div>
 
-              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3'>
+              <div className='flex flex-col gap-5 bg-white rounded-lg shadow-md py-[10px] px-[20px] md:w-1/3 border-[1px] border-purple-300'>
                 <h1 className='flex gap-2 items-center text-purple-500 font-bold text-[24px] md:text-[2rem]'><LucidePartyPopper /> Done!</h1>
                 <p className='text-[16px] text-gray-600'>
                   Your very own AI chatbot has been successfully integrated to your website.
@@ -103,6 +103,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <footer className={`bottom-0 flex gap-2 justify-center text-gray-500 py-[20px] w-full`}>Copyright <CopyrightIcon /> 2025 Kulfi AI.</footer> : <></>
         </>
   );
 }
