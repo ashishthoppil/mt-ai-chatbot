@@ -32,19 +32,19 @@ export default function Chat() {
         mColor, 
         botName
       });
-      const res = await fetch('/api/dashboard', {
-              method: 'POST',
-              body: JSON.stringify({
-              id
-            })
-          });
-      const data = await res.json();
-      if (data.data) {
-        setData(data.data);
-      } 
-      else {
-        router.push('/');
-      }
+      // const res = await fetch('/api/dashboard', {
+      //         method: 'POST',
+      //         body: JSON.stringify({
+      //         id
+      //       })
+      //     });
+      // const data = await res.json();
+      // if (data.data) {
+      //   setData(data.data);
+      // } 
+      // else {
+      //   router.push('/');
+      // }
     }
 
     const loadFaqs = async () => {

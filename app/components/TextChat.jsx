@@ -19,7 +19,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     const inputRef = useRef();
  
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-        api: '/api/chat',
+        api: `/api/chat?id=${botInfo.id}`,
         initialMessages: [
             {
                 id: 'initial',

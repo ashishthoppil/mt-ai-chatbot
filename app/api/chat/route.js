@@ -7,6 +7,7 @@ import { cosineSimilarity } from '@/lib/utils';
 export const runtime = 'edge'
 
 export async function POST(request) {
+  const clientId = request.query.id;
   const response = await request.json();
   let { messages } = response;
 
@@ -27,7 +28,7 @@ export async function POST(request) {
   const queryEmbedding = embeddingResponse.data[0].embedding
 
   // Retrieve embeddings
-  const embeddingsRes = await fetch(`${BASE_URL}/api/retrieve-embeddings?id=67aed1eb52e2ec4302b5415b`);
+  const embeddingsRes = await fetch(`${BASE_URL}/api/retrieve-embeddings?id=${clientId}`);
 
   const embeddingsArray = await embeddingsRes.json();
   const organization = embeddingsArray.data.organization;
@@ -87,7 +88,7 @@ export async function POST(request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: '67aed1eb52e2ec4302b5415b',
+        id: clientId,
         queryType: queryTypeRes.text,
         query: messages[messages.length - 1].content
       }),
