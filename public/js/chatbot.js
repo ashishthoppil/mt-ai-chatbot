@@ -36,14 +36,7 @@
             overflow: hidden;
         }
         `;
-
-        var loaderScriptURL = document.currentScript.src;
-        var urlObject = new URL(loaderScriptURL);
-        var id = urlObject.searchParams.get('id');
-        var bn = urlObject.searchParams.get('bn');
-        var cc = urlObject.searchParams.get('cc');
-        var lc = urlObject.searchParams.get('lc');
-        var mc = urlObject.searchParams.get('mc');
+        var { id, bn, cc, lc, mc } = window.chatbotConfig || {};
 
         document.head.appendChild(style);
         
@@ -73,7 +66,9 @@
     
         const chatButton = document.createElement('button');
         chatButton.className = 'my-chatbot-button';
-        chatButton.innerText = '💬';
+        chatButton.style.backgroundColor = `#${cc}`;
+        chatButton.style.color = `#ffffff`;
+        chatButton.innerText = bn[0].toUpperCase();
     
         chatButton.onclick = () => {
         isOpen = !isOpen;

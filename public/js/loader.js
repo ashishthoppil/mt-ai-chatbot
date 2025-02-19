@@ -6,6 +6,9 @@
     var cc = urlObject.searchParams.get('cc');
     var lc = urlObject.searchParams.get('lc');
     var mc = urlObject.searchParams.get('mc');
+
+    window.chatbotConfig = { id, bn, cc, lc, mc };
+
     setTimeout(() => {
       var chatbotScript = document.createElement('script');
       chatbotScript.src = `https://kulfi-ai.com/js/chatbot.js?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}`;
