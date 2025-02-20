@@ -5,7 +5,7 @@
         .my-chatbot-container {
             position: fixed;
             bottom: 20px;
-            right: 70px;
+            right: 15px;
             z-index: 9999; /* On top of everything */
             font-family: sans-serif; /* Basic font family */
         }
@@ -49,7 +49,12 @@
         // 3. Create the chatbot popup (hidden initially)
         const popup = document.createElement('div');
         popup.style.maxHeight = `${(0.75 * viewPortHeight)}px`;
-        popup.style.width = `25rem`;
+        if (document.documentElement.clientHeight > 500) {
+            popup.style.width = `25rem`;
+        } else {
+            container.style.width = '100%';
+            popup.style.width = `95%`;
+        }
         popup.className = 'my-chatbot-popup';
         popup.style.display = 'none'; // hide by default
 

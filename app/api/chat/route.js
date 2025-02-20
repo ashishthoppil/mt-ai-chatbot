@@ -63,7 +63,7 @@ export async function POST(request) {
       5. After the image, if you used any chunk that references a URL, provide the link in the format:
 
       <br/>
-      <a className='flex gap-1 text-blue-400' target='_blank' href='URL'><span>Read more</span> <img width="15" height="15" src="https://img.icons8.com/ios-glyphs/50/60a5fa/external-link.png" alt="external-link"/></a>
+      <a className='flex gap-1 text-black' target='_blank' href='URL'><span>Read more</span> <img width="15" height="15" src="https://img.icons8.com/ios-glyphs/50/60a5fa/external-link.png" alt="external-link"/></a>
 
       6. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks, except for the link at the end if available.
     `
