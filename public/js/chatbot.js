@@ -49,7 +49,7 @@
         // 3. Create the chatbot popup (hidden initially)
         const popup = document.createElement('div');
         popup.style.maxHeight = `${(0.75 * viewPortHeight)}px`;
-        if (document.documentElement.clientHeight > 500) {
+        if (document.documentElement.clientWidth > 500) {
             popup.style.width = `25rem`;
         } else {
             container.style.width = '100%';
