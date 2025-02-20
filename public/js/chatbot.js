@@ -53,7 +53,7 @@
             popup.style.width = `25rem`;
         } else {
             container.style.width = '100%';
-            popup.style.width = `95%`;
+            popup.style.width = `85%`;
         }
         popup.className = 'my-chatbot-popup';
         popup.style.display = 'none'; // hide by default
