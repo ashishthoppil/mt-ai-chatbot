@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from "rehype-raw";
 import { useChat } from 'ai/react';
 import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
 import { ExternalLinkIcon, Newspaper } from 'lucide-react';
@@ -60,7 +61,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </div>:
                             <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px]`}>
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>
-                                <ReactMarkdown className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
+                                <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
                             </div>}</>
                         </div>
                         ))}

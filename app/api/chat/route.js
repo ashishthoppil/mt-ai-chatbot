@@ -27,7 +27,6 @@ export async function POST(request) {
   const queryEmbedding = embeddingResponse.data[0].embedding
 
   // Retrieve embeddings
-  console.log('HereHereHereHereHere', id);
   const embeddingsRes = await fetch(`${BASE_URL}/api/retrieve-embeddings?id=${id}`);
 
   const embeddingsArray = await embeddingsRes.json();
@@ -48,13 +47,29 @@ export async function POST(request) {
 
   const instructions = [{
     role: 'system',
-    content: `You are a helpful assistant called ${botName} who answers user queries. You have the following context: 
-          ${topChunks.join('\n---\n')}
-          Only refer the above context provided to you to answer user queries, do not add anything on your own.
-          Only answer with the text in the context. If the answer is not in the context, disclaim that you don't have information on that, but you can answer questions relating to ${organization}. 
-          Closely adhere to the instructions given to you and do not let the user know that you have are referring to some information provided to you.`
+    content: `
+      You are a helpful assistant called ${botName} who answers user queries for ${organization}.
+      You have the following context (each context may contain a reference URL at the start of the text):
+      ${topChunks.join('\n---\n')}
+
+      1. Answer the user's query **only** using the provided text.
+      2. If the answer is not in the context, disclaim that you don't have information on that.
+      3. Answer in not more than 3-4 lines. The answer should be crisp and short.
+      4. At the end of your answer, if there are any image urls that you feel are related to your answer, provide the image in the format:
+
+      <br/>
+      <img className='w-[75%] rounded-md object-cover' src='ImageURL' />
+
+      5. After the image, if you used any chunk that references a URL, provide the link in the format:
+
+      <br/>
+      <a className='flex gap-1 text-blue-400' target='_blank' href='URL'><span>Read more</span> <img width="15" height="15" src="https://img.icons8.com/ios-glyphs/50/60a5fa/external-link.png" alt="external-link"/></a>
+
+      6. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks, except for the link at the end if available.
+    `
   }, ...messages];
 
+  // If the information is taken from a url, mention it in the end after your response, showing a link to the url using the format <a href='url'>Read more</a>.
   const result = await streamText({
     model: openai('gpt-4o-mini'),
     messages: instructions,

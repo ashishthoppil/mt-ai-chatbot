@@ -54,9 +54,21 @@ export async function POST(req) {
             const renderedHTML = scrapedData.data;
             const html = renderedHTML[0].results[0].html;
             const $ = load(html)
-            const text = $('body').text()
+            const text = $('body').text();
+
+            let imageUrls = 'This is a set of image urls from this page. \n'
+            $('img').each((index, element) => {
+                const src = url + $(element).attr('src').slice(1); 
+                const alt = $(element).attr('alt'); 
+                if (src) {
+                  imageUrls += `Image url for ${alt} - ${src}\n`;
+                }
+            });
+
             const intermediateChunk = chunkText(text, 10000);
-            chunks = chunks.concat(intermediateChunk);
+            for (const ic of intermediateChunk) {
+                chunks.push(`The reference url for the following data is ${url} - ${ic} \n ${imageUrls}`);
+            }
         }
 
         if (chunks.length > 0) {

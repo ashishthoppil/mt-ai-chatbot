@@ -9,7 +9,7 @@ export async function GET(request) {
     const mongoClient = await clientPromise
     const db = mongoClient.db('kulfi')
     const clientDoc = await db.collection('clients').findOne({ _id: new ObjectId(id) })
-    // const embeddingsArray = clientDoc?.scrapedData || []
-    const embeddingsArray = clientDoc?.kb || []
+    const embeddingsArray = clientDoc?.scrapedData || []
+    // const embeddingsArray = clientDoc?.kb || []
     return NextResponse.json({ success: true, data: { embeddingsArray, organization: clientDoc.organization, botName: clientDoc.botName } });
 }
