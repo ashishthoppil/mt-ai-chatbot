@@ -58,7 +58,7 @@ export async function POST(request) {
       4. At the end of your answer, if there are any image urls that you feel are related to your answer, provide the image in the format:
 
       <br/>
-      <img className='w-[75%] rounded-md object-cover' src='ImageURL' />
+      <img className='w-[90%] rounded-md object-cover' src='ImageURL' />
 
       5. After the image, if you used any chunk that references a URL, provide the link in the format:
 

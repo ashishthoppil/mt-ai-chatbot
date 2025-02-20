@@ -58,14 +58,19 @@ export async function POST(req) {
 
             let imageUrls = 'This is a set of image urls from this page. \n'
             $('img').each((index, element) => {
-                const src = url + $(element).attr('src').slice(1); 
+                let src = '';
+                if (src.includes('https') || src.includes('ftp')) {
+                    src = $(element).attr('src');
+                } else {
+                    src = url + $(element).attr('src').slice(1);
+                }
                 const alt = $(element).attr('alt'); 
                 if (src) {
                   imageUrls += `Image url for ${alt} - ${src}\n`;
                 }
             });
 
-            const intermediateChunk = chunkText(text, 10000);
+            const intermediateChunk = chunkText(text, 5000);
             for (const ic of intermediateChunk) {
                 chunks.push(`The reference url for the following data is ${url} - ${ic} \n ${imageUrls}`);
             }
