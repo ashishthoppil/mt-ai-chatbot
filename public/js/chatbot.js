@@ -3,6 +3,8 @@
         const style = document.createElement('style');
         style.innerHTML = `
         .my-chatbot-container {
+            display: flex;
+            justify-content: end;
             position: fixed;
             bottom: 20px;
             right: 15px;
