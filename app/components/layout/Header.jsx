@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Poppins } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { HomeIcon, LogInIcon, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, Tag } from 'lucide-react';
+import { HomeIcon, Loader2, LogInIcon, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, Tag } from 'lucide-react';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -28,12 +28,14 @@ export const Header = () => {
         password: ''
     });
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [ls, setLs] = useState(false);
     const router = useRouter();
     const loginRef = useRef();
 
     const submitHandler = async () => {
+        setIsLoading(true);
         const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
@@ -43,6 +45,7 @@ export const Header = () => {
         });
         const data = await response.json();
         if (data.success) {
+            setIsLoading(false);
             if (data.message._id) {
                 localStorage.setItem('objectID', data.message._id)
                 localStorage.setItem('color', data.message.color.slice(1))
@@ -118,7 +121,10 @@ export const Header = () => {
                                     </div>
                                 </div>
                                 <DialogFooter>
-                                    <button onClick={submitHandler} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Login</button>  
+                                    <button onClick={submitHandler} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? <div className='flex gap-2 items-center'>
+                                        <Loader2 className='animate-spin text-white' />
+                                        <p className='text-white'>Logging in</p>
+                                    </div> : 'Login'}</button>  
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>

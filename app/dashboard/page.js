@@ -748,7 +748,7 @@ export default function Dashboard() {
             return (
                 <>
                     <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plan</h3>
-                    <p>You are currently subscribed to the <strong>Basic</strong> plan. If you wish to cancel this plan please email us at <a className='underline text-blue-600' href='mailto:contact@kulfi.com'>contact@kulfi.com</a></p>
+                    <p>You are currently subscribed to the <strong>Basic</strong> plan. If you wish to cancel this plan please email us at <a className='underline text-blue-600' href='mailto:support@kulfi-ai.com'>support@kulfi-ai.com</a></p>
                 </>
             )
         }
