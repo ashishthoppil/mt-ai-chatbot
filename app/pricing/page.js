@@ -15,14 +15,14 @@ export const PricingSub = ({ selected }) => {
     console.log('client_id', process.env.PAYPAL_CLIENT_ID);
     console.log('test_plan', process.env.TEST_PLAN);
     const initialOptions = {
-        clientId: process.env.PAYPAL_CLIENT_ID,
+        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
         intent: "subscription",
         vault: true,
     };
 
     const handleCreateSubscription = (data, actions) => {
         return actions.subscription.create({
-          plan_id: process.env.TEST_PLAN,
+          plan_id: process.env.NEXT_PUBLIC_TEST_PLAN,
         });
     };
 
