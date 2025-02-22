@@ -1,6 +1,6 @@
 'use client';
 
-import { BuildCircleOutlined } from '@mui/icons-material';
+import { BuildCircleOutlined, LocationOn } from '@mui/icons-material';
 import { CopyrightIcon } from 'lucide-react';
 import { Poppins } from 'next/font/google'
 import { useState } from 'react';
@@ -95,6 +95,9 @@ export default function Contact() {
                         </div>}
                     </div>
                     <p className='text-white'>or Contact us at <a className='underline' href='mailto:support@kulfi-ai.com'>support@kulfi-ai.com</a> for any queries.</p>
+                    <div className='flex flex-col gap-2 items-center'>
+                        <LocationOn className='text-white' /> <p className='text-white'>XXI/246-(1), Ground Floor, Grande Tower,<br/>NH Bypass Metro Pillar No.41, Aluva - 683101.</p>
+                    </div>
                 </div>
             </div>
 
