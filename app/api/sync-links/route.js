@@ -59,7 +59,7 @@ export async function POST(req) {
             let imageUrls = 'This is a set of image urls from this page. \n'
             $('img').each((index, element) => {
                 let src = '';
-                if (src.includes('https') || src.includes('ftp')) {
+                if ($(element).attr('src').includes('https') || $(element).attr('src').includes('ftp')) {
                     src = $(element).attr('src');
                 } else {
                     src = url + $(element).attr('src').slice(1);
