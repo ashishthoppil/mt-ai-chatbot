@@ -4,6 +4,8 @@ import { Star } from '@mui/icons-material';
 import { CircleCheck, CopyrightIcon } from 'lucide-react';
 import { Poppins } from 'next/font/google'
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useEffect, useRef, useState } from 'react';
+
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -12,18 +14,23 @@ export const poppins = Poppins({
 
 export const PricingSub = ({ selected }) => {
 
-    console.log('client_id', process.env.PAYPAL_CLIENT_ID);
-    console.log('test_plan', process.env.TEST_PLAN);
     const initialOptions = {
-        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+        "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
         intent: "subscription",
         vault: true,
     };
 
-    const handleCreateSubscription = (data, actions) => {
-        return actions.subscription.create({
-          plan_id: process.env.NEXT_PUBLIC_TEST_PLAN,
+    const handleCreateSubscription = async () => {
+
+        const res = await fetch('/api/create-subscription', {
+            method: 'POST',
+            body: JSON.stringify({
+                plan_name: 'test',
+                duration: 'month'
+            })
         });
+        const data = await res.json();
+        console.log('data', data);
     };
 
     const handleApprove = (data, actions) => {

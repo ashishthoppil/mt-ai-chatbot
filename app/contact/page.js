@@ -70,7 +70,7 @@ export default function Contact() {
                     <h1 className='md:text-[42px] font-bold'>Got a business requirement <br/>or perhaps a grievance?</h1>
                     <h1 className='md:text-[42px] font-bold'>We'd love to hear from you!</h1>
                 </div>
-                <div className='flex justify-center w-full md:w-[50%]'>
+                <div className='flex flex-col gap-5 items-center w-full md:w-[50%]'>
                     <div className='flex flex-col gap-5 bg-orange-100 rounded-lg px-[2rem] pt-[3rem] pb-[1.5rem] md:w-[70%]'>
                         <div className='flex flex-col gap-2 text-gray-600'>
                             <label className='text-[16px] md:text-[20px] font-semibold'>Full Name</label>
@@ -94,8 +94,10 @@ export default function Contact() {
                             <h1>Your query has been submitted, we will get back to you shortly!</h1>
                         </div>}
                     </div>
+                    <p className='text-white'>or Contact us at <a className='underline' href='mailto:support@kulfi-ai.com'>support@kulfi-ai.com</a> for any queries.</p>
                 </div>
             </div>
+
             <footer className={`bottom-0 flex gap-2 justify-center text-gray-500 py-[20px] w-full`}>Copyright <CopyrightIcon /> 2025 Kulfi AI.</footer> : <></>
         </>
     );
