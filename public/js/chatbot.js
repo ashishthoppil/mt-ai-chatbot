@@ -90,7 +90,7 @@
             isOpen = !isOpen;
             popup.style.display = isOpen ? 'flex' : 'none';
 
-            const response = await fetch('/api/track-event', {
+            const response = await fetch('https://kulfi-ai.com/api/track-event', {
                 method: 'POST',
                 body: {
                     id,

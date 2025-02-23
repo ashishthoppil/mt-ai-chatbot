@@ -1,10 +1,19 @@
 import { getAnalyticsDb } from "@/lib/helper";
 import clientPromise from "@/lib/mongodb";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 const bcrypt = require('bcrypt');
 
 export async function POST(req, res) {
+
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    // Handle preflight request
+    return res.status(200).end();
+  }
   const DB_NAME = process.env.DB_NAME
   const client = await clientPromise;
   const db = client.db(DB_NAME);
