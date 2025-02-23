@@ -11,5 +11,7 @@ export async function GET(request) {
     const clientDoc = await db.collection('clients').findOne({ _id: new ObjectId(id) })
     const embeddingsArray = clientDoc?.scrapedData || []
     // const embeddingsArray = clientDoc?.kb || []
-    return NextResponse.json({ success: true, data: { embeddingsArray, organization: clientDoc.organization, botName: clientDoc.botName } });
+    return NextResponse.json({ success: true, data: { embeddingsArray, organization: clientDoc.organization, botName: clientDoc.botName, tone: clientDoc.tone, escalation: clientDoc.escalation
+        
+     } });
 }

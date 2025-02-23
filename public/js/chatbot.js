@@ -38,7 +38,7 @@
             overflow: hidden;
         }
         `;
-        var { id, bn, cc, lc, mc } = window.chatbotConfig || {};
+        var { id, bn, cc, lc, mc, wc } = window.chatbotConfig || {};
 
         document.head.appendChild(style);
         
@@ -52,7 +52,7 @@
         const popup = document.createElement('div');
         popup.style.maxHeight = `${(0.75 * viewPortHeight)}px`;
         if (document.documentElement.clientWidth > 500) {
-            popup.style.width = `25rem`;
+            popup.style.width = `${wc}px`;
         } else {
             container.style.width = '100%';
             popup.style.width = `85%`;
@@ -62,7 +62,7 @@
 
         const iframe = document.createElement('iframe');
 
-        iframe.src = `https://kulfi-ai.com/chat?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}`;
+        iframe.src = `https://kulfi-ai.com/chat?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}&wc=${wc}`;
         iframe.style.overflow = 'none';
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
@@ -86,9 +86,17 @@
         img.style.width = '35px';
         chatButton.appendChild(img);
     
-        chatButton.onclick = () => {
-        isOpen = !isOpen;
-        popup.style.display = isOpen ? 'flex' : 'none';
+        chatButton.onclick = async () => {
+            isOpen = !isOpen;
+            popup.style.display = isOpen ? 'flex' : 'none';
+            const response = await fetch('https://kulfi-ai.com/api/track-event', {
+                method: 'POST',
+                body: {
+                    id,
+                    organization: 'Acme',
+                    event: 'click'
+                }
+            })
         };  
     
         // 7. Put everything in the DOM

@@ -134,7 +134,7 @@ const PasswordStep = ({ formData, setFormData, nextStep, prevStep }) => {
                 </div>
                 <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
             </div>
-            <div className='flex flex-col gap-4  w-full'>
+            <div className='flex flex-col gap-4 w-full'>
                     <input autoFocus onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                             submitHandler()
@@ -367,6 +367,7 @@ const MultiStepForm = () => {
         localStorage.setItem('objectID', id);
         localStorage.setItem('color', formData.color.slice(1));
         localStorage.setItem('botname', formData.botName);
+        localStorage.setItem('cw', '400');
         setTimeout(() => {
             window.location.href = `/dashboard`;   
         }, 5000);

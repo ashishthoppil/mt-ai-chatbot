@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Poppins } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { HomeIcon, Loader2, LogInIcon, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, Tag } from 'lucide-react';
+import { HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, Tag } from 'lucide-react';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -27,6 +27,7 @@ export const Header = () => {
         email: '',
         password: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -94,7 +95,14 @@ export const Header = () => {
                         </ul>
                     </nav>
                     {ls && localStorage && !localStorage.getItem('objectID') ? <div className='flex gap-5'>
-                        <Dialog>
+                        <Dialog onOpenChange={(open) => {
+                            if (!open) {
+                                setCredentials({
+                                    email: '',
+                                    password: ''
+                                });
+                            }
+                        }}>
                             <DialogTrigger asChild>
                                 <button ref={loginRef} href="/login" className='flex gap-1 bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Login</button>
                             </DialogTrigger>
@@ -115,15 +123,20 @@ export const Header = () => {
                                     </div>
                                     <div className="flex flex-col gap-4">
                                         <label htmlFor="password" className="text-left">
-                                        Username
+                                        Password
                                         </label>
-                                        <input onChange={(e) => setCredentials((prev) => { return { ...prev, password: e.target.value } })} value={credentials.password} type='password' id='password' placeholder='Enter your password' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                        <input onChange={(e) => setCredentials((prev) => { return { ...prev, password: e.target.value } })} value={credentials.password} type={showPassword ? 'text' : 'password'} id='password' placeholder='Enter your password' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                        <div className='flex justify-end'>
+                                            <button onClick={() => setShowPassword(prev => !prev)}>
+                                                {!showPassword ? <LucideEye className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' /> :<LucideEyeClosed className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' />} 
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <DialogFooter>
                                     <button onClick={submitHandler} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? <div className='flex gap-2 items-center'>
-                                        <Loader2 className='animate-spin text-white' />
-                                        <p className='text-white'>Logging in</p>
+                                        <Loader2 className='animate-spin hover:text-purple-500' />
+                                        <p className='hover:text-purple-500'>Logging in</p>
                                     </div> : 'Login'}</button>  
                                 </DialogFooter>
                             </DialogContent>

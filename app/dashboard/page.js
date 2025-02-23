@@ -24,6 +24,7 @@ import {
 import { CopyIcon, ExternalLinkIcon, Eye, File, FileX, Loader2, Tag, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -51,6 +52,7 @@ export default function Dashboard() {
     const [isLoading, setIsLoading] = useState();
     const [isDeleting, setIsDeleting] = useState();
     const [isKBLoading, setIsKBLoading] = useState();
+    const [clickSelector, setClickSelector] = useState('Day');
     const [faq, setFaq] = useState({
         question: '',
         answer: ''
@@ -68,7 +70,8 @@ export default function Dashboard() {
         botName: '',
         color: '',
         lColor: '',
-        mColor: ''
+        mColor: '',
+        cw: ''
     });
 
     const botLink = useRef();
@@ -225,8 +228,12 @@ export default function Dashboard() {
 
     const settingsUpdate = async () => {
         // Validations
-        if (data.botName === '') {
+        if (data.botName === '' || data.cw === '') {
             toast.error("Please enter all required fields!");
+            return;
+        }
+        if (isNaN(data.cw)) {
+            toast.error("Please enter valid dimensions for the chat window!");
             return;
         }
         setIsLoading(true);
@@ -243,15 +250,18 @@ export default function Dashboard() {
             const color = data.color.slice(1);
             const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
             const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
+            const cw = data.cw;
             setUrlParams(prev => ({
                 ...prev,
                 botName,
                 color,
                 lColor,
-                mColor
+                mColor,
+                cw
             }));
             localStorage.setItem('botname', botName);
             localStorage.setItem('color', color);
+            localStorage.setItem('cw', cw);
             setIsLoading(false);
             toast.success("Settings updated!");            
         } 
@@ -370,15 +380,16 @@ export default function Dashboard() {
         const color = localStorage.getItem('color');
         const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
         const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
-
+        const cw = localStorage.getItem('cw');
         
-        if (id && botName && color) {
+        if (id && botName && color && cw) {
             setUrlParams({
                 id,
                 botName,
                 color,
                 lColor,
-                mColor
+                mColor,
+                cw
             });
         } else {
             router.push('/');
@@ -455,17 +466,46 @@ export default function Dashboard() {
         })
     }
 
+    const getClickData = () => {
+        return [
+            {
+                name: '1 Jan',
+                Clicks: 90,
+            },
+            {
+                name: '2 Jan',
+                Clicks: 90,
+            },
+            {
+                name: '3 Jan',
+                Clicks: 90,
+            },
+            {
+                name: '4 Jan',
+                Clicks: 90,
+            },
+            {
+                name: '5 Jan',
+                Clicks: 90,
+            },
+            {
+                name: '6 Jan',
+                Clicks: 90,
+            },
+        ]
+    }
+
     const getContent = (section, data) => {
         if (section === 'Profile') {
             return (
                 <>
                     <h3 className="font-bold text-gray-900 mb-2 md:text-[32px]">Welcome {data && data.organization}, </h3>
-                    <p className='text-[14px] md:text-[16px]'>This is an overview of the information that you provided during the registration process. You can manage your information from this section by editing the fields below.</p>
+                    <p className='text-[14px] md:text-[16px]'>This section provides an overview of the information you provided during registration. You can update or manage any details by editing the fields below.</p>
                     <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg'>
-                        <p className='text-[14px] md:text-[16px]'>Copy and paste this code snippet in the <span className='font-bold'>{'<head><head/>'}</span> section of your code.</p>
+                        <p className='text-[14px] md:text-[16px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-[14px] md:text-[16px] text-yellow-500 px-1'>
-                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&bn=${urlParams.botName}&cc=${urlParams.color}&lc=${urlParams.lColor}&mc=${urlParams.mColor}'></script>`}</span>
+                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&bn=${urlParams.botName}&cc=${urlParams.color}&lc=${urlParams.lColor}&mc=${urlParams.mColor}&cw=${urlParams.cw}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");
@@ -500,7 +540,39 @@ export default function Dashboard() {
                     </div>}
                     <div className='flex flex-col gap-4 pt-10'>
                         <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Reports</h3>
-                        <div className='flex flex-col md:flex-row justify-even gap-2 md:gap-20 md:py-10'>
+                        <div style={{ height: '20rem' }} className='w-full'>
+                            <div className='flex gap-1 justify-end w-full'>
+                                <button onClick={() => setClickSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                    Day
+                                </button>
+                                <button onClick={() => setClickSelector('Month')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Month' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                    Month
+                                </button>
+                                <button onClick={() => setClickSelector('Year')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Year' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                    Year
+                                </button>
+                            </div>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart
+                                    data={getClickData()}
+                                    margin={{
+                                        top: 10,
+                                        right: 30,
+                                        left: 0,
+                                        bottom: 0,
+                                    }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Area type="monotone" dataKey="Clicks" stroke="#6B21A8" fill="#A855F7" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+
+                        </div>
+                            
+                        {/* <div className='flex flex-col md:flex-row justify-even gap-2 md:gap-20 md:py-10'>
                             <div className='flex gap-2 items-center'>
                                 <span className='h-[10px] w-[10px] bg-red-500 rounded-sm'></span>
                                 <strong>Complaints</strong>
@@ -557,7 +629,7 @@ export default function Dashboard() {
                                         </DialogContent>
                                 </Dialog>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </>
             );
@@ -565,7 +637,7 @@ export default function Dashboard() {
             return (
                 <>
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Settings</h3>
-                    <p className='text-[14px] md:text-[16px]'>You can customize your chatbot from this section.</p>
+                    <p className='text-[14px] md:text-[16px]'>Customize your chatbot to align with your website’s style.</p>
                     <div className='flex gap-4 pt-10 text-[14px] md:text-[16px]'>
                         <div className="flex flex-col gap-4 w-[50%]">
                             <label htmlFor="botname" className="text-left">
@@ -592,6 +664,58 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
+
+                    <div className='flex gap-4 pt-10 pb-10 text-[14px] md:text-[16px]'>
+                        <div className="flex flex-col gap-4 w-[50%]">
+                            <label htmlFor="botname" className="text-left">
+                                Chat window width (Preferred range: 350px to 450px)
+                            </label>
+                            <input onChange={(e) => setData((prev) => { return { ...prev, cw: e.target.value } })} value={data.cw} id='cw' placeholder='Example: 400' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                        </div>
+                        {/* <div className="flex flex-col gap-4 w-[50%]">
+                            <label htmlFor="domain" className="text-left">
+                                Color Theme
+                            </label>
+                            <div className='flex gap-2'>
+                                <select value={data.color} onChange={(e) => setData((prev) => { return { ...prev, color: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
+                                    <option value='#046e00'>Green</option>
+                                    <option value='#4A1D96'>Purple</option>
+                                    <option value='#9B1C1C'>Red</option>
+                                    <option value='#004b5c'>Green</option>
+                                    <option value='#1E429F'>Blue</option>
+                                    <option value='#362F78'>Indigo</option>
+                                    <option value='#9F580A'>Brown</option>
+                                    <option value='#000000'>Black</option>
+                                </select>
+                                <span style={{ backgroundColor: data.color }} className={`w-[15%] rounded-md`}></span>
+                            </div>
+                        </div> */}
+                    </div>
+
+                    <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>
+                        <h3 className="md:text-[24px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3>
+                        <div className="flex flex-col gap-4 md:w-[50%]">
+                            <label htmlFor="tone" className="text-left">
+                                Chatbot Tone
+                            </label>
+                                <select value={data.tone} onChange={(e) => setData((prev) => { return { ...prev, tone: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
+                                    <option value='formal'>Formal - Polite, respectful</option>
+                                    <option value='casual'>Casual - Conversational, approachable</option>
+                                    <option value='enthusiastic'>Enthusiastic - Lively, motivational</option>
+                                    <option value='playful'>Playful - Lighthearted, fun, humorous</option>
+                                    <option value='empathetic'>Empathetic - Supportive, understanding</option>
+                                    <option value='analytical'>Analytical - Detailed, thorough, and data-focused</option>
+                                    <option value='neutral'>Neutral - Clear, straightforward, and objective</option>
+                                </select>
+                        </div>
+                        <div className="flex flex-col gap-4 md:w-[50%]">
+                            <label htmlFor="tone" className="text-left">
+                                Support email/contact number (To be shown when the queries are not being resolved or when users ask for human interaction)
+                            </label>
+                            <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg' />                            
+                        </div>
+                    </div>
+
                     <div className='flex justify-end mt-10'>
                         <button onClick={settingsUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Updating...' : 'Update'}</button>  
                     </div>

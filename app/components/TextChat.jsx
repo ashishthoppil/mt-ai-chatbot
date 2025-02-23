@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from "rehype-raw";
 import { useChat } from 'ai/react';
 import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
-import { ExternalLinkIcon, Newspaper } from 'lucide-react';
+import { Clock, ExternalLinkIcon, Newspaper } from 'lucide-react';
 import {
     Accordion,
     AccordionContent,
@@ -56,10 +56,10 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         {messages.map((msg, idx) => (
                         <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[20px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                             <>{msg.role === 'user' ? 
-                            <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg' style={{ backgroundColor: botInfo.mColor, color: 'white' }}>
+                            <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg border-[1px] border-gray-100 shadow-md' style={{ backgroundColor: botInfo.mColor, color: 'white' }}>
                                 <ReactMarkdown>{msg.content}</ReactMarkdown>
                             </div>:
-                            <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px]`}>
+                            <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md`}>
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>
                                 <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
                             </div>}</>

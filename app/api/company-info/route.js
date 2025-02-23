@@ -1,3 +1,4 @@
+import { getAnalyticsDb } from "@/lib/helper";
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 
@@ -13,20 +14,24 @@ export async function POST(req, res) {
   const salt = bcrypt.genSaltSync(10);
   const hashedpass = bcrypt.hashSync(data.password, salt);
   try {
-      const formattedData = { ...data, password: hashedpass }
+      const formattedData = { ...data, password: hashedpass, cw: '400', tone: 'formal', escalation: '' }
       const result = await db.collection('clients').insertOne(formattedData);
     
       if (result.acknowledged) {
-        await fetch(ZAPIER_WEBHOOK, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: result.insertedId.toString(),
-            email: data.email,
-          }),
-        });
+
+        const collection = await db.createCollection(`${getAnalyticsDb(data.organization, result.insertedId.toString())}}`);
+        if (collection) {
+          await fetch(ZAPIER_WEBHOOK, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: result.insertedId.toString(),
+              email: data.email,
+            }),
+          });
+        }
       }
 
       return NextResponse.json({ success: true, data: result });
