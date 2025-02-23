@@ -1,3 +1,6 @@
+const { getAnalyticsDb } = require("@/lib/helper");
+const { default: clientPromise } = require("@/lib/mongodb");
+
 (function () {
     setTimeout(() => {
         const style = document.createElement('style');
@@ -89,14 +92,22 @@
         chatButton.onclick = async () => {
             isOpen = !isOpen;
             popup.style.display = isOpen ? 'flex' : 'none';
-            const response = await fetch('https://kulfi-ai.com/api/track-event', {
-                method: 'POST',
-                body: {
-                    id,
-                    organization: 'Acme',
-                    event: 'click'
-                }
-            })
+            const client = await clientPromise;
+            const db = client.db('kulfi');
+            
+            const result = await db.collection(getAnalyticsDb('Acme', id)).insertOne({
+                event: 'click',
+                time: new Date()
+            });
+
+            // const response = await fetch('https://kulfi-ai.com/api/track-event', {
+            //     method: 'POST',
+            //     body: {
+            //         id,
+            //         organization: 'Acme',
+            //         event: 'click'
+            //     }
+            // })
         };  
     
         // 7. Put everything in the DOM
