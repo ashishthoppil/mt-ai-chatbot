@@ -8,7 +8,7 @@ export async function GET(req, res) {
   const DB_NAME = process.env.DB_NAME
   const client = await clientPromise;
   const db = client.db(DB_NAME);
-  const { searchParams } = new URL(request.url);
+  const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
   const organization = searchParams.get('organization');
   const event = searchParams.get('event');
