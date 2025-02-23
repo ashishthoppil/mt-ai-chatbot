@@ -4,20 +4,14 @@ import { NextResponse, NextRequest } from "next/server";
 
 const bcrypt = require('bcrypt');
 
-export async function POST(req, res) {
-
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  if (req.method === 'OPTIONS') {
-    // Handle preflight request
-    return res.status(200).end();
-  }
+export async function GET(req, res) {
   const DB_NAME = process.env.DB_NAME
   const client = await clientPromise;
   const db = client.db(DB_NAME);
-  const { id, organization, event } = await req.json();
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  const organization = searchParams.get('organization');
+  const event = searchParams.get('event');
 
   try {
     const result = await db.collection(getAnalyticsDb(organization, id)).insertOne({
