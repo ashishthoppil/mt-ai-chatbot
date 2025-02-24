@@ -24,7 +24,7 @@ import {
 import { CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, Loader2, Tag, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -51,6 +51,7 @@ export default function Dashboard() {
     const [links, setLinks] = useState('');
     const [data, setData] = useState();
     const [messageCount, setMessageCount] = useState(0);
+    const [location, setLocation] = useState({});
     const [engagementRate, setEngagementRate] = useState(0);
     const [activeSection, setActiveSection] = useState('Profile');
     const [isLoading, setIsLoading] = useState();
@@ -181,6 +182,7 @@ export default function Dashboard() {
         if (data) {
             getEngagementRate()
             getMessageCount()
+            getLocation()
         }
     }, [data])
 
@@ -518,6 +520,12 @@ export default function Dashboard() {
         setMessageCount(result.data);
     }
 
+    const getLocation = async () => {
+        const response = await fetch(`/api/get-event?id=${localStorage.getItem('objectID')}&event=location&organization=${data.organization}`);
+        const result = await response.json();
+        setLocation(result.data);
+    }
+
     const getContent = (section, data) => {
         if (section === 'Profile') {
             return (
@@ -566,7 +574,7 @@ export default function Dashboard() {
             );
         } else if (section === 'Reports') {
             return (
-                <div className='flex flex-col gap-4 pt-10'>
+                <div className='flex flex-col gap-4 py-10'>
                         <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Reports</h3>
                         
                         <div className='flex'>
@@ -636,68 +644,98 @@ export default function Dashboard() {
                                         <Area type="monotone" label="Sessions" dataKey="session" stroke="#6B21A8" fill="#A855F7" />
                                     </AreaChart>
                                 </ResponsiveContainer>
+                                <h1 className='text-center'>Number of chat sessions</h1>
                             </div>
                         </div>
-                        
-                            
-                        {/* <div className='flex flex-col md:flex-row justify-even gap-2 md:gap-20 md:py-10'>
-                            <div className='flex gap-2 items-center'>
-                                <span className='h-[10px] w-[10px] bg-red-500 rounded-sm'></span>
-                                <strong>Complaints</strong>
+
+                        <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
+                            <div style={{ height: '20rem' }} className='w-full md:w-1/2'>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart
+                                        width={500}
+                                        height={300}
+                                        data={location}
+                                        margin={{
+                                            top: 5,
+                                            right: 30,
+                                            left: 20,
+                                            bottom: 5,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="country" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Bar dataKey="mobile" fill="#6B21A8" activeBar={<Rectangle fill="#6B21A8" stroke="#6B21A8" />} />
+                                        <Bar dataKey="desktop" fill="#FFA500" activeBar={<Rectangle fill="#FFA500" stroke="#FFA500" />} />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                                <h1 className='text-center'>Demographics</h1>
+                            </div>
+                            <div className='flex flex-col justify-even gap-2  md:py-10 w-full md:w-1/2 md:pl-5'>
+                                <div className='flex gap-2 items-center'>
+                                    <span className='h-[10px] w-[10px] bg-red-500 rounded-sm'></span>
+                                    <strong>Complaints</strong>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getComplaintsSummary}><Eye height={15} /> View Summary</button>
+                                            </DialogTrigger>
+                                            <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                                                <DialogHeader className='flex flex-col gap-2'>
+                                                    <DialogTitle className='text-[16px] text-gray-800'>Complaints Summary</DialogTitle>
+                                                </DialogHeader>
+                                                    {complaints ? complaints.count ?
+                                                    <div className="flex flex-col gap-4 py-4 text-[14px]">
+                                                        <p>There are <strong>{complaints.count}</strong> complaints in total</p>
+                                                        <p>Summary: {complaints.summary}</p>
+                                                    </div> : <div className="flex flex-col gap-4 py-4 text-[14px]"><p>There is no information yet. Please try again later.</p></div>  : 
+                                                    <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
+                                            </DialogContent>
+                                        </Dialog>
+                                </div>
+
+                                <div className='flex gap-2 items-center'>
+                                    <span className='h-[10px] w-[10px] bg-yellow-500 rounded-sm'></span>
+                                    <strong>Feedbacks</strong>
                                     <Dialog>
-                                        <DialogTrigger asChild>
-                                            <button className='outline-none flex gap-1 border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-0 hover:bg-purple-800 hover:text-white duration-500' onClick={getComplaintsSummary}><Eye height={15} /></button>
-                                        </DialogTrigger>
-                                        <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
-                                            <DialogHeader className='flex flex-col gap-2'>
-                                                <DialogTitle className='text-[22px]'>Complaints Summary</DialogTitle>
-                                            </DialogHeader>
-                                                {complaints ? <div className="flex flex-col gap-4 py-4">
-                                                    <p>There are <strong>{complaints.count}</strong> in total</p>
-                                                    <p>Summary: {complaints.summary}</p>
-                                                </div> : <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
-                                        </DialogContent>
-                                    </Dialog>
-                            </div>
+                                            <DialogTrigger asChild>
+                                            <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getFeedbackSummary}><Eye height={15} />View Summary</button>
+                                            </DialogTrigger>
+                                            <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                                                <DialogHeader className='flex flex-col gap-2'>
+                                                    <DialogTitle className='text-[16px] text-gray-800'>Feedback Summary</DialogTitle>
+                                                </DialogHeader>
+                                                    {feedback ? feedback.count ?
+                                                    <div className="flex flex-col gap-4 py-4 text-[14px]">
+                                                        <p>There are <strong>{feedback.count}</strong> feedbacks in total</p>
+                                                        <p>Summary: {feedback.summary}</p>
+                                                    </div> : <div className="flex flex-col gap-4 py-4 text-[14px]"><p>There is no information yet. Please try again later.</p></div> : <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
+                                            </DialogContent>
+                                        </Dialog>
+                                </div>
 
-                            <div className='flex gap-2 items-center'>
-                                <span className='h-[10px] w-[10px] bg-yellow-500 rounded-sm'></span>
-                                <strong>Feedbacks</strong>
-                                <Dialog>
-                                        <DialogTrigger asChild>
-                                        <button className='outline-none flex gap-1 border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-0 hover:bg-purple-800 hover:text-white duration-500' onClick={getFeedbackSummary}><Eye height={15} /></button>
-                                        </DialogTrigger>
-                                        <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
-                                            <DialogHeader className='flex flex-col gap-2'>
-                                                <DialogTitle className='text-[22px]'>Feedback Summary</DialogTitle>
-                                            </DialogHeader>
-                                                {feedback ? <div className="flex flex-col gap-4 py-4">
-                                                    <p>There are <strong>{feedback.count}</strong> in total</p>
-                                                    <p>Summary: {feedback.summary}</p>
-                                                </div> : <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
-                                        </DialogContent>
+                                <div className='flex gap-2 items-center'>
+                                    <span className='h-[10px] w-[10px] bg-emerald-500 rounded-sm'></span>
+                                    <strong>General queries</strong>
+                                    <Dialog>
+                                            <DialogTrigger asChild>
+                                                <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getGeneralSummary}><Eye height={15} />View Summary</button>
+                                            </DialogTrigger>
+                                            <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                                                <DialogHeader className='flex flex-col gap-2'>
+                                                    <DialogTitle className='text-[16px] text-gray-800'>General Summary</DialogTitle>
+                                                </DialogHeader>
+                                                    {generalQueries ? generalQueries.count ?
+                                                    <div className="flex flex-col gap-4 py-4 text-[14px]">
+                                                        <p>There are <strong>{generalQueries.count}</strong> general queries in total</p>
+                                                        <p>Summary: {generalQueries.summary}</p>
+                                                    </div> : <div className="flex flex-col gap-4 py-4 text-[14px]"><p>There is no information yet. Please try again later.</p></div> : <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
+                                            </DialogContent>
                                     </Dialog>
+                                </div>
                             </div>
-
-                            <div className='flex gap-2 items-center'>
-                                <span className='h-[10px] w-[10px] bg-emerald-500 rounded-sm'></span>
-                                <strong>General queries</strong>
-                                <Dialog>
-                                        <DialogTrigger asChild>
-                                            <button className='outline-none flex gap-1 border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-0 hover:bg-purple-800 hover:text-white duration-500' onClick={getGeneralSummary}><Eye height={15} /></button>
-                                        </DialogTrigger>
-                                        <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
-                                            <DialogHeader className='flex flex-col gap-2'>
-                                                <DialogTitle className='text-[22px]'>General Summary</DialogTitle>
-                                            </DialogHeader>
-                                                {generalQueries ? <div className="flex flex-col gap-4 py-4">
-                                                    <p>There are <strong>{generalQueries.count}</strong> in total</p>
-                                                    <p>Summary: {generalQueries.summary}</p>
-                                                </div> : <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
-                                        </DialogContent>
-                                </Dialog>
-                            </div>
-                        </div> */}
+                        </div>
                     </div>
             )
         } else if (section === 'Settings') {

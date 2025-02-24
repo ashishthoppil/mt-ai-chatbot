@@ -143,7 +143,30 @@ export async function GET(request) {
     const event = searchParams.get('event');
     const type = searchParams.get('type');
 
-    if (event === 'count') {
+    if (event === 'location') {
+        const locCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "location" });
+        const locDocs = await locCursor.toArray();
+
+        const groupedByCountry = locDocs.reduce((acc, item) => {
+            const { country, device } = item;
+            if (!acc[country]) {
+              acc[country] = { country, mobile: 0, desktop: 0 };
+            }
+          
+            if (device) {
+              if (device.toLowerCase() === 'mobile') {
+                acc[country].mobile += 1;
+              } else if (device.toLowerCase() === 'desktop') {
+                acc[country].desktop += 1;
+              }
+            }
+            return acc;
+          }, {});
+          
+          const result = Object.values(groupedByCountry);
+          return NextResponse.json({ success: true, data: result });
+
+    } else if (event === 'count') {
         const count = await db.collection(getAnalyticsDb(organization, id)).count();
         return NextResponse.json({ success: true, data: count });
     } else if (event === 'engagement') {
@@ -151,7 +174,7 @@ export async function GET(request) {
         const clickDocs = await clickCursor.toArray();
         const sessionCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "session" });
         const sessionDocs = await sessionCursor.toArray();
-        return NextResponse.json({ success: true, data: ((sessionDocs.length / clickDocs.length) * 100) });
+        return NextResponse.json({ success: true, data: ((sessionDocs.length / clickDocs.length).toFixed(2) * 100) });
     } else {
         const queryCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": event });
         const queryDocs = await queryCursor.toArray();
