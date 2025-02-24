@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import { getAnalyticsDb } from '@/lib/analytics';
 
 
-function groupByDate(records) {
+function groupByDate(records, event) {
     // A map from "formattedDate" => number of clicks on that date
     const dateMap = {};
   
@@ -29,10 +29,10 @@ function groupByDate(records) {
   
     // Now transform the map into the array format you want
     // { name: '1 Jan', Clicks: 90 }
-    const result = Object.entries(dateMap).map(([dateStr, clicks]) => {
+    const result = Object.entries(dateMap).map(([dateStr, value]) => {
       return {
         name: dateStr,
-        Clicks: clicks
+        [event]: value
       };
     });
   
@@ -52,7 +52,7 @@ function groupByDate(records) {
     return result;
 }
 
-function groupByMonth(records) {
+function groupByMonth(records, event) {
     // A map from "MonthName Year" => number of clicks
     const monthMap = {};
   
@@ -75,10 +75,10 @@ function groupByMonth(records) {
     }
   
     // Transform the map into an array: { name: 'Feb 2025', Clicks: X }
-    const result = Object.entries(monthMap).map(([monthStr, clicks]) => {
+    const result = Object.entries(monthMap).map(([monthStr, value]) => {
       return {
         name: monthStr,   // e.g., "Feb 2025"
-        Clicks: clicks,
+        [event]: value,
       };
     });
   
@@ -104,7 +104,7 @@ function groupByMonth(records) {
     return result;
 }
 
-function groupByYear(records) {
+function groupByYear(records, event) {
     // A map from "Year" => number of clicks
     const yearMap = {};
   
@@ -123,9 +123,9 @@ function groupByYear(records) {
     }
   
     // Transform the map into an array: { name: '2025', Clicks: 99 }
-    const result = Object.entries(yearMap).map(([year, clicks]) => ({
+    const result = Object.entries(yearMap).map(([year, value]) => ({
       name: year,  // e.g. "2025"
-      Clicks: clicks,
+      [event]: value,
     }));
   
     // Sort by year (ascending)
@@ -135,26 +135,33 @@ function groupByYear(records) {
   }
 
 export async function GET(request) {
+    const mongoClient = await clientPromise
+    const db = mongoClient.db('kulfi')
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const organization = searchParams.get('organization');
     const event = searchParams.get('event');
     const type = searchParams.get('type');
 
-    
-    const mongoClient = await clientPromise
-    const db = mongoClient.db('kulfi')
-    const queryCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": event });
-    const queryDocs = await queryCursor.toArray();
-    
-    if (type === 'Day') {
-        return NextResponse.json({ success: true, data: groupByDate(queryDocs) });
-    } else if (type === 'Month') {
-        return NextResponse.json({ success: true, data: groupByMonth(queryDocs) });
-    } else if (type === 'Year') {
-        return NextResponse.json({ success: true, data: groupByYear(queryDocs) });
+    if (event === 'count') {
+        const count = await db.collection(getAnalyticsDb(organization, id)).count();
+        return NextResponse.json({ success: true, data: count });
+    } else if (event === 'engagement') {
+        const clickCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "click" });
+        const clickDocs = await clickCursor.toArray();
+        const sessionCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "session" });
+        const sessionDocs = await sessionCursor.toArray();
+        return NextResponse.json({ success: true, data: ((sessionDocs.length / clickDocs.length) * 100) });
+    } else {
+        const queryCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": event });
+        const queryDocs = await queryCursor.toArray();
+        
+        if (type === 'Day') {
+            return NextResponse.json({ success: true, data: groupByDate(queryDocs, event) });
+        } else if (type === 'Month') {
+            return NextResponse.json({ success: true, data: groupByMonth(queryDocs, event) });
+        } else if (type === 'Year') {
+            return NextResponse.json({ success: true, data: groupByYear(queryDocs, event) });
+        }
     }
-
-    // return NextResponse.json({ success: true, data: { summary: summary.text, count: queryDocs.length } });
-    // return NextResponse.json({ success: false, data: 'There seems to be something wrong.' });
 }

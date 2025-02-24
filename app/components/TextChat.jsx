@@ -50,11 +50,22 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     }
 
     const eventTracker = async () => {
-        console.log('Here');
         await fetch(`/api/track-event?id=${botInfo.id}&organization=Acme&event=session&user=${botInfo.userId}`, {
             method: 'GET'
         });
     }
+
+    const getLocation = async () => {
+        const response = await fetch('https://ipwho.is/', {
+            method: 'GET',
+        });
+
+        console.log('responseresponse', response);
+    }
+
+    useEffect(() => {
+        getLocation();
+    }, [])
 
     return (
         <>

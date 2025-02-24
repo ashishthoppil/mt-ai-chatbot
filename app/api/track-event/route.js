@@ -15,8 +15,6 @@ export async function GET(req, res) {
   const userId = searchParams.get('user');
 
   try {
-    console.log('api func');
-
     const result = await db.collection(getAnalyticsDb(organization, id)).insertOne({
       event,
       time: new Date(),

@@ -21,7 +21,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { CopyIcon, ExternalLinkIcon, Eye, File, FileX, Loader2, Tag, TrashIcon } from 'lucide-react';
+import { CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, Loader2, Tag, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -46,14 +46,18 @@ export default function Dashboard() {
     const [feedback, setFeedback] = useState();
     const [generalQueries, setGeneralQueries] = useState();
     const [clickData, setClickData] = useState([]);
+    const [sessionData, setSessionData] = useState([]);
     const [KB, setKB] = useState(null);
     const [links, setLinks] = useState('');
     const [data, setData] = useState();
+    const [messageCount, setMessageCount] = useState(0);
+    const [engagementRate, setEngagementRate] = useState(0);
     const [activeSection, setActiveSection] = useState('Profile');
     const [isLoading, setIsLoading] = useState();
     const [isDeleting, setIsDeleting] = useState();
     const [isKBLoading, setIsKBLoading] = useState();
     const [clickSelector, setClickSelector] = useState('Day');
+    const [sessionSelector, setSessionSelector] = useState('Day');
     const [faq, setFaq] = useState({
         question: '',
         answer: ''
@@ -167,6 +171,19 @@ export default function Dashboard() {
         }
     }, [data, clickSelector])
 
+    useEffect(() => {
+        if (data) {
+            getSessionData();
+        }
+    }, [data, sessionSelector]);
+
+    useEffect(() => {
+        if (data) {
+            getEngagementRate()
+            getMessageCount()
+        }
+    }, [data])
+
     const sideMenu = [
         {
             id: 1,
@@ -175,32 +192,36 @@ export default function Dashboard() {
         },
         {
             id: 2,
+            title: 'Reports',
+            Icon: GaugeIcon
+        },
+        {
+            id: 3,
             title: 'Settings',
             Icon: Settings
         },
         {
-            id: 3,
+            id: 4,
             title: 'Source',
             Icon: Source
         },
         {
-            id: 4,
+            id: 5,
             title: 'Articles',
             Icon: Newspaper
         },
         {
-            id: 5,
+            id: 6,
             title: 'FAQs',
             Icon: QuestionAnswer
         },
         {
-            id: 6,
+            id: 7,
             title: 'Plan',
             Icon: Tag
         },
-        
         {
-            id: 7,
+            id: 8,
             title: 'Logout',
             Icon: Logout
         },
@@ -479,6 +500,24 @@ export default function Dashboard() {
         setClickData(result.data);
     }
 
+    const getSessionData = async () => {
+        const response = await fetch(`/api/get-event?id=${localStorage.getItem('objectID')}&event=session&organization=${data.organization}&type=${sessionSelector}`);
+        const result = await response.json();
+        setSessionData(result.data);
+    }
+
+    const getEngagementRate = async () => {
+        const response = await fetch(`/api/get-event?id=${localStorage.getItem('objectID')}&event=engagement&organization=${data.organization}`);
+        const result = await response.json();
+        setEngagementRate(result.data);
+    }
+
+    const getMessageCount = async () => {
+        const response = await fetch(`/api/get-event?id=${localStorage.getItem('objectID')}&event=count&organization=${data.organization}`);
+        const result = await response.json();
+        setMessageCount(result.data);
+    }
+
     const getContent = (section, data) => {
         if (section === 'Profile') {
             return (
@@ -522,39 +561,84 @@ export default function Dashboard() {
                             <button onClick={profileUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Updating...' : 'Update'}</button>  
                         </div>
                     </div>}
-                    <div className='flex flex-col gap-4 pt-10'>
+                    
+                </>
+            );
+        } else if (section === 'Reports') {
+            return (
+                <div className='flex flex-col gap-4 pt-10'>
                         <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Reports</h3>
-                        <div style={{ height: '20rem' }} className='w-1/2'>
-                            <div className='flex gap-1 justify-end w-full'>
-                                <button onClick={() => setClickSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
-                                    Day
-                                </button>
-                                <button onClick={() => setClickSelector('Month')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Month' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
-                                    Month
-                                </button>
-                                <button onClick={() => setClickSelector('Year')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Year' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
-                                    Year
-                                </button>
-                            </div>
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart
-                                    data={clickData}
-                                    margin={{
-                                        top: 10,
-                                        right: 30,
-                                        left: 0,
-                                        bottom: 0,
-                                    }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Area type="monotone" dataKey="Clicks" stroke="#6B21A8" fill="#A855F7" />
-                                </AreaChart>
-                            </ResponsiveContainer>
-
+                        
+                        <div className='flex'>
+                            <h3 className="md:text-[14px] font-bold text-gray-500 mb-2">Messages: {messageCount}/5000</h3>   
                         </div>
+                        <div className='flex'>
+                            <h3 className="md:text-[14px] font-bold text-gray-500 mb-2">Engagement Rate: {engagementRate}%</h3>   
+                        </div>
+                        <div className='flex flex-col md:flex-row gap-2 w-full'>
+                            <div style={{ height: '20rem' }} className='w-full md:w-1/2'>
+                                <div className='flex gap-1 justify-end w-full'>
+                                    <button onClick={() => setClickSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                        Day
+                                    </button>
+                                    <button onClick={() => setClickSelector('Month')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Month' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                        Month
+                                    </button>
+                                    <button onClick={() => setClickSelector('Year')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Year' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                        Year
+                                    </button>
+                                </div>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart
+                                        data={clickData}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Area type="monotone" label="Clicks" dataKey="click" stroke="#6B21A8" fill="#A855F7" />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                                <h1 className='text-center'>Number of times users click on the chat button</h1>
+                            </div>
+                            <div style={{ height: '20rem' }} className='w-full mt-[6rem] md:mt-0 md:w-1/2'>
+                                <div className='flex gap-1 justify-end w-full'>
+                                    <button onClick={() => setSessionSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${sessionSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                        Day
+                                    </button>
+                                    <button onClick={() => setSessionSelector('Month')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${sessionSelector === 'Month' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                        Month
+                                    </button>
+                                    <button onClick={() => setSessionSelector('Year')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${sessionSelector === 'Year' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
+                                        Year
+                                    </button>
+                                </div>
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart
+                                        data={sessionData}
+                                        margin={{
+                                            top: 10,
+                                            right: 30,
+                                            left: 0,
+                                            bottom: 0,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Area type="monotone" label="Sessions" dataKey="session" stroke="#6B21A8" fill="#A855F7" />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                        
                             
                         {/* <div className='flex flex-col md:flex-row justify-even gap-2 md:gap-20 md:py-10'>
                             <div className='flex gap-2 items-center'>
@@ -615,8 +699,7 @@ export default function Dashboard() {
                             </div>
                         </div> */}
                     </div>
-                </>
-            );
+            )
         } else if (section === 'Settings') {
             return (
                 <>
