@@ -60,7 +60,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
             method: 'GET',
         });
 
-        console.log('responseresponse', response);
+        const locationInfo = response.json();
+
+        console.log('responseresponse', locationInfo);
     }
 
     useEffect(() => {
