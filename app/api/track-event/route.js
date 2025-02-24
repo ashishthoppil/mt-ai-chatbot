@@ -12,11 +12,13 @@ export async function GET(req, res) {
   const id = searchParams.get('id');
   const organization = searchParams.get('organization');
   const event = searchParams.get('event');
+  const userId = searchParams.get('user');
 
   try {
     const result = await db.collection(getAnalyticsDb(organization, id)).insertOne({
       event,
-      time: new Date()
+      time: new Date(),
+      user: userId ? userId : ''
     });
 
     if (result.acknowledged) {

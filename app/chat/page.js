@@ -23,6 +23,7 @@ export default function Chat() {
       const color = '#' + url.searchParams.get('cc');
       const lColor = '#' + url.searchParams.get('lc');
       const mColor = '#' + url.searchParams.get('mc');
+      const userId = url.searchParams.get('u');
       
       const botName = url.searchParams.get('bn');
       setBotInfo({
@@ -30,21 +31,9 @@ export default function Chat() {
         color,
         lColor,
         mColor, 
-        botName
+        botName,
+        userId
       });
-      // const res = await fetch('/api/dashboard', {
-      //         method: 'POST',
-      //         body: JSON.stringify({
-      //         id
-      //       })
-      //     });
-      // const data = await res.json();
-      // if (data.data) {
-      //   setData(data.data);
-      // } 
-      // else {
-      //   router.push('/');
-      // }
     }
 
     const loadFaqs = async () => {

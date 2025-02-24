@@ -45,6 +45,7 @@ export default function Dashboard() {
     const [complaints, setComplaints] = useState();
     const [feedback, setFeedback] = useState();
     const [generalQueries, setGeneralQueries] = useState();
+    const [clickData, setClickData] = useState([]);
     const [KB, setKB] = useState(null);
     const [links, setLinks] = useState('');
     const [data, setData] = useState();
@@ -159,6 +160,12 @@ export default function Dashboard() {
     useEffect(() => {
         loadData();
     }, []);
+
+    useEffect(() => {
+        if (data) {
+            getClickData();
+        }
+    }, [data, clickSelector])
 
     const sideMenu = [
         {
@@ -466,33 +473,10 @@ export default function Dashboard() {
         })
     }
 
-    const getClickData = () => {
-        return [
-            {
-                name: '1 Jan',
-                Clicks: 90,
-            },
-            {
-                name: '2 Jan',
-                Clicks: 190,
-            },
-            {
-                name: '3 Jan',
-                Clicks: 930,
-            },
-            {
-                name: '4 Jan',
-                Clicks: 220,
-            },
-            {
-                name: '5 Jan',
-                Clicks: 300,
-            },
-            {
-                name: '6 Jan',
-                Clicks: 690,
-            },
-        ]
+    const getClickData = async () => {
+        const response = await fetch(`/api/get-event?id=${localStorage.getItem('objectID')}&event=click&organization=${data.organization}&type=${clickSelector}`);
+        const result = await response.json();
+        setClickData(result.data);
     }
 
     const getContent = (section, data) => {
@@ -540,7 +524,7 @@ export default function Dashboard() {
                     </div>}
                     <div className='flex flex-col gap-4 pt-10'>
                         <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Reports</h3>
-                        <div style={{ height: '20rem' }} className='w-full'>
+                        <div style={{ height: '20rem' }} className='w-1/2'>
                             <div className='flex gap-1 justify-end w-full'>
                                 <button onClick={() => setClickSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
                                     Day
@@ -554,7 +538,7 @@ export default function Dashboard() {
                             </div>
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart
-                                    data={getClickData()}
+                                    data={clickData}
                                     margin={{
                                         top: 10,
                                         right: 30,

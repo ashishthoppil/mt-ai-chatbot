@@ -48,6 +48,12 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
         return ''
     }
 
+    const eventTracker = async () => {
+        await fetch(`/api/track-event?id=${id}&organization=Acme&event=session&user=${botInfo.userId}`, {
+            method: 'GET'
+        });
+    }
+
     return (
         <>
             {section === 0 && <>
@@ -88,6 +94,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         if (!isLoading) {
                             handleSubmit(event);
                             inputRef.current.blur();
+                            eventTracker();
                         }
                     }}>
                     <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
