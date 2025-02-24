@@ -52,7 +52,7 @@
         const popup = document.createElement('div');
         popup.style.maxHeight = `${(0.75 * viewPortHeight)}px`;
         if (document.documentElement.clientWidth > 500) {
-            popup.style.width = `${wc}px`;
+            popup.style.width = `${cw}px`;
         } else {
             container.style.width = '100%';
             popup.style.width = `85%`;
