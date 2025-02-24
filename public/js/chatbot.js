@@ -63,6 +63,7 @@
         const iframe = document.createElement('iframe');
 
         iframe.style.overflow = 'none';
+        iframe.src = `https://kulfi-ai.com/chat?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}&wc=${wc}&u=${id}${Math.floor(100000000 + Math.random() * 900000000)}`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
@@ -91,10 +92,8 @@
             const img = new Image();
             if (isOpen) {
                 img.src = `https://kulfi-ai.com/api/track-event?id=${id}&organization=Acme&event=click`;
-                iframe.src = `https://kulfi-ai.com/chat?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}&wc=${wc}&u=${Math.floor(100000000 + Math.random() * 900000000)}`;
             } else {
                 img.src = ``;
-                iframe.src = ``;
             }
         };  
     

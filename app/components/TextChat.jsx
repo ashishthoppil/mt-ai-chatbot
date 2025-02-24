@@ -16,6 +16,7 @@ import tinycolor from 'tinycolor2';
 export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
 
     const [section, setSection] = useState(0);
+    const [sessionTracked, setSessionTracked] = useState(false);
     const messageEnd = useRef();
     const inputRef = useRef();
  
@@ -94,7 +95,10 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         if (!isLoading) {
                             handleSubmit(event);
                             inputRef.current.blur();
-                            eventTracker();
+                            if (!sessionTracked) {
+                                eventTracker();
+                            }
+                            setSessionTracked(true);
                         }
                     }}>
                     <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
@@ -105,9 +109,14 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             value={input}
                             onChange={handleInputChange}
                             onKeyDown={(event) => { 
-                                if (event.key === 'Enter') { 
-                                    handleSubmit(event); 
-                                    inputRef.current.blur();} 
+                                    if (event.key === 'Enter') { 
+                                        handleSubmit(event); 
+                                        inputRef.current.blur();        
+                                        if (!sessionTracked) {
+                                            eventTracker();
+                                        }
+                                        setSessionTracked(true);
+                                    }
                                 }
                             }
                             placeholder="Ask me anything..."
