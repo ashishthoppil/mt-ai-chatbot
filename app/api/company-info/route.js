@@ -1,4 +1,4 @@
-import { getAnalyticsDb } from "@/lib/helper";
+import { getAnalyticsDb } from "@/lib/analytics";
 import clientPromise from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 

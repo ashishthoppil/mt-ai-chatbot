@@ -474,23 +474,23 @@ export default function Dashboard() {
             },
             {
                 name: '2 Jan',
-                Clicks: 90,
+                Clicks: 190,
             },
             {
                 name: '3 Jan',
-                Clicks: 90,
+                Clicks: 930,
             },
             {
                 name: '4 Jan',
-                Clicks: 90,
+                Clicks: 220,
             },
             {
                 name: '5 Jan',
-                Clicks: 90,
+                Clicks: 300,
             },
             {
                 name: '6 Jan',
-                Clicks: 90,
+                Clicks: 690,
             },
         ]
     }
