@@ -59,10 +59,10 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
         const response = await fetch('https://ipwho.is/', {
             method: 'GET',
         });
-
         const locationInfo = await response.json();
-
-        console.log('responseresponse', locationInfo);
+        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=Acme&event=location&country=${locationInfo.country}`, {
+            method: 'GET'
+        })
     }
 
     useEffect(() => {
