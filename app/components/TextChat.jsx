@@ -12,6 +12,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import tinycolor from 'tinycolor2';
+import { isMobile } from 'react-device-detect';
 
 export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
 
@@ -60,7 +61,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
             method: 'GET',
         });
         const locationInfo = await response.json();
-        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=Acme&event=location&country=${locationInfo.country}`, {
+        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=Acme&event=location&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
             method: 'GET'
         })
     }

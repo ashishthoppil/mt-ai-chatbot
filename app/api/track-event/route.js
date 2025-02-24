@@ -14,13 +14,15 @@ export async function GET(req, res) {
   const event = searchParams.get('event');
   const userId = searchParams.get('user');
   const country = searchParams.get('country');
+  const device = searchParams.get('device');
 
   try {
     const result = await db.collection(getAnalyticsDb(organization, id)).insertOne({
       event,
       time: new Date(),
       user: userId ? userId : '',
-      country: country ? country : ''
+      country: country ? country : '',
+      device: device ? device : ''
     });
 
     if (result.acknowledged) {
