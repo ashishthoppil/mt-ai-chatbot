@@ -89,13 +89,11 @@
         chatButton.onclick = async () => {
             isOpen = !isOpen;
             popup.style.display = isOpen ? 'flex' : 'none';
-
-            const clickTrackFrame = document.createElement('iframe');
-            clickTrackFrame.style.display = 'none';
+            const img = new Image();
             if (isOpen) {
-                clickTrackFrame.src = `https://kulfi-ai.com/api/track-event?id=${id}&organization=Acme&event=click`;
+                img.src = `https://kulfi-ai.com/api/track-event?id=${id}&organization=Acme&event=click`;
             } else {
-                clickTrackFrame.src = ``;
+                img.src = ``;
             }
         };  
     
