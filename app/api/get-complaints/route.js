@@ -14,7 +14,6 @@ export async function GET(request) {
     const queryDocs = await queryCursor.toArray();
 
     let complaints = ''
-    console.log('queryDocsqueryDocs', queryDocs);
     
     for (let i = 0; i < queryDocs.length; i++) {
         complaints += `${queryDocs[i].query} `

@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <main className={`flex bg-white flex-col items-center justify-between flex-grow px-[10px] md:px-[25px] ${poppins.className}`}>
+        <main className={`flex bg-white flex-col items-center justify-between flex-grow px-[10px] md:px-[25px] !focus:ring-0 ${poppins.className}`}>
           <Header />
           {children}
           <ToastContainer />

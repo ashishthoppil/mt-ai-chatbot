@@ -24,7 +24,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: `/api/chat`,
         body: {
-            id: botInfo.id
+            id: botInfo.id,
+            org: botInfo.organization
         },
         initialMessages: [
             {
@@ -61,7 +62,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
             method: 'GET',
         });
         const locationInfo = await response.json();
-        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=Acme&event=location&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
+        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=location&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
             method: 'GET'
         })
     }
