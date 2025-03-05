@@ -70,7 +70,7 @@ export async function POST(request) {
           temperature: 0
         });
 
-        const track = fetch(`${BASE_URL}/api/track-event?id=${id}&organization=Acme&event=lead&summary=${leadRequest.text}&contact=${leadContact.email}`, {
+        const track = fetch(`${BASE_URL}/api/track-event?id=${id}&organization=Acme&event=lead&summary=${leadRequest.text}&email=${leadContact.email}&phone=${leadContact.phone}`, {
           method: 'GET'
         });
 
@@ -142,8 +142,8 @@ export async function POST(request) {
         <a className='flex justify-end gap-1 text-black' target='_blank' href='URL'><img width="15" height="15" src="https://img.icons8.com/flat-round/50/link--v1.png" alt="link--v1"/></a>
   
         6. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks, except for the link at the end if available.
-        7. In case you are not able to resolve a user's concern in 3-4 tries, politely ask the user to call or email at ${escalation}
-        8. If the user is interested in any service or products, strictly answer the user as follows: "Could you please provide your email address or phone number so we can follow up with you?". DO NOT add anything else.
+        7. If the user asks for human interaction, politely ask the user to call or email at ${escalation}.
+        8. If the user is interested or wants any service or products, answer the user as follows: "Could you please provide your email address or phone number so we can follow up with you?". DO NOT disobey this instruction.
       `
     }, ...messages];
   

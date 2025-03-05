@@ -13,15 +13,11 @@
         }
     
         .my-chatbot-button {
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            font-size: 24px;
-            outline: none;
+            transition: transform .2s
+        }
+
+        .my-chatbot-button:hover {
+            transform: translateY(-3px);
         }
     
         .my-chatbot-popup {
@@ -74,15 +70,17 @@
     
         const chatButton = document.createElement('button');
         chatButton.className = 'my-chatbot-button';
-        chatButton.style.border = `2px solid #${cc}`;
-        chatButton.style.backgroundColor = `#ffffff`;
-        chatButton.style.boxShadow = `rgba(0, 0, 0, 0.24) 0px 3px 8px`;
-        chatButton.style.display = `flex`;
-        chatButton.style.justifyContent = `center`;
-        chatButton.style.alignItems = `center`;
+        // chatButton.style.border = `2px solid #${cc}`;
+        // chatButton.style.backgroundColor = `#ffffff`;
+        // chatButton.style.boxShadow = `rgba(0, 0, 0, 0.24) 0px 3px 8px`;
+        // chatButton.style.display = `flex`;
+        // chatButton.style.justifyContent = `center`;
+        // chatButton.style.alignItems = `center`;
+
+
 
         const img = document.createElement('img');
-        img.src = `https://www.kulfi-ai.com/icons/${cc}.png`;
+        img.src = `https://www.kulfi-ai.com/images/kulfi-icon.png`;
         img.style.width = '35px';
         chatButton.appendChild(img);
     

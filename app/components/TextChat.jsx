@@ -77,13 +77,14 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                 <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'h-[60vh]' : 'h-[42vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
                     <div>
                         {messages.map((msg, idx) => (
-                        <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[20px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
+                        <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                             <>{msg.role === 'user' ? 
                             <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg border-[1px] border-gray-100 shadow-md' style={{ backgroundColor: botInfo.mColor, color: 'white' }}>
                                 <ReactMarkdown>{msg.content}</ReactMarkdown>
                             </div>:
                             <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md`}>
-                                <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>
+                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
+                                <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
                                 <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
                             </div>}</>
                         </div>
@@ -148,6 +149,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </button>
                         </div>
                     </div>
+                    {!botInfo.hideBranding ? <span className='text-[14px]' style={{ color: botInfo.color }}><span className='font-semibold'>Powered by</span> <span style={{ backgroundColor: botInfo.color }} className='text-white rounded-full py-1 px-2'>Kulfi AI</span></span> : <></>}
                 </form>
             </>}
             {section === 1 && 

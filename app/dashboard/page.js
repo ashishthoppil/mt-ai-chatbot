@@ -1,7 +1,7 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, QuestionAnswer, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
@@ -25,6 +25,7 @@ import { CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, Loader2, Noteb
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Switch } from '@/components/ui/switch';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -42,6 +43,7 @@ const Loader = () => {
 
 export default function Dashboard() {
     const [articleFile, setArticleFile] = useState(null);
+    const [botIcon, setBotIcon] = useState(null);
     const [complaints, setComplaints] = useState();
     const [feedback, setFeedback] = useState();
     const [generalQueries, setGeneralQueries] = useState();
@@ -151,6 +153,35 @@ export default function Dashboard() {
           setArticleFile(e.target.files[0]);
         }
     };
+
+    const handleBotIconChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let base64Image = "";
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = async () => {
+                    base64Image = reader.result.split(",")[1];
+                    setData((prev) => { return { ...prev, botIcon: base64Image } })
+                };
+            }
+        }
+    }
+
+    const handleAvatarChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let base64Image = "";
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = async () => {
+                    base64Image = reader.result.split(",")[1];
+                    setData((prev) => { return { ...prev, botAvatar: base64Image } })
+                };
+            }
+        }
+    }
+    
 
     const handleKBChange = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -770,16 +801,21 @@ export default function Dashboard() {
                                 <h3 className="md:text-[22px] font-bold text-purple-800 mb-2">Lead #{index + 1}</h3>
                                 {item.summary}
                             </div>
-                            {item.contact ? <div className='flex flex-col md:flex-row gap-2 items-center justify-between w-full'>
+                            <div className='flex flex-col md:flex-row gap-2 items-center justify-between w-full'>
                                 <span className='text-[12px]'>Date: {getLeadDate(item.time)}</span>
                                 <div className='flex gap-2'>
-                                    <a className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' href={`mailto:${item.contact}`}><EmailOutlined className='h-4' />Email</a>
+                                    {item.email !== 'null' ? <><a className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' href={`mailto:${item.email}`}><EmailOutlined className='h-4' />Email</a>
                                     <button className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' onClick={(e) => {
-                                        navigator.clipboard.writeText(item.contact);
+                                        navigator.clipboard.writeText(item.email);
                                         toast.success("Email address has been copied!");
-                                    }} href={`mailto:${item.contact}`}><CopyIcon className='h-4' />Copy email address</button>
+                                    }}><CopyIcon className='h-4' />Copy email address</button></> : <></>}
+                                    {item.phone !== 'null' ? <><a className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' href={`tel:${item.phone}`}><Phone className='h-4' />Phone</a>
+                                    <button className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' onClick={(e) => {
+                                        navigator.clipboard.writeText(item.phone);
+                                        toast.success("Phone number has been copied!");
+                                    }}><CopyIcon className='h-4' />Copy phone no.</button></> : <></>}
                                 </div>
-                            </div> : <></>}
+                            </div>
                         </div>
                         )
                     })}
@@ -842,6 +878,50 @@ export default function Dashboard() {
                                 <span style={{ backgroundColor: data.color }} className={`w-[15%] rounded-md`}></span>
                             </div>
                         </div> */}
+                    </div>
+
+                    <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                        <div className='flex items-center gap-2 w-[50%]'>
+                            <div className="flex flex-col gap-4">
+                                <label htmlFor="botname" className="text-left">
+                                    Upload Bot Icon
+                                </label>
+                                <input key={1} type="file" onChange={(e) => handleBotIconChange(e)} />
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                {data.botIcon ? <img className='h-[3rem] max-w-[3rem] rounded-lg object-cover border-[1px] border-gray-200 rounded-md p-1' src={`data:image/jpeg;base64,${data.botIcon}`} /> : <></>}
+                                {data.botIcon ? <div><button onClick={() => setData((prev) => { return { ...prev, botIcon: null } })} className='bg-transparent text-red-500 text-[12px]'><Close className='text-red-500 text-[12px]' /> Remove image</button></div> : <></>}
+                            </div>
+                        </div>
+
+                        <div className='flex items-center gap-2 w-[50%]'>
+                            <div className="flex flex-col gap-4">
+                                <label htmlFor="botname" className="text-left">
+                                    Upload Bot Avatar
+                                </label>
+                                <input key={2} type="file" onChange={(e) => handleAvatarChange(e)} />
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                {data.botAvatar ? <img className='h-[3rem] max-w-[3rem] rounded-lg object-cover border-[1px] border-gray-200 rounded-md p-1' src={`data:image/jpeg;base64,${data.botAvatar}`} /> : <></>}
+                                {data.botAvatar ? <div><button onClick={() => setData((prev) => { return { ...prev, botAvatar: null } })} className='bg-transparent text-red-500 text-[12px]'><Close className='text-red-500 text-[12px]' /> Remove image</button></div> : <></>}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                        <div className='flex items-center gap-2 w-[50%]'>
+                            <div className="flex gap-4">
+                                <Switch 
+                                    checked={data.hideBranding}
+                                    onCheckedChange={(e) => {
+                                        setData((prev) => { return { ...prev, hideBranding: !data.hideBranding } })
+                                    }} className='data-[state=checked]:bg-purple-800 data-[state=unchecked]:bg-gray-100' 
+                                />
+                                <label htmlFor="botname" className="text-left">
+                                    Remove 'Kulfi AI' branding
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>

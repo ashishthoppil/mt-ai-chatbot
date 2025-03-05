@@ -76,10 +76,12 @@ export const Header = () => {
 
     return (
         pathname !== '/chat' && 
-        <div className='flex flex-col md:flex-row w-full z-[10] '>
+        <div className={`flex flex-col md:flex-row w-full px-[10px] py-[2px] z-[10] ${pathname !== '/' ? 'border-[1px] border-gray-200' : ''}`}>
             <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[10px] md:px-[75px]`}>
-                <div className='flex gap-2'>
-                    <Link href='/' className='text-purple-800 font-bold text-[3rem]'>Kulfi.</Link>
+                <div className='pb-2'>
+                    <Link href='/' className='flex items-center gap-2 text-purple-800 font-bold text-[3rem]'>
+                        <img style={{ width: '12rem' }} src="images/kulfi_logo.png" alt="bot"/>
+                    </Link>
                 </div>
                 {pathname !== '/get-started' && 
                 <>
@@ -87,13 +89,6 @@ export const Header = () => {
                     <button className='text-purple-800' onClick={() => setIsOpen((prev) => !prev)}>{isOpen ? <CloseTwoTone /> : <MenuIcon />}</button>
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
-                    <nav>
-                        <ul className='flex gap-[5rem] justify-between items-center'>
-                            <Link href="/" className='flex gap-1 text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'><HomeIcon /> Home</Link>
-                            <Link href="/pricing" className='flex gap-1 text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'><Tag /> Pricing</Link>
-                            <Link href="/contact" className='flex gap-1 text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100'><Phone /> Contact</Link>
-                        </ul>
-                    </nav>
                     {ls && localStorage && !localStorage.getItem('objectID') ? <div className='flex gap-5'>
                         <Dialog onOpenChange={(open) => {
                             if (!open) {
@@ -142,7 +137,7 @@ export const Header = () => {
                             </DialogContent>
                         </Dialog>
                         <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Get started</Link>
-                    </div> : ls ? <Link className='flex gap-1 text-purple-800 hover:cursor-pointer hover:scale-[1.1] duration-100' href="/dashboard"><AccountCircleOutlined className='text-purple-800 cursor-pointer' />Profile</Link> : <></>}
+                        </div> : ls ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}
                 </div></>}
             </header>
             {isOpen ?

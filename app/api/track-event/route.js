@@ -16,7 +16,8 @@ export async function GET(req, res) {
   const country = searchParams.get('country');
   const device = searchParams.get('device');
   const summary = searchParams.get('summary');
-  const contact = searchParams.get('contact');
+  const email = searchParams.get('email');
+  const phone = searchParams.get('phone');
 
   try {
     const result = await db.collection(getAnalyticsDb(organization, id)).insertOne({
@@ -26,9 +27,9 @@ export async function GET(req, res) {
       country: country ? country : '',
       device: device ? device : '',
       summary: summary ? summary : '',
-      contact: contact ? contact : ''
+      email: email ? email : '',
+      phone: phone ? phone : ''
     });
-    console.log('123123123', event)
 
     if (result.acknowledged) {
       return NextResponse.json({ success: true, data: result });

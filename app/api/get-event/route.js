@@ -169,7 +169,6 @@ export async function GET(request) {
     } else if (event === 'lead') {
       const leadsCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "lead" });
       const leadsDocs = await leadsCursor.toArray();
-      console.log('leadsDocs', leadsDocs); 
       return NextResponse.json({ success: true, data: leadsDocs });
     } else if (event === 'count') {
         const count = await db.collection(getAnalyticsDb(organization, id)).count();
