@@ -36,9 +36,6 @@
         `;
         var { id, bn, cc, lc, mc, cw, al } = window.chatbotConfig || {};
 
-        console.log('cwcw', cw);
-        console.log('alal', al);
-
         document.head.appendChild(style);
         
         const viewPortHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
@@ -47,6 +44,7 @@
         const container = document.createElement('div');
         container.className = 'my-chatbot-container';
 
+        console.log('check', al === 'l')
         if (al === 'l') {
             container.style.removeProperty('right');
             container.style.left = '15px';
