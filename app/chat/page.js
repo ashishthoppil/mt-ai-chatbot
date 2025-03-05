@@ -26,7 +26,7 @@ export default function Chat() {
       const res = await fetch('/api/dashboard', {
         method: 'POST',
         body: JSON.stringify({
-            id: localStorage.getItem('objectID')
+            id
         })
       });
             

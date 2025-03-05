@@ -587,7 +587,7 @@ export default function Dashboard() {
                         <p className='text-[14px] md:text-[16px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-[14px] md:text-[16px] text-yellow-500 px-1'>
-                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&cw=${urlParams.cw}$al=${data.alignment[0]}'></script>`}</span>
+                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&cw=${urlParams.cw}&al=${data.alignment[0]}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");
