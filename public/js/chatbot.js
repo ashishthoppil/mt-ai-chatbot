@@ -34,7 +34,7 @@
             overflow: hidden;
         }
         `;
-        var { id, bn, cc, lc, mc, cw } = window.chatbotConfig || {};
+        var { id, bn, cc, lc, mc, cw, al } = window.chatbotConfig || {};
 
         document.head.appendChild(style);
         
@@ -43,6 +43,11 @@
         // 2. Create the main container for the chatbot
         const container = document.createElement('div');
         container.className = 'my-chatbot-container';
+
+        if (al === 'l') {
+            container.style.removeProperty('right');
+            container.style.left = '15px';
+        }
     
         // 3. Create the chatbot popup (hidden initially)
         const popup = document.createElement('div');
@@ -55,6 +60,11 @@
         }
         popup.className = 'my-chatbot-popup';
         popup.style.display = 'none'; // hide by default
+        if (al === 'l') {
+            container.style.removeProperty('right');
+            container.style.left = '0px';
+        }
+
 
         const iframe = document.createElement('iframe');
 
@@ -81,7 +91,7 @@
 
         const img = document.createElement('img');
         img.src = `https://www.kulfi-ai.com/images/kulfi-icon.png`;
-        img.style.width = '35px';
+        img.style.width = '50px';
         chatButton.appendChild(img);
     
         chatButton.onclick = async () => {

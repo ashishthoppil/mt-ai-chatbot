@@ -21,11 +21,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, Loader2, NotebookTabsIcon, Tag, TrashIcon } from 'lucide-react';
+import { AlignLeft, AlignRight, Check, CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, Loader2, NotebookTabsIcon, Tag, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Switch } from '@/components/ui/switch';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -43,7 +44,6 @@ const Loader = () => {
 
 export default function Dashboard() {
     const [articleFile, setArticleFile] = useState(null);
-    const [botIcon, setBotIcon] = useState(null);
     const [complaints, setComplaints] = useState();
     const [feedback, setFeedback] = useState();
     const [generalQueries, setGeneralQueries] = useState();
@@ -587,7 +587,7 @@ export default function Dashboard() {
                         <p className='text-[14px] md:text-[16px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-[14px] md:text-[16px] text-yellow-500 px-1'>
-                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&bn=${urlParams.botName}&cc=${urlParams.color}&lc=${urlParams.lColor}&mc=${urlParams.mColor}&cw=${urlParams.cw}'></script>`}</span>
+                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&cw=${urlParams.cw}$al=${data.alignment[0]}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");
@@ -909,6 +909,39 @@ export default function Dashboard() {
                     </div>
 
                     <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                        <div className='flex items-center gap-2 w-[50%]'>
+                            <div className="flex flex-col gap-4">
+                                <label htmlFor="botname" className="text-left">
+                                    Bot position
+                                </label>
+                                <div className='flex gap-2 w-full'>
+                                    <div onClick={() => setData((prev) => { return { ...prev, alignment: 'left' } })} className={`flex gap-4 rounded-lg border-2 ${data.alignment === 'left' ? 'border-5 border-purple-800' : 'border-gray-300'} p-5`}>
+                                        <div className='flex gap-2'>
+                                            <AlignLeft />
+                                            <span>Left</span>
+                                        </div>
+                                        <Check className={`text-purple-800 ${data.alignment === 'left' ? 'opacity-1' : 'opacity-0'} duration-200`} />
+                                    </div>
+                                    <div onClick={() => setData((prev) => { return { ...prev, alignment: 'right' } })} className={`flex gap-4 rounded-lg border-2 ${data.alignment === 'right' ? 'border-5 border-purple-800' : 'border-gray-300'} p-5`}>
+                                        <div className='flex gap-2'>
+                                            <AlignRight />
+                                            <span>Right</span>
+                                        </div>
+                                        <Check className={`text-purple-800 ${data.alignment === 'right' ? 'opacity-1' : 'opacity-0'} duration-200`} />
+                                    </div>
+                                </div>
+                                {/* <RadioGroup className='flex gap-4 peer-data-[state=checked]:bg-purple-800' defaultValue="comfortable">
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem className='' value="left" id="r1" />
+                                        <label htmlFor="r1">Left</label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="right" id="r2" />
+                                        <label htmlFor="r2">Right</label>
+                                    </div>
+                                </RadioGroup> */}
+                            </div>
+                        </div>
                         <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex gap-4">
                                 <Switch 

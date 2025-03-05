@@ -7,8 +7,9 @@
     var lc = urlObject.searchParams.get('lc');
     var mc = urlObject.searchParams.get('mc');
     var cw = urlObject.searchParams.get('cw');
+    var al = urlObject.searchParams.get('al');
 
-    window.chatbotConfig = { id, bn, cc, lc, mc, cw };
+    window.chatbotConfig = { id, bn, cc, lc, mc, cw, al };
 
     setTimeout(() => {
       var chatbotScript = document.createElement('script');

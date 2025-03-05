@@ -12,7 +12,17 @@ export async function POST(req) {
         const result = await db.collection('clients').updateOne(
             { _id: new ObjectId(request.id) },
             {
-              $set: { botName: request.botName, color: request.color, cw: request.cw, tone: request.tone, escalation: request.escalation, botIcon: request.botIcon, hideBranding: request.hideBranding, botAvatar: request.botAvatar },
+              $set: { 
+                botName: request.botName, 
+                color: request.color, 
+                cw: request.cw, 
+                tone: request.tone, 
+                escalation: request.escalation, 
+                botIcon: request.botIcon, 
+                hideBranding: request.hideBranding, 
+                botAvatar: request.botAvatar, 
+                alignment: request.alignment 
+              },
               $currentDate: { lastModified: true }
             }
         );

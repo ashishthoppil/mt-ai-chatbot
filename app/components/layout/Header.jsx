@@ -76,7 +76,7 @@ export const Header = () => {
 
     return (
         pathname !== '/chat' && 
-        <div className={`flex flex-col md:flex-row w-full px-[10px] py-[2px] z-[10] ${pathname !== '/' ? 'border-[1px] border-gray-200' : ''}`}>
+        <div className={`flex flex-col md:flex-row w-full px-[10px] md:px-[25px] py-[2px] z-[10] ${pathname !== '/' ? 'border-[1px] border-gray-200' : ''}`}>
             <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[10px] md:px-[75px]`}>
                 <div className='pb-2'>
                     <Link href='/' className='flex items-center gap-2 text-purple-800 font-bold text-[3rem]'>
