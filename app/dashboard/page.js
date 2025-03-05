@@ -930,19 +930,12 @@ export default function Dashboard() {
                                         <Check className={`text-purple-800 ${data.alignment === 'right' ? 'opacity-1' : 'opacity-0'} duration-200`} />
                                     </div>
                                 </div>
-                                {/* <RadioGroup className='flex gap-4 peer-data-[state=checked]:bg-purple-800' defaultValue="comfortable">
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem className='' value="left" id="r1" />
-                                        <label htmlFor="r1">Left</label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="right" id="r2" />
-                                        <label htmlFor="r2">Right</label>
-                                    </div>
-                                </RadioGroup> */}
                             </div>
                         </div>
-                        <div className='flex items-center gap-2 w-[50%]'>
+                    </div>
+
+                    
+                    <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex gap-4">
                                 <Switch 
                                     checked={data.hideBranding}
@@ -955,7 +948,6 @@ export default function Dashboard() {
                                 </label>
                             </div>
                         </div>
-                    </div>
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>
                         <h3 className="md:text-[24px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3>

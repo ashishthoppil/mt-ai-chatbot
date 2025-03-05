@@ -7,7 +7,6 @@
             justify-content: end;
             position: fixed;
             bottom: 20px;
-            right: 15px;
             z-index: 9999; /* On top of everything */
             font-family: sans-serif; /* Basic font family */
         }
@@ -46,8 +45,9 @@
 
         console.log('check', al === 'l')
         if (al === 'l') {
-            container.style.removeProperty('right');
             container.style.left = '15px';
+        } else {
+            container.style.right = '15px';
         }
     
         // 3. Create the chatbot popup (hidden initially)
