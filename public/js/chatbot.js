@@ -62,8 +62,8 @@
         popup.className = 'my-chatbot-popup';
         popup.style.display = 'none'; // hide by default
         if (al === 'l') {
-            container.style.removeProperty('right');
-            container.style.left = '0px';
+            popup.style.removeProperty('right');
+            popup.style.left = '0px';
         }
 
 
