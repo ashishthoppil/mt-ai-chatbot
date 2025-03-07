@@ -8,7 +8,7 @@
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-5px);
             }
         }
 
@@ -102,6 +102,11 @@
         // chatButton.style.justifyContent = `center`;
         // chatButton.style.alignItems = `center`;
 
+        const message = document.createElement('div');
+        message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
+        message.innerHTML = 'Hi, how can I assist you?'
+        message.style.position = 'relative';
+        message.style.bottom = '10px';
 
 
         const img = document.createElement('img');
@@ -110,6 +115,7 @@
         chatButton.appendChild(img);
     
         chatButton.onclick = async () => {
+            message.classList.add = 'hidden';
             isOpen = !isOpen;
             popup.style.display = isOpen ? 'flex' : 'none';
             const img = new Image();
@@ -119,12 +125,6 @@
                 img.src = ``;
             }
         };  
-
-        const message = document.createElement('div');
-        message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
-        message.innerHTML = 'Hi, how can I assist you?'
-        message.style.position = 'relative';
-        message.style.bottom = '10px';
 
         // 7. Put everything in the DOM
         container.appendChild(message);
