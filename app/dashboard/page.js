@@ -143,9 +143,6 @@ export default function Dashboard() {
             router.push('/');
             logout();
         }
-        loadFaqs();
-        loadArticles();
-        
     }
 
     const handleArticleFileChange = (e) => {

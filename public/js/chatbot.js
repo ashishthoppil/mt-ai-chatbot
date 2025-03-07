@@ -41,7 +41,7 @@
     
         // 2. Create the main container for the chatbot
         const container = document.createElement('div');
-        container.className = 'my-chatbot-container';
+        container.className = 'my-chatbot-container flex flex-col items-end';
 
         console.log('check', al === 'l')
         if (al === 'l') {
@@ -107,9 +107,11 @@
         };  
 
         const message = document.createElement('div')
-        message.className = 'bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg relative bottom-[15px]'
+        message.className = 'flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg'
         message.innerHTML = 'Hi, how can I assist you?'
-    
+        message.style.position = 'relative';
+        message.style.bottom = '10px';
+
         // 7. Put everything in the DOM
         container.appendChild(message);
         container.appendChild(popup);

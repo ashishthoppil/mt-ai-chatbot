@@ -51,6 +51,7 @@ export const Header = () => {
                 localStorage.setItem('objectID', data.message._id)
                 localStorage.setItem('color', data.message.color.slice(1))
                 localStorage.setItem('botname', data.message.botName)
+                localStorage.setItem('cw', data.message.cw)
                 router.push('/dashboard');
             } else {
                 setError(data.message);
