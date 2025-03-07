@@ -2,6 +2,20 @@
     setTimeout(() => {
         const style = document.createElement('style');
         style.innerHTML = `
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .kulfi-greetings {
+            animation: bounce 1s infinite;
+        }
+
         .my-chatbot-container {
             display: flex;
             justify-content: end;
@@ -106,8 +120,8 @@
             }
         };  
 
-        const message = document.createElement('div')
-        message.className = 'flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
+        const message = document.createElement('div');
+        message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
         message.innerHTML = 'Hi, how can I assist you?'
         message.style.position = 'relative';
         message.style.bottom = '10px';
