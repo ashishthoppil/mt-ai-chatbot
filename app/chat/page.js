@@ -4,6 +4,7 @@ import { Poppins } from 'next/font/google'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
 import tinycolor from 'tinycolor2';
+import { Loader2 } from 'lucide-react';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -89,7 +90,7 @@ export default function Chat() {
     }, []);
 
     return (
-      botInfo && <main className={`flex flex-col items-center justify-between gap-4 flex-grow w-full ${poppins.className}`}>
+      botInfo ? <main className={`flex flex-col items-center justify-between gap-4 flex-grow w-full ${poppins.className}`}>
         <header style={{ backgroundColor: botInfo.color }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px]`}>
           <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto px-[25px]'>
             <span className={`bg-gray-100 text-gray-500 rounded-full ${botInfo.botIcon ? 'p-[2px]' : 'p-[5px]'}`}>
@@ -108,6 +109,6 @@ export default function Chat() {
           </div>
         </header>
         <TextChat data={data} botInfo={botInfo} articlesList={articlesList} faqList={faqList} />
-      </main>
+      </main> : <div className='flex flex-col items-center gap-3 absolute left-[50%] top-[50%]'><Loader2 className='animate-spin text-gray-400 size-10' /><span className={`text-[14px] text-gray-500 ${poppins.className}`}>LOADING</span></div>
     );
 }

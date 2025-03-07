@@ -115,7 +115,7 @@
         chatButton.appendChild(img);
     
         chatButton.onclick = async () => {
-            message.classList.add = 'hidden';
+            message.style.display = 'none';
             isOpen = !isOpen;
             popup.style.display = isOpen ? 'flex' : 'none';
             const img = new Image();
