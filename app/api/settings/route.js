@@ -21,7 +21,9 @@ export async function POST(req) {
                 botIcon: request.botIcon, 
                 hideBranding: request.hideBranding, 
                 botAvatar: request.botAvatar, 
-                alignment: request.alignment 
+                alignment: request.alignment,
+                initialmsg: request.initialmsg,
+                placeholder: request.placeholder,
               },
               $currentDate: { lastModified: true }
             }

@@ -31,7 +31,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
             {
                 id: 'initial',
                 role: 'assistant',
-                content: `Hello! I'm ${botInfo && botInfo.botName}. How can I help you today?`,
+                content: botInfo.initialmsg ? botInfo.initialmsg : `Hello! I'm ${botInfo && botInfo.botName}. How can I help you today?`,
             },
         ]
     });
@@ -136,7 +136,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     }
                                 }
                             }
-                            placeholder="Ask me anything..."
+                            placeholder={botInfo.placeholder ? botInfo.placeholder : "Ask me anything..."}
                         />
                         <div className='flex justify-end'>  
                             <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] relative bottom-4 ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>

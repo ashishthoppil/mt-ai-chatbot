@@ -105,8 +105,13 @@
                 img.src = ``;
             }
         };  
+
+        const message = document.createElement('div')
+        message.className = 'bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg relative bottom-[15px]'
+        message.innerHTML = 'Hi, how can I assist you?'
     
         // 7. Put everything in the DOM
+        container.appendChild(message);
         container.appendChild(popup);
         container.appendChild(chatButton);
         document.body.appendChild(container);

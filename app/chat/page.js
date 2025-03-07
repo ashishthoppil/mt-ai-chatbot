@@ -44,7 +44,9 @@ export default function Chat() {
           userId,
           botIcon: data.data.botIcon,
           botAvatar: data.data.botAvatar,
-          hideBranding: data.data.hideBranding
+          hideBranding: data.data.hideBranding,
+          initialmsg: data.data.initialmsg,
+          placeholder: data.data.placeholder
         });  
         loadFaqs(id);
         loadArticles(id);   

@@ -934,8 +934,24 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    
-                    <div className='flex items-center gap-2 w-[50%]'>
+                    <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                        <div className='flex flex-col gap-2 w-[50%]'>
+                            <label htmlFor="initial" className="text-left">
+                                Initial message
+                            </label>
+                            <textarea onChange={(e) => setData((prev) => { return { ...prev, initialmsg: e.target.value } })} value={data.initialmsg} placeholder='Enter the chatbot`s initial message.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                        </div>
+
+
+                        <div className='flex flex-col gap-2 w-[50%]'>
+                            <label htmlFor="initial" className="text-left">
+                                Message box placeholder
+                            </label>
+                            <textarea onChange={(e) => setData((prev) => { return { ...prev, placeholder: e.target.value } })} value={data.placeholder} placeholder='Enter the chat message box placeholder text.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                        </div>
+                    </div>
+
+                        <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex gap-4">
                                 <Switch 
                                     checked={data.hideBranding}
