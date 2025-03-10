@@ -84,7 +84,7 @@ export async function POST(request) {
           return new Response(JSON.stringify({
             type: "lead_form",
             title: "Lead Form",
-            fields: 0 ? formData.data.leadForm : [
+            fields: formData.data.leadForm ? formData.data.leadForm : [
               {
                 id: 1,
                 type: 'text',
