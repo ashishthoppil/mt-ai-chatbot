@@ -98,7 +98,6 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         </div>
                         ))}
                         {leadForm.length > 0 ?
-                            <>
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
@@ -122,10 +121,10 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                         <button className='px-2 py-1 rounded-md text-[14px]' style={{ backgroundColor: botInfo.color, color: 'white', border: `1px solid ${botInfo.color}` }}>Submit</button>
                                     </form> 
                                 </div>
-                            </div></>: <></>}
+                            </div>: <></>}
                         {isLoading && (
                             <div className='flex gap-2 px-[20px]'>
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="256px" height="64px" viewBox="0 0 512 128" xmlSpace="preserve">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="64px" viewBox="0 0 512 50" xmlSpace="preserve">
                                     <circle fill={botInfo.color} cx="0" cy="0" r="11" transform="translate(16 16)">
                                         <animateTransform attributeName="transform" type="scale" additive="sum" values="1;1.42;1;1;1;1;1;1;1;1" dur="1050ms" repeatCount="indefinite"></animateTransform>
                                     </circle>
@@ -145,6 +144,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                     onSubmit={(event) => {
                         if (!isLoading) {
                             handleSubmit(event);
+                            setLeadForm([]);
                             inputRef.current.blur();
                             if (!sessionTracked) {
                                 eventTracker();
@@ -162,6 +162,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             onKeyDown={(event) => { 
                                     if (event.key === 'Enter') { 
                                         handleSubmit(event); 
+                                        setLeadForm([]);
                                         inputRef.current.blur();        
                                         if (!sessionTracked) {
                                             eventTracker();
