@@ -91,7 +91,7 @@ export default function Chat() {
 
     return (
       botInfo ? <main className={`flex flex-col items-center justify-between gap-4 flex-grow w-full ${poppins.className}`}>
-        <header style={{ backgroundColor: botInfo.color }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px]`}>
+        <header style={{ backgroundImage: `linear-gradient(${botInfo.color}, #${tinycolor(botInfo.color).darken(10).toHexString().slice(1)})`  }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px]`}>
           <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto px-[25px]'>
               {
                 botInfo.botIcon ? 

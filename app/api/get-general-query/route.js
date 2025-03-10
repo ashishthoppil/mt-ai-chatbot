@@ -1,7 +1,8 @@
 import clientPromise from '@/lib/mongodb';
-import { generateText } from 'ai';
+import { generateObject, generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -21,15 +22,45 @@ export async function GET(request) {
     if (generalQueries) {
         const systemMessage = [{
             role: 'system',
-            content: `You are a helpful assistant. Your job is to summarize the following text: ${generalQueries}. Never just show the text provided to you.`
+            content: `You are a helpful assistant. Summarize the following text and extract the 5 most queried topics and their occurences (most to least order): ${generalQueries}. 
+                Return an object in the following format:
+                    {
+                        summary: 'Concise summary of the text',
+                        hotTopics: [
+                            {
+                                name: 'Topic1',
+                                occurrence: 40,
+                            },
+                            {
+                                name: 'Topic2',
+                                occurrence: 25,
+                            },
+                            {
+                                name: 'Topic3',
+                                occurrence: 10,
+                            },
+                        ]
+                    }
+                Never just return the text provided to you.`,
         }];
+
+        const hotTopicsSchema = z.object({
+            name: z.string(),
+            occurrence: z.number()
+        })
         
-        const summary = await generateText({
-            model: openai('gpt-4o-mini'), // or however your model is specified
+        const summary = await generateObject({
+            model: openai('gpt-4o-mini'),
             messages: systemMessage,
-            temperature: 0
+            temperature: 0,
+            schema: z.object({
+                summary: z.string(),
+                hotTopics: z.array(hotTopicsSchema)
+            }),
         });
-        return NextResponse.json({ success: true, data: { summary: summary.text, count: queryDocs.length } });
+
+        console.log('summarysummarysummary123', summary.object.hotTopics);
+        return NextResponse.json({ success: true, data: { summary: summary.object.summary, count: queryDocs.length, graphData: summary.object.hotTopics } });
     }
     return NextResponse.json({ success: false, data: 'There seems to be something wrong.' });
 }

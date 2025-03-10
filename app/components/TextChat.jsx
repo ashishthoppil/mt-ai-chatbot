@@ -18,6 +18,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
 
     const [section, setSection] = useState(0);
     const [sessionTracked, setSessionTracked] = useState(false);
+    const [leadForm, setLeadForm] = useState([]);
     const messageEnd = useRef();
     const inputRef = useRef();
  
@@ -33,7 +34,14 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                 role: 'assistant',
                 content: botInfo.initialmsg ? botInfo.initialmsg : `Hello! I'm ${botInfo && botInfo.botName}. How can I help you today?`,
             },
-        ]
+        ],
+        onResponse: async (response) => {
+            const contentType = response.headers.get("content-type");
+            if (contentType === 'application/json') {
+                const data = await response.json();
+                setLeadForm(data.fields);
+            }
+        }
     });
 
     useEffect(() => {
@@ -89,6 +97,32 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </div>}</>
                         </div>
                         ))}
+                        {leadForm.length > 0 ?
+                            <>
+                            <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
+                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
+                                <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
+                                <div className='flex flex-col gap-5'>
+                                    <h1 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest. Please fill the form below so that our team can get back to you.</h1>
+                                    <form style={{ border: `1px solid ${botInfo.color}` }} className='flex flex-col gap-3 rounded-md shadow-md px-5 py-3 w-full' onSubmit={(e) => {
+                                        e.preventDefault();
+                                        alert(123);
+                                    }}>
+                                        {leadForm.map((item) => {
+                                            return (
+                                                <div key={item.id} className='flex flex-col gap-1'>
+                                                    <label style={{ color: botInfo.color }} className='font-semibold text-[12px]'>{item.label}</label>
+                                                    {item.type === 'textarea' ? 
+                                                        <textarea placeholder={item.placeholder} className='text-[12px] border-2 border-gray-200 rounded-md px-2 py-2 outline-none'  required={item.isRequired}></textarea> :
+                                                        <input placeholder={item.placeholder} className='text-[12px] border-2 border-gray-200 rounded-md px-2 py-2 outline-none' type={item.type} required={item.isRequired} />
+                                                    }
+                                                </div>
+                                            )
+                                        })}
+                                        <button className='px-2 py-1 rounded-md text-[14px]' style={{ backgroundColor: botInfo.color, color: 'white', border: `1px solid ${botInfo.color}` }}>Submit</button>
+                                    </form> 
+                                </div>
+                            </div></>: <></>}
                         {isLoading && (
                             <div className='flex gap-2 px-[20px]'>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="256px" height="64px" viewBox="0 0 512 128" xmlSpace="preserve">

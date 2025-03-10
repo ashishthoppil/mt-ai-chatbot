@@ -13,20 +13,7 @@ export async function POST(req) {
             { _id: new ObjectId(request.id) },
             {
               $set: { 
-                botName: request.botName, 
-                color: request.color, 
-                cw: request.cw, 
-                tone: request.tone, 
-                escalation: request.escalation, 
-                botIcon: request.botIcon, 
-                hideBranding: request.hideBranding, 
-                botAvatar: request.botAvatar, 
-                alignment: request.alignment,
-                initialmsg: request.initialmsg,
-                placeholder: request.placeholder,
-                responselength: request.responselength,
-                showsource: request.showsource,
-                showimg: request.showimg
+                leadForm: request.leadForm, 
               },
               $currentDate: { lastModified: true }
             }

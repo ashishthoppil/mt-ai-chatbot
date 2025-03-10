@@ -14,7 +14,7 @@ export async function POST(req, res) {
   const salt = bcrypt.genSaltSync(10);
   const hashedpass = bcrypt.hashSync(data.password, salt);
   try {
-      const formattedData = { ...data, password: hashedpass, cw: '400', tone: 'formal', escalation: '', alignment: 'right' }
+      const formattedData = { ...data, password: hashedpass, cw: '400', tone: 'formal', escalation: '', alignment: 'right', responselength: 'medium' }
       const result = await db.collection('clients').insertOne(formattedData);
     
       if (result.acknowledged) {

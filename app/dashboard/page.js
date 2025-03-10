@@ -1,7 +1,7 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
@@ -21,12 +21,14 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { AlignLeft, AlignRight, Check, CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, Loader2, NotebookTabsIcon, Tag, TrashIcon } from 'lucide-react';
+import { AlignLeft, AlignRight, Check, CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, ListRestart, Loader2, NotebookTabsIcon, PlusIcon, Save, Tag, TrashIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Switch } from '@/components/ui/switch';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Progress } from '@/components/ui/progress';
 
 export const poppins = Poppins({
   subsets: ['latin'],
@@ -52,11 +54,12 @@ export default function Dashboard() {
     const [KB, setKB] = useState(null);
     const [links, setLinks] = useState('');
     const [leads, setLeads] = useState([]);
+    const [leadForm, setLeadForm] = useState([]);
     const [data, setData] = useState();
     const [messageCount, setMessageCount] = useState(0);
     const [location, setLocation] = useState({});
     const [engagementRate, setEngagementRate] = useState(0);
-    const [activeSection, setActiveSection] = useState('Profile');
+    const [activeSection, setActiveSection] = useState('Leads');
     const [isLoading, setIsLoading] = useState();
     const [isDeleting, setIsDeleting] = useState();
     const [isKBLoading, setIsKBLoading] = useState();
@@ -83,6 +86,7 @@ export default function Dashboard() {
         cw: ''
     });
 
+    const leadRef = useRef();
     const botLink = useRef();
     const router = useRouter();
 
@@ -126,6 +130,7 @@ export default function Dashboard() {
         const data = await res.json();
         if (data.data) {
             setData(data.data);
+            setLeadForm(data.data.leadForm ? data.data.leadForm : []);
             let updatedLinks = '';
             if (data.data.links) {
                 data.data.links.forEach((element, index) => {
@@ -216,6 +221,147 @@ export default function Dashboard() {
         }
     }, [data])
 
+    const fieldAddHandler = () => {
+        setLeadForm((prev) => [
+            ...prev,
+            {
+                id: prev.length !== 0 ? parseInt(prev[prev.length - 1].id) + 1 : 1,
+                type: 'text',
+                label: '',
+                placeholder: '',
+                isRequired: false
+            }
+        ])
+    }
+
+    const inputTypeHandler = (id, type, value) => {
+        setLeadForm((prev) => {
+            const data = prev.map((item) => {
+                if (item.id === id) {
+                    return ({
+                        ...item,
+                        [type]: value,
+                    });
+                } else {
+                    return item;
+                }
+            })
+            return data;
+        });
+    }
+
+    const getField = (item) => {
+        switch (item.type) {
+            case 'text':
+                return (
+                    <div className='flex justify-between items-center gap-5 w-full'>
+                        <div className='flex flex-col w-[20%]'>
+                            <label>Field label</label>
+                            <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                        </div>
+                        <div className='flex flex-col w-[20%]'>
+                            <label>Field type</label>
+                            <select onChange={(e) => inputTypeHandler(item.id, 'type' , e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='text'>
+                                <option value='text'>Text</option>
+                                <option value='textarea'>Textarea</option>
+                                <option value='tel'>Phone</option>
+                                <option value='email'>Email</option>
+                            </select>
+                        </div>
+                        <div className='flex flex-col  w-[20%]'>
+                            <label>Field Placeholder</label>
+                            <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                        </div>
+                        <div className='flex gap-2 items-center w-[20%]'>
+                            <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
+                            <span>Required</span>
+                        </div>
+                    </div>
+                );
+            
+                case 'textarea':
+                    return (
+                        <div className='flex justify-between items-center gap-2 w-full'>
+                            <div className='flex flex-col w-[20%]'>
+                                <label>Field label</label>
+                                <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                            </div>
+                            <div className='flex flex-col w-[20%]'>
+                                <label>Field type</label>
+                                <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='textarea'>
+                                    <option value='text'>Text</option>
+                                    <option value='textarea'>Textarea</option>
+                                    <option value='tel'>Phone</option>
+                                    <option value='email'>Email</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col w-[20%]'>
+                                <label>Field Placeholder</label>
+                                <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                            </div>
+                            <div className='flex gap-2 items-center w-[20%]'>
+                                <input checked={item.isRequired} type='checkbox' onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} />
+                                <span>Required</span>
+                            </div>
+                        </div>
+                    );
+                    case 'tel':
+                    return (
+                        <div className='flex justify-between items-center gap-2 w-full'>
+                            <div className='flex flex-col w-[20%]'>
+                                <label>Field label</label>
+                                <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                            </div>
+                            <div className='flex flex-col w-[20%]'>
+                                <label>Field type</label>
+                                <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='tel'>
+                                    <option value='text'>Text</option>
+                                    <option value='textarea'>Textarea</option>
+                                    <option value='tel'>Phone</option>
+                                    <option value='email'>Email</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col w-[20%]'>
+                                <label>Field Placeholder</label>
+                                <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                            </div>
+                            <div className='flex gap-2 items-center w-[20%]'>
+                                <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
+                                <span>Required</span>
+                            </div>
+                        </div>
+                    );
+                    case 'email':
+                        return (
+                            <div className='flex justify-between items-center gap-2 w-full'>
+                                <div className='flex flex-col w-[20%]'>
+                                    <label>Field label</label>
+                                    <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                </div>
+                                <div className='flex flex-col w-[20%]'>
+                                    <label>Field type</label>
+                                    <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='email'>
+                                        <option value='text'>Text</option>
+                                        <option value='textarea'>Textarea</option>
+                                        <option value='tel'>Phone</option>
+                                        <option value='email'>Email</option>
+                                    </select>
+                                </div>
+                                <div className='flex flex-col w-[20%]'>
+                                    <label>Field Placeholder</label>
+                                    <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                </div>
+                                <div className='flex gap-2 items-center w-[20%]'>
+                                    <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
+                                    <span>Required</span>
+                                </div>
+                            </div>
+                        );
+            default:
+                return <></>
+        }
+    }
+
     const sideMenu = [
         {
             id: 1,
@@ -224,7 +370,7 @@ export default function Dashboard() {
         },
         {
             id: 2,
-            title: 'Reports',
+            title: 'Analytics',
             Icon: GaugeIcon
         },
         {
@@ -239,7 +385,7 @@ export default function Dashboard() {
         },
         {
             id: 5,
-            title: 'Source',
+            title: 'Training',
             Icon: Source
         },
         {
@@ -254,13 +400,8 @@ export default function Dashboard() {
         },
         {
             id: 8,
-            title: 'Plan',
+            title: 'Membership',
             Icon: Tag
-        },
-        {
-            id: 9,
-            title: 'Logout',
-            Icon: Logout
         },
     ];
 
@@ -527,7 +668,8 @@ export default function Dashboard() {
         const result = await response.json();
         setGeneralQueries({
             summary: result.data.summary,
-            count: result.data.count
+            count: result.data.count,
+            graphData: result.data.graphData
         })
     }
 
@@ -620,14 +762,10 @@ export default function Dashboard() {
                     
                 </>
             );
-        } else if (section === 'Reports') {
+        } else if (section === 'Analytics') {
             return (
                 <div className='flex flex-col gap-4 py-10'>
                         <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Reports</h3>
-                        
-                        <div className='flex'>
-                            <h3 className="md:text-[14px] font-bold text-gray-500 mb-2">Messages: {messageCount}/5000</h3>   
-                        </div>
                         <div className='flex'>
                             <h3 className="md:text-[14px] font-bold text-gray-500 mb-2">Engagement Rate: {engagementRate}%</h3>   
                         </div>
@@ -766,7 +904,7 @@ export default function Dashboard() {
                                 <div className='flex gap-2 items-center'>
                                     <span className='h-[10px] w-[10px] bg-emerald-500 rounded-sm'></span>
                                     <strong>General queries</strong>
-                                    <Dialog>
+                                    <Dialog className='max-w-[15rem]'>
                                             <DialogTrigger asChild>
                                                 <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getGeneralSummary}><Eye height={15} />View Summary</button>
                                             </DialogTrigger>
@@ -778,6 +916,29 @@ export default function Dashboard() {
                                                     <div className="flex flex-col gap-4 py-4 text-[14px]">
                                                         <p>There are <strong>{generalQueries.count}</strong> general queries in total</p>
                                                         <p>Summary: {generalQueries.summary}</p>
+                                                        <div style={{ height: '20rem' }} className='w-full'>
+                                                            <ResponsiveContainer width="100%" height="100%">
+                                                                <BarChart
+                                                                    width={500}
+                                                                    height={300}
+                                                                    data={generalQueries.graphData}
+                                                                    margin={{
+                                                                        top: 5,
+                                                                        right: 30,
+                                                                        left: 20,
+                                                                        bottom: 5,
+                                                                    }}
+                                                                >
+                                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                                    <XAxis dataKey="name" />
+                                                                    <YAxis />
+                                                                    <Tooltip />
+                                                                    <Legend />
+                                                                    <Bar dataKey="occurrence" fill="#6B21A8" activeBar={<Rectangle fill="#6B21A8" stroke="#6B21A8" />} />
+                                                                </BarChart>
+                                                            </ResponsiveContainer>
+                                                            <h1 className='text-center'>Demographics</h1>
+                                                        </div>
                                                     </div> : <div className="flex flex-col gap-4 py-4 text-[14px]"><p>There is no information yet. Please try again later.</p></div> : <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
                                             </DialogContent>
                                     </Dialog>
@@ -789,8 +950,46 @@ export default function Dashboard() {
         } else if (section === 'Leads') {
             return (<>
                 <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Leads</h3>
-                <p className='text-[14px] md:text-[16px]'>Access all the leads generated by the chatbot right here.</p>
-                <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px]'>
+                <p className='text-[14px] md:text-[16px]'>Manage lead forms and leads generated by the chatbot right here.</p>
+                <div className='flex flex-col gap-3 mt-5'>
+                    <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Lead Form</h3>
+                    <div className='flex gap-5'>
+                        <div ref={leadRef} className='flex flex-col gap-2 border-2 border-dashed border-gray-200 p-5 w-full rounded-md'>
+                            {leadForm && leadForm.map((item) => {
+                                return (
+                                    <div key={item.id}>{getField(item)}</div>
+                                )
+                            })}
+                            <button onClick={fieldAddHandler} className='flex items-center'>
+                                <PlusIcon className='h-4 text-purple-800' />
+                                <h3 className="font-bold text-purple-800 text-[14px]">Add new field</h3>
+                            </button>
+                            {leadForm && leadForm.length > 0 ? <div className='flex gap-2 justify-end'>
+                                <button onClick={() => setLeadForm([])} className='flex items-center py-2 px-2 bg-purple-800 rounded-md'>
+                                    <RestartAlt className='h-4 text-white' />
+                                    <h3 className="text-[14px]  text-white">Reset form</h3>
+                                </button>
+                                <button onClick={async () => {
+                                            const res = await fetch('/api/save-form', {
+                                                method: 'POST',
+                                                body: JSON.stringify({
+                                                    id: localStorage.getItem('objectID'),
+                                                    leadForm
+                                                })
+                                            });
+                                            const response = await res.json();
+                                            if (response) {
+                                                toast.success('Lead structure saved!')
+                                            }
+                                }} className='flex items-center py-2 px-2 bg-purple-800 rounded-md'>
+                                    <Save className='h-4 text-white' />
+                                    <h3 className="text-[14px]  text-white">Save form</h3>
+                                </button>
+                            </div> : <></>}
+                        </div>
+                    </div>
+                </div>
+                {/* <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px]'>
                     {leads.map((item, index) => {
                         return (
                         <div key={index} className='flex flex-col gap-2 border-[1px] border-gray-400 rounded-lg p-4'>
@@ -816,7 +1015,7 @@ export default function Dashboard() {
                         </div>
                         )
                     })}
-                </div>
+                </div> */}
             </>)
         } else if (section === 'Settings') {
             return (
@@ -984,6 +1183,42 @@ export default function Dashboard() {
                             </label>
                             <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg' />                            
                         </div>
+
+                        <div className="flex flex-col gap-4 md:w-[50%]">
+                            <label htmlFor="response_length" className="text-left">
+                                Chatbot response length
+                            </label>
+                            <select value={data.responselength} onChange={(e) => setData((prev) => { return { ...prev, responselength: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
+                                <option value='short'>Short</option>
+                                <option value='medium'>Medium</option>
+                                <option value='long'>Long</option>
+                            </select>                         
+                        </div>
+
+                        <div className='flex items-center gap-2 w-[50%] mt-10'>
+                            <div className="flex gap-4 w-[50%]">
+                                <Switch 
+                                    checked={data.showimg}
+                                    onCheckedChange={(e) => {
+                                        setData((prev) => { return { ...prev, showimg: !data.showimg } })
+                                    }} className='data-[state=checked]:bg-purple-800 data-[state=unchecked]:bg-gray-100' 
+                                />
+                                <label htmlFor="botname" className="text-left">
+                                    Show images
+                                </label>
+                            </div>
+                            <div className="flex gap-4 w-[50%]">
+                                <Switch 
+                                    checked={data.showsource}
+                                    onCheckedChange={(e) => {
+                                        setData((prev) => { return { ...prev, showsource: !data.showsource } })
+                                    }} className='data-[state=checked]:bg-purple-800 data-[state=unchecked]:bg-gray-100' 
+                                />
+                                <label htmlFor="botname" className="text-left">
+                                    Show sources
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <div className='flex justify-end mt-10'>
@@ -991,7 +1226,7 @@ export default function Dashboard() {
                     </div>
                 </>
             )
-        } else if (section === 'Source') {
+        } else if (section === 'Training') {
             return (
                 <>
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Source</h3>
@@ -1002,7 +1237,7 @@ export default function Dashboard() {
                             <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
                             <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
                             <div className='flex justify-end w-full mt-10'>
-                                <button onClick={linkSync} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Sync Links'}</button>  
+                                <button onClick={linkSync} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Add Links'}</button>  
                             </div>
                         </div>
                         
@@ -1036,14 +1271,14 @@ export default function Dashboard() {
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Articles (Blog)</h3>
                     <p className='text-[14px] md:text-[16px]'>You can add the articles posted in your website here.</p>
                     <div className='flex flex-col gap-5 pt-10 text-[14px] md:text-[16px]'>
-                        <div className='flex gap-2'>
-                            <div className="flex flex-col gap-4 md:w-[50%]">
+                        <div className='flex flex-col md:flex-row gap-2'>
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                 <label className="text-left">
                                     Title
                                 </label>
                                 <input onChange={(e) => setArticle((prev) => { return { ...prev, title: e.target.value } })} value={article.title} id='title' placeholder='Enter the title of the article here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
                             </div>
-                            <div className="flex flex-col gap-4 md:w-[50%]">
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                 <label className="text-left">
                                     Link
                                 </label>
@@ -1051,7 +1286,7 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-4 md:w-[50%]">
+                        <div className="flex flex-col gap-4 w-full md:w-[50%]">
                             <label htmlFor="botname" className="text-left">
                                 Description
                             </label>
@@ -1066,9 +1301,31 @@ export default function Dashboard() {
                             <button onClick={articlesUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
                         </div>
                     </div>
-                    <div className='flex flex-col gap-5 mt-2 border-2 border-gray-400 pt-5 rounded-lg mt-[50px] hidden md:block'>
-                        <h1 className='text-center text-lg font-semibold'>Articles</h1>
-                        <table className='w-full'>
+                    <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
+                        <Table>
+                            {articlesList.length === 0 ? <TableCaption className='mt-5'>There are no records at the moment.</TableCaption> : <></>}
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Title</TableHead>
+                                    <TableHead>Description</TableHead>
+                                    <TableHead>Link</TableHead>
+                                    <TableHead>Image</TableHead>
+                                    <TableHead>Delete</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {articlesList.map((item, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">{item.title}</TableCell>
+                                        <TableCell>{item.description}</TableCell>
+                                        <TableCell>{item.link}</TableCell>
+                                        <TableCell className="text-right">{item.img ? <img className='h-[5rem] w-full  rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}</TableCell>
+                                        <TableCell><button onClick={() => deleteArticle(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        {/* <table className='w-full'>
                             <thead>
                                 <tr className='text-left'>
                                     <th className='p-4 border-t-2 border-r-2 border-gray-400'>Title</th>
@@ -1092,7 +1349,7 @@ export default function Dashboard() {
                                     </tr>}
                                 
                             </tbody>
-                        </table>
+                        </table> */}
                     </div>
                 </>
             )
@@ -1138,7 +1395,7 @@ export default function Dashboard() {
                     </Accordion> : <div className='flex justify-center items-center min-h-[10rem]'><h1>No FAQs added at the moment</h1></div>}
                 </>
             )
-        } else if (section === 'Plan') {
+        } else if (section === 'Membership') {
             return (
                 <>
                     <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plan</h3>
@@ -1153,18 +1410,25 @@ export default function Dashboard() {
             <div className="md:flex w-full">
                 <ul className="flex md:flex-col gap-2 md:gap-0 md:space-y md:space-y-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0 overflow-x-auto md:overflow-visible py-3 md:py-0">
                     {sideMenu.map(({ Icon, ...item}) => (
-                        item.title !== 'Logout' ? <li key={item.id}>
-                            <button onClick={() => setActiveSection(item.title)} className={`inline-flex items-center px-4 py-3 rounded-lg  ${activeSection === item.title ? 'bg-purple-800 text-white hover:bg-purple-700 hover:text-gray-100 border-2 border-purple-800' : 'border-2 border-slate-200 hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
+                        <li key={item.id}>
+                            <button onClick={() => setActiveSection(item.title)} className={`inline-flex items-center px-4 py-3 ${activeSection === item.title ? 'border-l-4 hover:text-white border-purple-800 hover:bg-purple-700 text-purple-800' : 'hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
                                 <Icon />
                                 {item.title}
                             </button>
-                        </li>:
-                        <Dialog open={logoutModalOpen} key={item.id}>
+                        </li>
+                    ))}
+                    <div className='flex flex-col items-center gap-5 border-2 border-slate-200 px-4 py-3 rounded-lg'>
+                        
+                        <div className='flex flex-col'>
+                            <h3 className="flex gap-2 md:text-[14px] font-bold text-gray-500 mb-2"><span>Messages:</span> <span>{messageCount}/5000</span></h3>   
+                            <Progress indicatorClass='bg-purple-700' value={messageCount * 100/5000} />
+                        </div>
+                        <Dialog open={logoutModalOpen}>
                             <DialogTrigger asChild>
                             <li>
-                                <button onClick={() => { setLogoutModalOpen(true); }} className={`inline-flex items-center px-4 py-3 rounded-lg  ${activeSection === item.title ? 'bg-purple-800 text-white hover:bg-purple-700 hover:text-gray-100 border-2 border-purple-800' : 'border-2 border-slate-200 hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
-                                    <Icon />
-                                    {item.title}
+                                <button onClick={() => { setLogoutModalOpen(true); }} className='inline-flex items-center px-2 py-1 rounded-md bg-purple-800 text-white hover:bg-purple-700 hover:text-gray-100 border-2 border-purple-800 duration-200' aria-current="page">
+                                    <Logout className='h-4' />
+                                    Logout
                                 </button>
                             </li>
                             </DialogTrigger>
@@ -1181,7 +1445,7 @@ export default function Dashboard() {
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
-                    ))}
+                    </div>
                 </ul>
                 <div className={`p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-lg w-full ${data ? '' : 'flex justify-center items-center'}`}>
                     {data ? getContent(activeSection, data) : <Loader />}
