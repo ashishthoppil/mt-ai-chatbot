@@ -82,7 +82,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     return (
         <>
             {section === 0 && <>
-                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'h-[60vh]' : 'h-[42vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
+                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'max-h-[70vh]' : 'h-[42vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
                     <div>
                         {messages.map((msg, idx) => (
                         <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
@@ -152,11 +152,11 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             setSessionTracked(true);
                         }
                     }}>
-                    <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='rounded-lg h-[100px] py-[10px] px-[10px] w-[100%]'>
+                    <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='flex items-center rounded-lg py-[10px] px-[10px] w-[100%]'>
                         <textarea
                             ref={inputRef}
                             style={{ backgroundColor: botInfo.lColor, color: botInfo.color }}
-                            className={`w-full outline-none resize-none text-[14px] ${tinycolor(botInfo.lColor).getLuminance() < 0.3 ? 'placeholder-gray-500' : 'placeholder-gray-500'}`}
+                            className={`w-[90%] outline-none resize-none text-[14px] ${tinycolor(botInfo.lColor).getLuminance() < 0.3 ? 'placeholder-gray-500' : 'placeholder-gray-500'}`}
                             value={input}
                             onChange={handleInputChange}
                             onKeyDown={(event) => { 
@@ -173,7 +173,15 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             }
                             placeholder={botInfo.placeholder ? botInfo.placeholder : "Ask me anything..."}
                         />
-                        <div className='flex justify-end'>  
+                        <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500 w-[10%]`}>
+                                <Image
+                                    src="/icons/send.png"
+                                    width={20}
+                                    height={20}
+                                    alt="Send Message"
+                                />
+                            </button>
+                        {/* <div className='flex justify-end'>  
                             <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] relative bottom-4 ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
                                 <Image
                                     src="/icons/send.png"
@@ -182,7 +190,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     alt="Send Message"
                                 />
                             </button>
-                        </div>
+                        </div> */}
                     </div>
                     {!botInfo.hideBranding ? <span className='text-[14px]' style={{ color: botInfo.color }}><span className='font-semibold'>Powered by</span> <span style={{ backgroundColor: botInfo.color }} className='text-white rounded-full py-1 px-2'>Kulfi AI</span></span> : <></>}
                 </form>
