@@ -38,6 +38,7 @@ export default function Chat() {
         const mColor = `#${tinycolor(data.data.color).lighten(20).toHexString().slice(1)}`
         setBotInfo({
           id,
+          organization: data.data.organization,
           color: data.data.color,
           lColor,
           mColor, 
@@ -47,7 +48,11 @@ export default function Chat() {
           botAvatar: data.data.botAvatar,
           hideBranding: data.data.hideBranding,
           initialmsg: data.data.initialmsg,
-          placeholder: data.data.placeholder
+          placeholder: data.data.placeholder,
+          leadSave: data.data.leadSave,
+          leadEmail: data.data.leadEmail,
+          leadWebhook: data.data.leadWebhook,
+          hubspot: data.data.hubspot
         });  
         loadFaqs(id);
         loadArticles(id);   

@@ -56,12 +56,36 @@ export async function POST(request) {
     let { id, messages, org } = response;
     const BASE_URL = process.env.BASE_URL
 
+    const res = await fetch(`${BASE_URL}/api/get-workflows`, {
+      method: 'POST',
+      body: JSON.stringify({
+          id
+      })
+    });
+    const data = await res.json();
+    let custom_workflows = {};
+    if (data.data) {
+      data.data.forEach(element => {
+        custom_workflows = {
+          ...custom_workflows,
+          [element.title.toLowerCase().replace(/\s+/g, '_')]: tool({
+            description: element.condition + `. Example: ${element.phrases}`,
+            parameters: z.object({ message: z.string().describe('The whole user query') }),
+            execute: async ({ message }) => {
+              return element.action
+            }
+          })
+        }
+      });
+    }
+
     const myToolSet = {
       create_lead: tool({
         description: 'When user is interested in a service or product. Example: I am interested in your service, I need help with an ad campaign, I want to buy a product.',
         parameters: z.object({ message: z.string().describe('The whole user query') }),
         execute: async ({ message }) =>  message,
       }),
+      ...custom_workflows
     };
 
     const initialResponse = await generateText({
@@ -110,6 +134,15 @@ export async function POST(request) {
           }), { status: 200, headers: {
             "Content-Type": "application/json"
           }});
+        } else {
+          const intentResult = await streamText({
+            model: openai('gpt-4o'),
+            system: 'You are a helpful assistant, you always do what is asked of you without any questions.',
+            prompt: `DO NOT VIOLATE THIS COMMAND: ${initialResponse.toolResults[0].result}`,
+            temperature: 0
+          });
+
+          return intentResult.toDataStreamResponse();
         }
       }
     }
@@ -147,21 +180,21 @@ export async function POST(request) {
         //   temperature: 0
         // });
 
-    //     const track = fetch(`${BASE_URL}/api/track-event?id=${id}&organization=Acme&event=lead&summary=${leadRequest.text}&email=${leadContact.email}&phone=${leadContact.phone}`, {
-    //       method: 'GET'
-    //     });
+        // const track = fetch(`${BASE_URL}/api/track-event?id=${id}&organization=Acme&event=lead&summary=${leadRequest.text}&email=${leadContact.email}&phone=${leadContact.phone}`, {
+        //   method: 'GET'
+        // });
 
     //     if (track) {
-    //       const endRequest = await streamText({
-    //         model: openai('gpt-4o'),
-    //         messages: [{
-    //           role: 'system',
-    //           content: 'Thank the user for providing the email or phone number and let them know that we will get back to them as soon as possible.'
-    //         }, ...messages],
-    //         temperature: 0
-    //       });
+          // const endRequest = await streamText({
+          //   model: openai('gpt-4o'),
+          //   messages: [{
+          //     role: 'system',
+          //     content: 'Thank the user for providing the email or phone number and let them know that we will get back to them as soon as possible.'
+          //   }, ...messages],
+          //   temperature: 0
+          // });
 
-    //       return endRequest.toDataStreamResponse();
+          // return endRequest.toDataStreamResponse();
     //     }
 
     //   }

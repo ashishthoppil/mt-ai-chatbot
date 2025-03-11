@@ -47,7 +47,13 @@ const Loader = () => {
 export default function Dashboard() {
     const [articleFile, setArticleFile] = useState(null);
     const [complaints, setComplaints] = useState();
+    const [hubspot, setHubspot] = useState({
+        portal: '',
+        form: ''
+    });
     const [feedback, setFeedback] = useState();
+    const [leadEmail, setLeadEmail] = useState('');
+    const [leadWebhook, setLeadWebhook] = useState('');
     const [generalQueries, setGeneralQueries] = useState();
     const [clickData, setClickData] = useState([]);
     const [sessionData, setSessionData] = useState([]);
@@ -59,23 +65,34 @@ export default function Dashboard() {
     const [messageCount, setMessageCount] = useState(0);
     const [location, setLocation] = useState({});
     const [engagementRate, setEngagementRate] = useState(0);
-    const [activeSection, setActiveSection] = useState('Leads');
+    const [activeSection, setActiveSection] = useState('Settings');
     const [isLoading, setIsLoading] = useState();
     const [isDeleting, setIsDeleting] = useState();
     const [isKBLoading, setIsKBLoading] = useState();
     const [clickSelector, setClickSelector] = useState('Day');
     const [sessionSelector, setSessionSelector] = useState('Day');
+    const [isWorkflowSaving, setIsWorkflowSaving] = useState(false);
     const [faq, setFaq] = useState({
         question: '',
         answer: ''
     });
     const [faqList, setFaqList] = useState([]);
+    const [leadSave, setLeadSave] = useState('');
     const [article, setArticle] = useState({
         title: '',
         description: '',
         link: ''
     });
+    const [workflow, setWorkflow] = useState({
+        title: '',
+        condition: '',
+        phrases: '',
+        action: '',
+        webhook: '',
+        parameters: ''
+    });
     const [articlesList, setArticlesList] = useState([]);
+    const [workflowsList, setWorkflowsList] = useState([]);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [urlParams, setUrlParams] = useState({
         id: '',
@@ -89,6 +106,21 @@ export default function Dashboard() {
     const leadRef = useRef();
     const botLink = useRef();
     const router = useRouter();
+
+    const loadWorkflows = async () => {
+        const res = await fetch('/api/get-workflows', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID')
+            })
+        });
+        const data = await res.json();
+        if (data.data) {
+            setWorkflowsList(data.data);
+        } else {
+            setWorkflowsList([]);
+        }
+    }
 
     const loadFaqs = async () => {
         const res = await fetch('/api/get-questions', {
@@ -131,6 +163,13 @@ export default function Dashboard() {
         if (data.data) {
             setData(data.data);
             setLeadForm(data.data.leadForm ? data.data.leadForm : []);
+            setLeadSave(data.data.leadSave ? data.data.leadSave : '');
+            setLeadEmail(data.data.leadEmail ? data.data.leadEmail : '');
+            setLeadWebhook(data.data.leadWebhook ? data.data.leadWebhook : '');
+            setHubspot(data.data.hubspot ? data.data.hubspot : {
+                portal: '',
+                form: ''
+            });
             let updatedLinks = '';
             if (data.data.links) {
                 data.data.links.forEach((element, index) => {
@@ -198,6 +237,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         loadData();
+        loadWorkflows();
+        loadFaqs();
+        loadArticles();
     }, []);
 
     useEffect(() => {
@@ -250,78 +292,37 @@ export default function Dashboard() {
         });
     }
 
+    const removeField = (id) => {
+        const updatedData = []
+        
+        leadForm.forEach((item) => {
+            if (item.id !== id) {
+                updatedData.push(item);
+            }
+        });
+        setLeadForm(updatedData);
+    }
+
     const getField = (item) => {
-        switch (item.type) {
-            case 'text':
-                return (
-                    <div className='flex justify-between items-center gap-5 w-full'>
-                        <div className='flex flex-col w-[20%]'>
-                            <label>Field label</label>
-                            <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
-                        </div>
-                        <div className='flex flex-col w-[20%]'>
-                            <label>Field type</label>
-                            <select onChange={(e) => inputTypeHandler(item.id, 'type' , e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='text'>
-                                <option value='text'>Text</option>
-                                <option value='textarea'>Textarea</option>
-                                <option value='tel'>Phone</option>
-                                <option value='email'>Email</option>
-                            </select>
-                        </div>
-                        <div className='flex flex-col  w-[20%]'>
-                            <label>Field Placeholder</label>
-                            <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
-                        </div>
-                        <div className='flex gap-2 items-center w-[20%]'>
-                            <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
-                            <span>Required</span>
-                        </div>
-                    </div>
-                );
-            
-                case 'textarea':
+        if (item) {
+            switch (item.type) {
+                case 'text':
                     return (
-                        <div className='flex justify-between items-center gap-2 w-full'>
+                        <div className='flex justify-between items-center gap-5 w-full'>
                             <div className='flex flex-col w-[20%]'>
                                 <label>Field label</label>
                                 <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                             </div>
                             <div className='flex flex-col w-[20%]'>
                                 <label>Field type</label>
-                                <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='textarea'>
+                                <select onChange={(e) => inputTypeHandler(item.id, 'type' , e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='text'>
                                     <option value='text'>Text</option>
                                     <option value='textarea'>Textarea</option>
                                     <option value='tel'>Phone</option>
                                     <option value='email'>Email</option>
                                 </select>
                             </div>
-                            <div className='flex flex-col w-[20%]'>
-                                <label>Field Placeholder</label>
-                                <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
-                            </div>
-                            <div className='flex gap-2 items-center w-[20%]'>
-                                <input checked={item.isRequired} type='checkbox' onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} />
-                                <span>Required</span>
-                            </div>
-                        </div>
-                    );
-                    case 'tel':
-                    return (
-                        <div className='flex justify-between items-center gap-2 w-full'>
-                            <div className='flex flex-col w-[20%]'>
-                                <label>Field label</label>
-                                <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
-                            </div>
-                            <div className='flex flex-col w-[20%]'>
-                                <label>Field type</label>
-                                <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='tel'>
-                                    <option value='text'>Text</option>
-                                    <option value='textarea'>Textarea</option>
-                                    <option value='tel'>Phone</option>
-                                    <option value='email'>Email</option>
-                                </select>
-                            </div>
-                            <div className='flex flex-col w-[20%]'>
+                            <div className='flex flex-col  w-[20%]'>
                                 <label>Field Placeholder</label>
                                 <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                             </div>
@@ -329,9 +330,13 @@ export default function Dashboard() {
                                 <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
                                 <span>Required</span>
                             </div>
+                            <div className='flex justify-center items-end'>
+                                <button onClick={() => removeField(item.id)} className='bg-red-500 rounded-md py-2 px-1'><TrashIcon className='h-4 text-white' /></button>
+                            </div>
                         </div>
                     );
-                    case 'email':
+                
+                    case 'textarea':
                         return (
                             <div className='flex justify-between items-center gap-2 w-full'>
                                 <div className='flex flex-col w-[20%]'>
@@ -340,7 +345,36 @@ export default function Dashboard() {
                                 </div>
                                 <div className='flex flex-col w-[20%]'>
                                     <label>Field type</label>
-                                    <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='email'>
+                                    <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='textarea'>
+                                        <option value='text'>Text</option>
+                                        <option value='textarea'>Textarea</option>
+                                        <option value='tel'>Phone</option>
+                                        <option value='email'>Email</option>
+                                    </select>
+                                </div>
+                                <div className='flex flex-col w-[20%]'>
+                                    <label>Field Placeholder</label>
+                                    <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                </div>
+                                <div className='flex gap-2 items-center w-[20%]'>
+                                    <input checked={item.isRequired} type='checkbox' onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} />
+                                    <span>Required</span>
+                                </div>
+                                <div className='flex justify-center items-end'>
+                                    <button onClick={() => removeField(item.id)} className='bg-red-500 rounded-md py-2 px-1'><TrashIcon className='h-4 text-white' /></button>
+                                </div>
+                            </div>
+                        );
+                        case 'tel':
+                        return (
+                            <div className='flex justify-between items-center gap-2 w-full'>
+                                <div className='flex flex-col w-[20%]'>
+                                    <label>Field label</label>
+                                    <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                </div>
+                                <div className='flex flex-col w-[20%]'>
+                                    <label>Field type</label>
+                                    <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='tel'>
                                         <option value='text'>Text</option>
                                         <option value='textarea'>Textarea</option>
                                         <option value='tel'>Phone</option>
@@ -355,10 +389,43 @@ export default function Dashboard() {
                                     <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
                                     <span>Required</span>
                                 </div>
+                                <div className='flex justify-center items-end'>
+                                    <button onClick={() => removeField(item.id)} className='bg-red-500 rounded-md py-2 px-1'><TrashIcon className='h-4 text-white' /></button>
+                                </div>
                             </div>
                         );
-            default:
-                return <></>
+                        case 'email':
+                            return (
+                                <div className='flex justify-between items-center gap-2 w-full'>
+                                    <div className='flex flex-col w-[20%]'>
+                                        <label>Field label</label>
+                                        <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                    </div>
+                                    <div className='flex flex-col w-[20%]'>
+                                        <label>Field type</label>
+                                        <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='email'>
+                                            <option value='text'>Text</option>
+                                            <option value='textarea'>Textarea</option>
+                                            <option value='tel'>Phone</option>
+                                            <option value='email'>Email</option>
+                                        </select>
+                                    </div>
+                                    <div className='flex flex-col w-[20%]'>
+                                        <label>Field Placeholder</label>
+                                        <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                    </div>
+                                    <div className='flex gap-2 items-center w-[20%]'>
+                                        <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
+                                        <span>Required</span>
+                                    </div>
+                                    <div className='flex justify-center items-end'>
+                                        <button onClick={() => removeField(item.id)} className='bg-red-500 rounded-md py-2 px-1'><TrashIcon className='h-4 text-white' /></button>
+                                    </div>
+                                </div>
+                            );
+                default:
+                    return <></>
+            }
         }
     }
 
@@ -523,8 +590,22 @@ export default function Dashboard() {
         }
     }
 
+    const workflowUpdate = async () => {
+        setIsWorkflowSaving(true);
+        const res = await fetch('/api/save-workflow', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID'),
+                workflow
+            })
+        });
+        if (res) {
+            setIsWorkflowSaving(false);
+            loadWorkflows();
+            toast.success("Workflow added!");
+        }        
+    }
     const articlesUpdate = async () => {
-
         // Validations
         if (article.title === '' || article.description === '' || article.link === '') {
             toast.success("Please enter all required fields!");
@@ -714,6 +795,25 @@ export default function Dashboard() {
         const options = { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' };
         const formattedDate = date.toLocaleDateString('en-GB', options);
         return formattedDate;
+    }
+
+    const hubspotHandler = (key, value) => {
+        setHubspot((prev) => ({
+            ...prev,
+            [key]: value
+        }))
+    }
+
+    const leadSaveHandler = async (value) => {
+        setLeadSave(value);
+        const res = await fetch('/api/save-lead-type', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID'),
+                leadSave: value
+            })
+        });
+        const response = await res.json();
     }
 
     const getContent = (section, data) => {
@@ -953,9 +1053,28 @@ export default function Dashboard() {
                 <p className='text-[14px] md:text-[16px]'>Manage lead forms and leads generated by the chatbot right here.</p>
                 <div className='flex flex-col gap-3 mt-5'>
                     <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Lead Form</h3>
-                    <div className='flex gap-5'>
+                    <p className='text-[14px] md:text-[16px]'>Where do you wish to save your leads?</p>
+                    <RadioGroup defaultValue={leadSave}>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem onClick={(e) => leadSaveHandler('kulfi')} value="kulfi" id="kulfi" />
+                            <label htmlFor="kulfi">Save with Kulfi AI</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem onClick={(e) => leadSaveHandler('email')} value="email" id="email" />
+                            <label htmlFor="email">Send as an Email</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem onClick={(e) => leadSaveHandler('webhook')} value="webhook" id="webhook" />
+                            <label htmlFor="webhook">Webhook</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem onClick={(e) => leadSaveHandler('hubspot')} value="hubspot" id="hubspot" />
+                            <label htmlFor="hubspot">Use hubspot form</label>
+                        </div>
+                    </RadioGroup>
+                    {leadSave === 'kulfi' || leadSave === 'email' || leadSave === 'webhook' ? <div className='flex gap-5'>
                         <div ref={leadRef} className='flex flex-col gap-2 border-2 border-dashed border-gray-200 p-5 w-full rounded-md'>
-                            {leadForm && leadForm.map((item) => {
+                            {leadForm.length !== 0 && leadForm.map((item) => {
                                 return (
                                     <div key={item.id}>{getField(item)}</div>
                                 )
@@ -964,10 +1083,18 @@ export default function Dashboard() {
                                 <PlusIcon className='h-4 text-purple-800' />
                                 <h3 className="font-bold text-purple-800 text-[14px]">Add new field</h3>
                             </button>
+                            {leadSave === 'email' ? <div className='flex flex-col gap-2 w-[50%] mt-5'>
+                                <label>Email address to recieve the leads</label>
+                                <input className='p-2 outline-none border-2 border-gray-200' type='email' placeholder='Enter email address' value={leadEmail} onChange={(e) => setLeadEmail(e.target.value)}/>
+                            </div> : <></>}
+                            {leadSave === 'webhook' ? <div className='flex flex-col gap-2 w-[50%] mt-5'>
+                                <label>Webhook Url</label>
+                                <input className='p-2 outline-none border-2 border-gray-200' type='url' placeholder='Enter webhook url' value={leadWebhook} onChange={(e) => setLeadWebhook(e.target.value)}/>
+                            </div> : <></>}
                             <div className='flex flex-col gap-2'>
-                                
+
                             </div>
-                            {leadForm && leadForm.length > 0 ? <div className='flex gap-2 justify-end'>
+                            <div className='flex gap-2 justify-end'>
                                 <button onClick={() => setLeadForm([])} className='flex items-center py-2 px-2 bg-purple-800 rounded-md'>
                                     <RestartAlt className='h-4 text-white' />
                                     <h3 className="text-[14px]  text-white">Reset form</h3>
@@ -977,7 +1104,9 @@ export default function Dashboard() {
                                                 method: 'POST',
                                                 body: JSON.stringify({
                                                     id: localStorage.getItem('objectID'),
-                                                    leadForm
+                                                    leadForm,
+                                                    leadEmail,
+                                                    leadWebhook
                                                 })
                                             });
                                             const response = await res.json();
@@ -988,37 +1117,67 @@ export default function Dashboard() {
                                     <Save className='h-4 text-white' />
                                     <h3 className="text-[14px]  text-white">Save form</h3>
                                 </button>
-                            </div> : <></>}
+                            </div>
                         </div>
-                    </div>
+                    </div> : <></>}
+                    {leadSave === 'hubspot' ? <div className='flex flex-col gap-2 border-2 border-dashed border-gray-200 p-5 w-full rounded-md'>
+                                <div className='flex gap-2'> 
+                                    <div className='flex flex-col w-[40%]'>
+                                        <label>Hubspot portal id</label>
+                                        <input value={hubspot.portal} onChange={(e) => hubspotHandler('portal', e.target.value)} placeholder='Hubsport portal id' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                    </div>
+                                    <div className='flex flex-col w-[40%]'>
+                                        <label>Hubspot form id</label>
+                                        <input value={hubspot.form} onChange={(e) => hubspotHandler('form', e.target.value)} placeholder='Hubsport form id' className='border-2 border-gray-200 rounded-md p-2' type='text' />
+                                    </div>
+                                </div>
+                                <div className='flex justify-end'>
+                                    <button onClick={async () => {
+                                                const res = await fetch('/api/save-hubspot', {
+                                                    method: 'POST',
+                                                    body: JSON.stringify({
+                                                        id: localStorage.getItem('objectID'),
+                                                        hubspot
+                                                    })
+                                                });
+                                                const response = await res.json();
+                                                if (response) {
+                                                    toast.success('Hubspot details saved!')
+                                                }
+                                    }} className='flex items-center py-2 px-2 bg-purple-800 rounded-md'>
+                                        <Save className='h-4 text-white' />
+                                        <h3 className="text-[14px]  text-white">Save details</h3>
+                                    </button>
+                                </div>
+                            </div> : <></>}
                 </div>
-                {/* <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px]'>
-                    {leads.map((item, index) => {
+                <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px]'>
+                    {leadSave === 'kulfi' && leads.map((item, index) => {
                         return (
                         <div key={index} className='flex flex-col gap-2 border-[1px] border-gray-400 rounded-lg p-4'>
                             <div className='flex flex-col'>
                                 <h3 className="md:text-[22px] font-bold text-purple-800 mb-2">Lead #{index + 1}</h3>
-                                {item.summary}
+                                <p className='text-[14px] md:text-[16px]'>The following information was extracted</p>
+                                <div className='flex flex-col gap-2 mt-5'>
+                                {
+                                    Object.entries(JSON.parse(item.leadData)).map((entry, index) => {
+                                        let key = entry[0];
+                                        let value = entry[1];
+                                        return <div key={index} className='flex gap-2'>
+                                            <span className='font-semibold'>{key}:</span> {value}
+                                        </div>
+                                    })
+                                }
+                                </div>
                             </div>
                             <div className='flex flex-col md:flex-row gap-2 items-center justify-between w-full'>
                                 <span className='text-[12px]'>Date: {getLeadDate(item.time)}</span>
-                                <div className='flex gap-2'>
-                                    {item.email !== 'null' ? <><a className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' href={`mailto:${item.email}`}><EmailOutlined className='h-4' />Email</a>
-                                    <button className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' onClick={(e) => {
-                                        navigator.clipboard.writeText(item.email);
-                                        toast.success("Email address has been copied!");
-                                    }}><CopyIcon className='h-4' />Copy email address</button></> : <></>}
-                                    {item.phone !== 'null' ? <><a className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' href={`tel:${item.phone}`}><Phone className='h-4' />Phone</a>
-                                    <button className='flex items-center text-[14px] text-white bg-purple-800 rounded-md p-1' onClick={(e) => {
-                                        navigator.clipboard.writeText(item.phone);
-                                        toast.success("Phone number has been copied!");
-                                    }}><CopyIcon className='h-4' />Copy phone no.</button></> : <></>}
-                                </div>
+                                
                             </div>
                         </div>
                         )
                     })}
-                </div> */}
+                </div>
             </>)
         } else if (section === 'Settings') {
             return (
@@ -1227,6 +1386,88 @@ export default function Dashboard() {
                     <div className='flex justify-end mt-10'>
                         <button onClick={settingsUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Updating...' : 'Update'}</button>  
                     </div>
+
+                    <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300 mt-5'>
+                        <h3 className="md:text-[24px] font-bold text-gray-500 mb-2">Custom Workflows</h3>
+                        <p className='text-[14px] md:text-[16px]'>You can add your custom workflows here.</p>
+                        <div className='flex flex-col gap-5 pt-10 text-[14px] md:text-[16px]'>
+                            <div className='flex flex-col md:flex-row gap-2'>
+                                <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                    <label className="text-left">
+                                        Title
+                                    </label>
+                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, title: e.target.value } })} value={workflow.title} id='title' placeholder='Enter the name of your workflow.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                </div>
+                                <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                    <label className="text-left">
+                                        Condition
+                                    </label>
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return { ...prev, condition: e.target.value } })} value={workflow.condition} id='condition' placeholder='Enter the condition in which the workflow is to be triggered.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg' />
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                <label htmlFor="botname" className="text-left">
+                                    Training Phrases
+                                </label>
+                                <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, phrases: e.target.value }})} value={workflow.phrases} placeholder="Example prompts to train the chatbot separated by commas" className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                            </div>
+
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                <label htmlFor="botname" className="text-left">
+                                    Action
+                                </label>
+                                <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, action: e.target.value }})} value={workflow.action} placeholder="The action that the chatbot must take." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                            </div>
+
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                <label className="text-left">
+                                    Webhook (if any)
+                                </label>
+                                <input type='url' onChange={(e) => setWorkflow((prev) => { return { ...prev, webhook: e.target.value } })} value={workflow.webhook} id='webhook' placeholder='Enter any webhooks you need to call.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            </div>
+
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                <label className="text-left">
+                                    Webhook parameters
+                                </label>
+                                <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters, comma separated' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            </div>
+
+                            <div className='flex justify-end items-end'>
+                                <button onClick={workflowUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
+                            </div>
+
+                            <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
+                                <Table>
+                                    {workflowsList.length === 0 ? <TableCaption className='mt-5'>No workflows have been added.</TableCaption> : <></>}
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Title</TableHead>
+                                            <TableHead>Condition</TableHead>
+                                            <TableHead>Phrases</TableHead>
+                                            <TableHead>Action</TableHead>
+                                            <TableHead>Webhook</TableHead>
+                                            <TableHead>Parameters</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {workflowsList.map((item) => (
+                                            <TableRow key={item.id}>
+                                                <TableCell className="font-medium">{item.title}</TableCell>
+                                                <TableCell>{item.condition}</TableCell>
+                                                <TableCell>{item.phrases}</TableCell>
+                                                <TableCell>{item.action}</TableCell>
+                                                <TableCell>{item.webhook}</TableCell>
+                                                <TableCell>{item.parameters}</TableCell>
+                                                <TableCell><button onClick={() => alert(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </div>
+                        </div>
+                    </div>
                 </>
             )
         } else if (section === 'Training') {
@@ -1328,31 +1569,6 @@ export default function Dashboard() {
                                 ))}
                             </TableBody>
                         </Table>
-                        {/* <table className='w-full'>
-                            <thead>
-                                <tr className='text-left'>
-                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Title</th>
-                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Description</th>
-                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Link</th>
-                                    <th className='p-4 border-t-2 border-r-2 border-gray-400'>Image</th>
-                                    <th className='p-4 border-t-2 border-gray-400'>Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {articlesList.length > 0 ? articlesList.map((item, index) => (
-                                    <tr key={index} className='text-left text-[14px]'>
-                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.title}</td>
-                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.description}</td>
-                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'><a className='flex gap-1 text-blue-400' href={item.link} target='_blank'>{item.link}<ExternalLinkIcon height={20} /></a></td>
-                                        <td className='p-4 border-t-2 border-r-2 border-gray-400'>{item.img ? <img className='h-[5rem] w-full  rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}</td>
-                                        <td className='flex justify-center item-center p-4 border-t-2 border-gray-400'><button onClick={() => deleteArticle(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></td>
-                                    </tr>
-                                )) : <tr className='text-center'>
-                                        <td colSpan={5} className='p-4 border-t-2 border-gray-400'>No records to show</td>
-                                    </tr>}
-                                
-                            </tbody>
-                        </table> */}
                     </div>
                 </>
             )

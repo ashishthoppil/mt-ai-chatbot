@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from "rehype-raw";
 import { useChat } from 'ai/react';
 import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
-import { Clock, ExternalLinkIcon, Newspaper } from 'lucide-react';
+import { Clock, ExternalLinkIcon, Loader2, Newspaper } from 'lucide-react';
 import HubspotForm from 'react-hubspot-form';
 import {
     Accordion,
@@ -98,35 +98,45 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </div>}</>
                         </div>
                         ))}
-
-                            {leadForm.length > 0 ?
-                                <div style={{ border: `1px solid ${botInfo.color}` }} className='w-full rounded-md shadow-md'>
-                                    <HubspotForm
-                                        portalId='242230551'
-                                        formId='1eaecae2-a52e-4c53-b315-f4e8c42322ad'
-                                        onSubmit={() => console.log('Submit!')}
-                                        onReady={(form) => console.log('Form ready!')}
-                                        loading={<div>Loading...</div>}
-                                    />
-                                </div>
-                            : <></>}
-                        {/* {leadForm.length > 0 ?
+                        {
+                            leadForm.length > 0 && botInfo.leadSave === 'hubspot' ? <div style={{ border: `1px solid ${botInfo.color}` }} className='w-full rounded-md shadow-md'>
+                                <HubspotForm
+                                    portalId={botInfo.hubspot.portal}
+                                    formId={botInfo.hubspot.form}
+                                    loading={<div className='flex gap-1 items-center w-full'><Loader2 className='h-4 text-gray-500 animate-spin' /> Loading</div>}
+                                />
+                            </div> : <></>
+                        }
+                        {leadForm.length > 0 && (botInfo.leadSave === 'email' || botInfo.leadSave === 'kulfi' || botInfo.leadSave === 'webhook') ?
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
                                 <div className='flex flex-col gap-5 w-[75%]'>
                                     <h1 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest. Please fill the form below so that our team can get back to you.</h1>
-                                    <form style={{ border: `1px solid ${botInfo.color}` }} className='flex flex-col gap-3 rounded-md shadow-md px-5 py-3 w-full' onSubmit={(e) => {
+                                    <form style={{ border: `1px solid ${botInfo.color}` }} className='flex flex-col gap-3 rounded-md shadow-md px-5 py-3 w-full' onSubmit={async (e) => {
                                         e.preventDefault();
-                                        alert(123);
+                                        const formData = {};
+                                        for (var i = 0; i < e.target.length - 1; i++) {
+                                            formData[e.target[i].name] = e.target[i].value
+                                        }
+
+                                        if (botInfo.leadSave === 'email') {
+                                            alert(`Sending to ${botInfo.leadEmail}`)
+                                        } else if (botInfo.leadSave === 'webhook') {
+                                            alert(`Sending to the webhook`)
+                                        } else if (botInfo.leadSave === 'kulfi') {
+                                            const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=lead&leadData=${JSON.stringify(formData)}`, {
+                                                method: 'GET'
+                                            });
+                                        }
                                     }}>
                                         {leadForm.map((item) => {
                                             return (
                                                 <div key={item.id} className='flex flex-col gap-1'>
                                                     <label style={{ color: botInfo.color }} className='font-semibold text-[12px]'>{item.label}</label>
                                                     {item.type === 'textarea' ? 
-                                                        <textarea placeholder={item.placeholder} className='text-[12px] border-2 border-gray-200 rounded-md px-2 py-2 outline-none'  required={item.isRequired}></textarea> :
-                                                        <input placeholder={item.placeholder} className='text-[12px] border-2 border-gray-200 rounded-md px-2 py-2 outline-none' type={item.type} required={item.isRequired} />
+                                                        <textarea name={item.label} placeholder={item.placeholder} className='text-[12px] border-2 border-gray-200 rounded-md px-2 py-2 outline-none'  required={item.isRequired}></textarea> :
+                                                        <input name={item.label} placeholder={item.placeholder} className='text-[12px] border-2 border-gray-200 rounded-md px-2 py-2 outline-none' type={item.type} required={item.isRequired} />
                                                     }
                                                 </div>
                                             )
@@ -134,7 +144,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                         <button className='px-2 py-1 rounded-md text-[14px]' style={{ backgroundColor: botInfo.color, color: 'white', border: `1px solid ${botInfo.color}` }}>Submit</button>
                                     </form> 
                                 </div>
-                            </div>: <></>} */}
+                            </div>: <></>}
                         {isLoading && (
                             <div className='flex gap-2 px-[20px]'>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="64px" viewBox="0 0 512 50" xmlSpace="preserve">

@@ -9,14 +9,11 @@ export async function POST(req) {
 
   const request = await req.json();
     try {
-      console.log('request.leadEmail', request.leadEmail);
         const result = await db.collection('clients').updateOne(
             { _id: new ObjectId(request.id) },
             {
               $set: { 
-                leadForm: request.leadForm, 
-                leadEmail: request.leadEmail, 
-                leadWebhook: request.leadWebhook, 
+                hubspot: request.hubspot, 
               },
               $currentDate: { lastModified: true }
             }
