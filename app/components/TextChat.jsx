@@ -99,9 +99,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         ))}
                         {leadForm.length > 0 ?
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
-                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
+                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
-                                <div className='flex flex-col gap-5'>
+                                <div className='flex flex-col gap-5 w-[75%]'>
                                     <h1 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest. Please fill the form below so that our team can get back to you.</h1>
                                     <form style={{ border: `1px solid ${botInfo.color}` }} className='flex flex-col gap-3 rounded-md shadow-md px-5 py-3 w-full' onSubmit={(e) => {
                                         e.preventDefault();
