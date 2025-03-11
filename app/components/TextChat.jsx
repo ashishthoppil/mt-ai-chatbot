@@ -99,11 +99,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         </div>
                         ))}
 
-                        {leadForm.length > 0 ?
-                            <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
-                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
-                                <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
-                                <div style={{ border: `1px solid ${botInfo.color}` }} className='w-[75%] rounded-md shadow-md'>
+                            {leadForm.length > 0 ?
+                                <div style={{ border: `1px solid ${botInfo.color}` }} className='w-full rounded-md shadow-md'>
                                     <HubspotForm
                                         portalId='242230551'
                                         formId='1eaecae2-a52e-4c53-b315-f4e8c42322ad'
@@ -112,7 +109,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                         loading={<div>Loading...</div>}
                                     />
                                 </div>
-                            </div>: <></>}
+                            : <></>}
                         {/* {leadForm.length > 0 ?
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
