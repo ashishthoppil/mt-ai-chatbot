@@ -5,6 +5,7 @@ import rehypeRaw from "rehype-raw";
 import { useChat } from 'ai/react';
 import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
 import { Clock, ExternalLinkIcon, Newspaper } from 'lucide-react';
+import HubspotForm from 'react-hubspot-form';
 import {
     Accordion,
     AccordionContent,
@@ -97,7 +98,22 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </div>}</>
                         </div>
                         ))}
+
                         {leadForm.length > 0 ?
+                            <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
+                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
+                                <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
+                                <div style={{ border: `1px solid ${botInfo.color}` }} className='w-[75%] rounded-md shadow-md'>
+                                    <HubspotForm
+                                        portalId='242230551'
+                                        formId='1eaecae2-a52e-4c53-b315-f4e8c42322ad'
+                                        onSubmit={() => console.log('Submit!')}
+                                        onReady={(form) => console.log('Form ready!')}
+                                        loading={<div>Loading...</div>}
+                                    />
+                                </div>
+                            </div>: <></>}
+                        {/* {leadForm.length > 0 ?
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
@@ -121,7 +137,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                         <button className='px-2 py-1 rounded-md text-[14px]' style={{ backgroundColor: botInfo.color, color: 'white', border: `1px solid ${botInfo.color}` }}>Submit</button>
                                     </form> 
                                 </div>
-                            </div>: <></>}
+                            </div>: <></>} */}
                         {isLoading && (
                             <div className='flex gap-2 px-[20px]'>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="64px" viewBox="0 0 512 50" xmlSpace="preserve">

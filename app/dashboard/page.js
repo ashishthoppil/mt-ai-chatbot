@@ -964,6 +964,9 @@ export default function Dashboard() {
                                 <PlusIcon className='h-4 text-purple-800' />
                                 <h3 className="font-bold text-purple-800 text-[14px]">Add new field</h3>
                             </button>
+                            <div className='flex flex-col gap-2'>
+                                
+                            </div>
                             {leadForm && leadForm.length > 0 ? <div className='flex gap-2 justify-end'>
                                 <button onClick={() => setLeadForm([])} className='flex items-center py-2 px-2 bg-purple-800 rounded-md'>
                                     <RestartAlt className='h-4 text-white' />
