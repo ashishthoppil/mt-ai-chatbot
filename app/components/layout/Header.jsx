@@ -12,11 +12,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Poppins } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, Tag } from 'lucide-react';
+import { Eye, HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, Tag } from 'lucide-react';
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 })
@@ -77,8 +77,8 @@ export const Header = () => {
 
     return (
         pathname !== '/chat' && 
-        <div className={`flex flex-col md:flex-row w-full px-[10px] md:px-[25px] py-[2px] z-[10] ${pathname !== '/' ? 'border-[1px] border-gray-200' : ''}`}>
-            <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} bg-white w-full py-[2px] px-[10px] md:px-[75px]`}>
+        <div className={`flex flex-col ${pathname !== '/dashboard' && pathname !== '/get-started' ? 'bg-purple-300' : ''} md:flex-row w-full px-[10px] md:px-[25px] py-[2px] z-[10] ${pathname !== '/' ? 'border-[1px] border-gray-200' : ''}`}>
+            <header className={`flex items-center ${pathname !== '/get-started' ? 'justify-between' : 'justify-center'} w-full py-[2px] px-[10px] md:px-[75px]`}>
                 <div className='pb-2'>
                     <Link href='/' className='flex items-center gap-2 text-purple-800 font-bold text-[3rem]'>
                         <img style={{ width: '12rem' }} src="images/kulfi_logo.png" alt="bot"/>
@@ -90,7 +90,9 @@ export const Header = () => {
                     <button className='text-purple-800' onClick={() => setIsOpen((prev) => !prev)}>{isOpen ? <CloseTwoTone /> : <MenuIcon />}</button>
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
-                    {ls && localStorage && !localStorage.getItem('objectID') ? <div className='flex gap-5'>
+                    {ls && localStorage && !localStorage.getItem('objectID') ? <div className='flex items-center gap-5'>
+                        <Link className='text-purple-800 font-semibold' href=''>Use Cases</Link>
+                        <button className='text-purple-800 font-semibold'>Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
                             if (!open) {
                                 setCredentials({
@@ -100,7 +102,7 @@ export const Header = () => {
                             }
                         }}>
                             <DialogTrigger asChild>
-                                <button ref={loginRef} href="/login" className='flex gap-1 bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Login</button>
+                                <button ref={loginRef} href="/login" className='flex gap-1 bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-purple-200 hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Login</button>
                             </DialogTrigger>
                             <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
                                 <DialogHeader className='flex flex-col gap-2'>
@@ -137,8 +139,8 @@ export const Header = () => {
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
-                        <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Get started</Link>
-                        </div> : ls ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}
+                        <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Get started - for free!</Link>
+                        </div> : ls ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
                 </div></>}
             </header>
             {isOpen ?

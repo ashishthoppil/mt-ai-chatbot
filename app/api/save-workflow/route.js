@@ -1,17 +1,18 @@
-import { getAnalyticsDb } from "@/lib/analytics";
 import clientPromise from "@/lib/mongodb";
+import { getDbName } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 const bcrypt = require('bcrypt');
 
 export async function POST(req, res) {
-  const DB_NAME = process.env.DB_NAME
-  const client = await clientPromise;
-  const db = client.db(DB_NAME);
   const data = await req.json();
 
+  const DB_NAME = getDbName(data.organization);
+  const client = await clientPromise;
+  const db = client.db(DB_NAME);
+
   try {
-      const formattedData = { ...data.workflow, tenantId: data.id }
+      const formattedData = { ...data.workflow }
       const result = await db.collection('workflows').insertOne(formattedData);
     
       if (result.acknowledged) {

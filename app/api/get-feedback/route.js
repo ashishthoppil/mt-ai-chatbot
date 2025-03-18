@@ -2,33 +2,35 @@ import clientPromise from '@/lib/mongodb';
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { NextResponse } from 'next/server';
+import { getDbName } from '@/lib/utils';
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    const organization = searchParams.get('organization');
 
     const mongoClient = await clientPromise
-    const db = mongoClient.db('kulfi')
-    const queryCursor = await db.collection('queries').find({ "id": id, "queryType": 'Feedback' });
+    const DB_NAME = getDbName(organization)
+    const db = mongoClient.db(DB_NAME)
+    const queryCursor = await db.collection('chats').find({ "queryType": 'Feedback' });
     
     const queryDocs = await queryCursor.toArray();
 
-    let feedbacks = ''
+    let feedbacks = []
     
     for (let i = 0; i < queryDocs.length; i++) {
-        feedbacks += `${queryDocs[i].query} `
+        feedbacks = [...feedbacks, ...queryDocs[i].messages]
     }
 
-    if (feedbacks) {
+    if (feedbacks.length) {
 
         const systemMessage = [{
             role: 'system',
-            content: `You are a helpful assistant. Your job is to summarize the following text: ${feedbacks}.`
+            content: `You are a helpful assistant. Your job is to summarize the user's queries. Refer to the user role as 'visitors'.`
         }];
         
         const summary = await generateText({
             model: openai('gpt-4o-mini'), // or however your model is specified
-            messages: systemMessage,
+            messages: [...systemMessage, ...feedbacks],
             temperature: 0
         });
         return NextResponse.json({ success: true, data: { summary: summary.text, count: queryDocs.length } });

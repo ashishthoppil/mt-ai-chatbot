@@ -1,8 +1,8 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
-import { Poppins } from 'next/font/google'
+import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Queue, QueueOutlined, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 
 import { useEffect, useRef, useState } from 'react';
@@ -21,7 +21,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { AlignLeft, AlignRight, Check, CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, ListRestart, Loader2, NotebookTabsIcon, PlusIcon, Save, Tag, TrashIcon } from 'lucide-react';
+import { AlignLeft, AlignRight, BrainCircuit, BrainCircuitIcon, Check, CheckCircleIcon, Clock, Code, CopyIcon, ExternalLinkIcon, Eye, File, FileX, GaugeIcon, ListRestart, Loader2, NotebookTabsIcon, PlusIcon, Save, Tag, TestTube, TrashIcon, Upload, WatchIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import tinycolor from 'tinycolor2';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -30,7 +30,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 });
@@ -59,13 +59,14 @@ export default function Dashboard() {
     const [sessionData, setSessionData] = useState([]);
     const [KB, setKB] = useState(null);
     const [links, setLinks] = useState('');
+    const [addedLinks, setAddedLinks] = useState([]);
     const [leads, setLeads] = useState([]);
     const [leadForm, setLeadForm] = useState([]);
     const [data, setData] = useState();
     const [messageCount, setMessageCount] = useState(0);
     const [location, setLocation] = useState({});
     const [engagementRate, setEngagementRate] = useState(0);
-    const [activeSection, setActiveSection] = useState('Settings');
+    const [activeSection, setActiveSection] = useState('Code');
     const [isLoading, setIsLoading] = useState();
     const [isDeleting, setIsDeleting] = useState();
     const [isKBLoading, setIsKBLoading] = useState();
@@ -78,6 +79,7 @@ export default function Dashboard() {
     });
     const [faqList, setFaqList] = useState([]);
     const [leadSave, setLeadSave] = useState('');
+    const [fileNames, setFileNames] = useState([]);
     const [article, setArticle] = useState({
         title: '',
         description: '',
@@ -111,7 +113,8 @@ export default function Dashboard() {
         const res = await fetch('/api/get-workflows', {
             method: 'POST',
             body: JSON.stringify({
-                id: localStorage.getItem('objectID')
+                id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization')
             })
         });
         const data = await res.json();
@@ -126,7 +129,8 @@ export default function Dashboard() {
         const res = await fetch('/api/get-questions', {
             method: 'POST',
             body: JSON.stringify({
-                id: localStorage.getItem('objectID')
+                id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization')
             })
         });
         const data = await res.json();
@@ -141,7 +145,8 @@ export default function Dashboard() {
         const res = await fetch('/api/get-articles', {
             method: 'POST',
             body: JSON.stringify({
-                id: localStorage.getItem('objectID')
+                id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization')
             })
         });
         const data = await res.json();
@@ -156,11 +161,13 @@ export default function Dashboard() {
         const res = await fetch('/api/dashboard', {
             method: 'POST',
             body: JSON.stringify({
-                id: localStorage.getItem('objectID')
+                id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization')
             })
         });
         const data = await res.json();
         if (data.data) {
+            console.log('data.datadata.datadata.data', data.data);
             setData(data.data);
             setLeadForm(data.data.leadForm ? data.data.leadForm : []);
             setLeadSave(data.data.leadSave ? data.data.leadSave : '');
@@ -171,17 +178,23 @@ export default function Dashboard() {
                 form: ''
             });
             let updatedLinks = '';
-            if (data.data.links) {
-                data.data.links.forEach((element, index) => {
+
+            if (data.links) {
+                data.links.forEach((element, index) => {
                     if (element !== "") {
-                        if (index !== data.data.links.length - 1) {
-                            updatedLinks += element + '\n';
+                        if (index !== data.links.length - 1) {
+                            updatedLinks += element.link + '\n';
                         } else {
-                            updatedLinks += element;
+                            updatedLinks += element.link;
                         }
                     }
                 });
                 setLinks(updatedLinks);
+                setAddedLinks(data.links);
+            }
+
+            if (data.fileNames) {
+                setFileNames(data.fileNames)
             }
         } else {
             router.push('/');
@@ -225,13 +238,13 @@ export default function Dashboard() {
     
 
     const handleKBChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
+        if (e.target.files) {
             if (e.target.files[0].type !== 'application/pdf') {
-                alert('Please upload a valid PDF file.');
+                toast.error("Please upload a valid PDF file");
                 e.target.value = '';
                 return;
             }
-            setKB(e.target.files[0]);
+            setKB(e.target.files);
         }
     }
 
@@ -432,8 +445,8 @@ export default function Dashboard() {
     const sideMenu = [
         {
             id: 1,
-            title: 'Profile',
-            Icon: AccountCircleOutlined
+            title: 'Code',
+            Icon: Code
         },
         {
             id: 2,
@@ -514,6 +527,7 @@ export default function Dashboard() {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization'),
                 ...data
             })
         });
@@ -542,7 +556,7 @@ export default function Dashboard() {
 
     const faqsUpdate = async () => {
         if (faq.question === '' || faq.answer === '') {
-            toast.error("Please enter all required fields!");
+            toast.error("Please enter the FAQ details!");
             return;
         }
         setIsLoading(true);
@@ -550,6 +564,7 @@ export default function Dashboard() {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization'),
                 question: faq.question, 
                 answer: faq.answer
             })
@@ -574,7 +589,8 @@ export default function Dashboard() {
                 title: article.title, 
                 description: article.description,
                 link: article.link,
-                img: base64
+                img: base64,
+                organization: localStorage.getItem('organization')
             })
         });
         const response = await res.json();
@@ -596,13 +612,14 @@ export default function Dashboard() {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization'),
                 workflow
             })
         });
         if (res) {
             setIsWorkflowSaving(false);
             loadWorkflows();
-            toast.success("Workflow added!");
+            toast.success("Workflow has been added.");
         }        
     }
     const articlesUpdate = async () => {
@@ -614,7 +631,7 @@ export default function Dashboard() {
         const re = /^(https?|ftp):\/\/([^\s\/]*)\.([^\s\/]*)(?:\/[^\s]*)?$/i;
         const websiteFormat = re.test(article.link);
         if (!websiteFormat) {
-            toast.error("Please enter a proper url!");
+            toast.error("Please enter a valid url!");
             return;
         }
         let base64Image = "";
@@ -637,12 +654,13 @@ export default function Dashboard() {
             method: 'POST',
             body: JSON.stringify({
                 faqId: id, 
+                organization: localStorage.getItem('organization')
             })
         });
         if (res) {
             setIsDeleting(false);
             loadFaqs();
-            toast.success("Item deleted!");
+            toast.success("Item deleted.");
         }
     }
 
@@ -651,13 +669,14 @@ export default function Dashboard() {
         const res = await fetch('/api/remove-article', {
             method: 'POST',
             body: JSON.stringify({
-                articleId: id, 
+                articleId: id,
+                organization: localStorage.getItem('organization')
             })
         });
         if (res) {
             loadArticles();
             setIsDeleting(false);
-            toast.success("Item deleted!");
+            toast.success("Item deleted.");
         }
     }
 
@@ -684,19 +703,45 @@ export default function Dashboard() {
         }
     }, []);
 
-    const linkSync = async () => {
+    const addLinks = async () => {
         setIsLoading(true);
         const splitLinks = links.split('\n');
-        const res = await fetch('/api/sync-links', {
+        const res = await fetch('/api/add-links', {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization'),
                 links: splitLinks, 
             })
         });
-        if (res) {
+        const data = await res.json()
+        if (data) {
+            setAddedLinks(data.message)
             setIsLoading(false);
-            toast.success("Links have been synced!");
+            toast.success("Links have been added and ready to be synced!");
+        }
+    }
+
+    const linkSync = async () => {
+        // setIsLoading(true);
+        const splitLinks = links.split('\n');
+        for (const link of addedLinks) {
+            const res = await fetch('/api/sync-links', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: localStorage.getItem('objectID'),
+                    organization: localStorage.getItem('organization'),
+                    link, 
+                })
+            });
+            const data = await res.json();
+            if (data) {
+            console.log('datadata', data.message);
+
+                setAddedLinks(data.message)
+                // setIsLoading(false);
+                // toast.success("Links have been synced!");
+            }
         }
     }
 
@@ -706,17 +751,19 @@ export default function Dashboard() {
     
         try {
           setIsKBLoading(true)
-          const formData = new FormData()
-          formData.append('file', KB)
-          formData.append('id', localStorage.getItem('objectID'))
-    
-          const response = await fetch('/api/kb-upload', {
-            method: 'POST',
-            body: formData,
-          })
-    
-          if (response) {
-            loadData()
+          for (const file of KB) {
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('id', localStorage.getItem('objectID'))
+      
+            const response = await fetch(`/api/kb-upload?organization=${localStorage.getItem('organization')}`, {
+              method: 'POST',
+              body: formData,
+            })
+      
+            if (response) {
+              loadData()
+            }
           }
         } catch (error) {
           console.error('Upload error:', error)
@@ -727,7 +774,7 @@ export default function Dashboard() {
       }
 
     const getComplaintsSummary = async () => {
-        const response = await fetch(`/api/get-complaints?id=${localStorage.getItem('objectID')}`);
+        const response = await fetch(`/api/get-complaints?id=${localStorage.getItem('objectID')}&organization=${localStorage.getItem('organization')}`);
         const result = await response.json();
         setComplaints({
             summary: result.data.summary,
@@ -736,7 +783,7 @@ export default function Dashboard() {
     }
 
     const getFeedbackSummary = async () => {
-        const response = await fetch(`/api/get-feedback?id=${localStorage.getItem('objectID')}`);
+        const response = await fetch(`/api/get-feedback?id=${localStorage.getItem('objectID')}&organization=${localStorage.getItem('organization')}`);
         const result = await response.json();
         setFeedback({
             summary: result.data.summary,
@@ -745,7 +792,7 @@ export default function Dashboard() {
     }
 
     const getGeneralSummary = async () => {
-        const response = await fetch(`/api/get-general-query?id=${localStorage.getItem('objectID')}`);
+        const response = await fetch(`/api/get-general-query?id=${localStorage.getItem('objectID')}&organization=${localStorage.getItem('organization')}`);
         const result = await response.json();
         setGeneralQueries({
             summary: result.data.summary,
@@ -810,6 +857,7 @@ export default function Dashboard() {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization'),
                 leadSave: value
             })
         });
@@ -817,15 +865,19 @@ export default function Dashboard() {
     }
 
     const getContent = (section, data) => {
-        if (section === 'Profile') {
+        if (section === 'Code') {
             return (
                 <>
                     <h3 className="font-bold text-gray-900 mb-2 md:text-[32px]">Welcome {data && data.organization}, </h3>
                     <p className='text-[14px] md:text-[16px]'>This section provides an overview of the information you provided during registration. You can update or manage any details by editing the fields below.</p>
-                    <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg'>
-                        <p className='text-[14px] md:text-[16px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
+                    <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg text-[14px]'>
+                        <div className='flex justify-between'>
+                            <p className='text-[14px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
+                            <a target='_blank' href={`/chat?id=${urlParams.id}&cw=${urlParams.cw}&al=${data.alignment[0]}&sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 px-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'><TestTube height={15} /> Test chatbot</a>
+                        </div>
+                        
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
-                            <div className='flex justify-between items-start text-[14px] md:text-[16px] text-yellow-500 px-1'>
+                            <div className='flex justify-between items-start text-[14px] text-yellow-500 px-1'>
                                 <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&cw=${urlParams.cw}&al=${data.alignment[0]}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
@@ -833,45 +885,28 @@ export default function Dashboard() {
                                 }}><CopyIcon className='h-4 w-4' /></button>
                             </div>
                         </div>
+                        <div className='py-5'>
+                            <h3 className="font-semibold text-gray-500 mb-2 md:text-[22px]">Instructions</h3>
+                            <ol className='flex flex-col'>
+                                <li>1. Copy the above code snippet.</li>
+                                <li>2. Add your data (Links or PDF) from the 'Training' section and wait for the data to be added.</li>
+                                <li>3. Open your project in a code editor, look for the <span className='font-bold'>{'<head>'}</span> section. It should most likely be in a root file for newer technologies (Eg: main.js, index,js) In case of a WordPress website, modify the theme files or install a header modifying plugin.</li>
+                                <li>4. Paste the copied snippet.</li>
+                                <li>5. Refresh the page.</li>
+                                <li>6. You can modify the chatbot according to your website's style and theme.</li>
+                            </ol>
+                        </div>
                     </div>
-                    {data && <div className='flex flex-col gap-4 pt-10'>
-                        <div className='flex justify-between gap-4'>
-                            <div className="flex flex-col gap-2 md:gap-4 text-[14px] md:text-[16px] w-[50%]">
-                                <label htmlFor="organization" className="text-left">
-                                    Organization
-                                </label>
-                                <input disabled onChange={(e) => setData((prev) => { return { ...prev, organization: e.target.value } })} value={data.organization} id='organization' placeholder='Ex: Acme Pvt Ltd' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg bg-gray-300'></input>
-                            </div>
-                            <div className="flex flex-col gap-2 md:gap-4 text-[14px] md:text-[16px] w-[50%]">
-                                <label htmlFor="website" className="text-left">
-                                    Website
-                                </label>
-                                <input onChange={(e) => setData((prev) => { return { ...prev, website: e.target.value } })} value={data.website} placeholder='Ex: www.acme.com' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
-                            </div>
-                        </div>
-                        <div className='flex items-end justify-between gap-4'>
-                            <div className="flex flex-col gap-2 md:gap-4 text-[14px] md:text-[16px] w-[50%]">
-                                <label htmlFor="domain" className="text-left">
-                                    Domain
-                                </label>
-                                <input onChange={(e) => setData((prev) => { return { ...prev, domain: e.target.value } })} value={data.domain} placeholder='Ex: Automobiles, Retail, Healthcare etc.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
-                            </div>
-                            <button onClick={profileUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Updating...' : 'Update'}</button>  
-                        </div>
-                    </div>}
-                    
                 </>
             );
         } else if (section === 'Analytics') {
             return (
-                <div className='flex flex-col gap-4 py-10'>
-                        <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Reports</h3>
-                        <div className='flex'>
-                            <h3 className="md:text-[14px] font-bold text-gray-500 mb-2">Engagement Rate: {engagementRate}%</h3>   
-                        </div>
-                        <div className='flex flex-col md:flex-row gap-2 w-full'>
+                <div className='flex flex-col gap-4 pb-10'>
+                        <h3 className="font-bold text-gray-900 mb-2 md:text-[32px]">Analytics</h3>
+                        <p className='text-[14px] md:text-[16px]'>This section provides an overview of basic analytics relating to the chatbot.</p>
+                        <div className='flex flex-col md:flex-row gap-2 w-full text-[12px]'>
                             <div style={{ height: '20rem' }} className='w-full md:w-1/2'>
-                                <div className='flex gap-1 justify-end w-full'>
+                                <div className='flex gap-1 justify-end w-full pb-2'>
                                     <button onClick={() => setClickSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
                                         Day
                                     </button>
@@ -902,7 +937,7 @@ export default function Dashboard() {
                                 <h1 className='text-center'>Number of times users click on the chat button</h1>
                             </div>
                             <div style={{ height: '20rem' }} className='w-full mt-[6rem] md:mt-0 md:w-1/2'>
-                                <div className='flex gap-1 justify-end w-full'>
+                                <div className='flex gap-1 justify-end w-full pb-2'>
                                     <button onClick={() => setSessionSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${sessionSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
                                         Day
                                     </button>
@@ -934,8 +969,36 @@ export default function Dashboard() {
                             </div>
                         </div>
 
+                        <div className='flex items-center justify-center gap-2 mt-[6rem]'>
+                            <h3 className="md:text-[14px] font-bold text-gray-500">Engagement Rate: </h3>{engagementRate && engagementRate <= 100 ? <span className='text-[26px] text-purple-800 font-semibold'>{engagementRate + '%'}</span> : <span>No data as of now.</span>}  
+                        </div>
                         <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
-                            <div style={{ height: '20rem' }} className='w-full md:w-1/2'>
+                            <Table className='border-2 border-purple-200'>
+                                <TableCaption className='mt-5'>Demographics</TableCaption>
+                                {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
+                                <TableHeader className='bg-purple-200'>
+                                    <TableRow>
+                                        <TableHead>Country</TableHead>
+                                        <TableHead>Desktop</TableHead>
+                                        <TableHead>Mobile</TableHead>
+                                        <TableHead>Total</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {location.length > 0 && location.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell className='flex gap-2 items-center'><img className='h-4' src={item.flag} /> {item.country}</TableCell>
+                                            <TableCell>{item.desktop}</TableCell>
+                                            <TableCell>{item.mobile}</TableCell>
+                                            <TableCell>{item.total}</TableCell>
+                                            {/* <TableCell><button onClick={() => alert(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell> */}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
+                            {/* <div style={{ height: '20rem' }} className='w-full md:w-1/2 text-[12px]'>
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart
                                         width={500}
@@ -958,32 +1021,36 @@ export default function Dashboard() {
                                     </BarChart>
                                 </ResponsiveContainer>
                                 <h1 className='text-center'>Demographics</h1>
-                            </div>
-                            <div className='flex flex-col justify-even gap-2  md:py-10 w-full md:w-1/2 md:pl-5'>
+                            </div> */}
+                            <div className='flex flex-col justify-even gap-4 md:py-10 w-full md:w-1/2 md:pl-5'>
                                 <div className='flex gap-2 items-center'>
-                                    <span className='h-[10px] w-[10px] bg-red-500 rounded-sm'></span>
-                                    <strong>Complaints</strong>
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getComplaintsSummary}><Eye height={15} /> View Summary</button>
-                                            </DialogTrigger>
-                                            <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
-                                                <DialogHeader className='flex flex-col gap-2'>
-                                                    <DialogTitle className='text-[16px] text-gray-800'>Complaints Summary</DialogTitle>
-                                                </DialogHeader>
-                                                    {complaints ? complaints.count ?
+                                    <div className='flex gap-1 items-center w-[50%]'>
+                                        <span className='h-[10px] w-[10px] bg-red-500 rounded-sm'></span>
+                                        <p className='text-[14px]'>Complaints</p>
+                                    </div>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getComplaintsSummary}><Eye height={15} /> View Summary</button>
+                                        </DialogTrigger>
+                                        <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                                            <DialogHeader className='flex flex-col gap-2'>
+                                                <DialogTitle className='text-[16px] text-gray-800'>Complaints Summary</DialogTitle>
+                                            </DialogHeader>
+                                                {complaints ? complaints.count ?
                                                     <div className="flex flex-col gap-4 py-4 text-[14px]">
                                                         <p>There are <strong>{complaints.count}</strong> complaints in total</p>
                                                         <p>Summary: {complaints.summary}</p>
                                                     </div> : <div className="flex flex-col gap-4 py-4 text-[14px]"><p>There is no information yet. Please try again later.</p></div>  : 
                                                     <div className='flex justify-center text-[16px] text-gray-500'><Loader /></div>}
-                                            </DialogContent>
-                                        </Dialog>
+                                        </DialogContent>
+                                    </Dialog>
                                 </div>
 
-                                <div className='flex gap-2 items-center'>
-                                    <span className='h-[10px] w-[10px] bg-yellow-500 rounded-sm'></span>
-                                    <strong>Feedbacks</strong>
+                                <div className='flex gap-2 items-center justfiy-between'>
+                                    <div className='flex gap-1 items-center w-[50%]'>
+                                        <span className='h-[10px] w-[10px] bg-yellow-500 rounded-sm'></span>
+                                        <p className='text-[14px]'>Feedbacks</p>
+                                    </div>
                                     <Dialog>
                                             <DialogTrigger asChild>
                                             <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getFeedbackSummary}><Eye height={15} />View Summary</button>
@@ -1002,8 +1069,10 @@ export default function Dashboard() {
                                 </div>
 
                                 <div className='flex gap-2 items-center'>
-                                    <span className='h-[10px] w-[10px] bg-emerald-500 rounded-sm'></span>
-                                    <strong>General queries</strong>
+                                    <div className='flex gap-1 items-center w-[50%]'>
+                                        <span className='h-[10px] w-[10px] bg-emerald-500 rounded-full'></span>
+                                        <p className='text-[14px]'>General queries</p>
+                                    </div>
                                     <Dialog className='max-w-[15rem]'>
                                             <DialogTrigger asChild>
                                                 <button className='outline-none flex items-center border-[1px] border-gray-200 shadow-sm rounded-sm py-1 px-1 text-[12px] hover:bg-purple-800 hover:text-white duration-500' onClick={getGeneralSummary}><Eye height={15} />View Summary</button>
@@ -1051,10 +1120,10 @@ export default function Dashboard() {
             return (<>
                 <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Leads</h3>
                 <p className='text-[14px] md:text-[16px]'>Manage lead forms and leads generated by the chatbot right here.</p>
-                <div className='flex flex-col gap-3 mt-5'>
-                    <h3 className="font-bold text-gray-500 mb-2 text-[24px]">Lead Form</h3>
-                    <p className='text-[14px] md:text-[16px]'>Where do you wish to save your leads?</p>
-                    <RadioGroup defaultValue={leadSave}>
+                <div className='flex flex-col gap-3 mt-5 text-[14px]'>
+                    <h3 className="font-bold text-gray-500 mb-2 text-[22px]">Lead Form</h3>
+                    <p className='text-[14px]'>Where do you wish to save your leads?</p>
+                    <RadioGroup className='flex gap-2' defaultValue={leadSave}>
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem onClick={(e) => leadSaveHandler('kulfi')} value="kulfi" id="kulfi" />
                             <label htmlFor="kulfi">Save with Kulfi AI</label>
@@ -1104,6 +1173,7 @@ export default function Dashboard() {
                                                 method: 'POST',
                                                 body: JSON.stringify({
                                                     id: localStorage.getItem('objectID'),
+                                                    organization: localStorage.getItem('organization'),
                                                     leadForm,
                                                     leadEmail,
                                                     leadWebhook
@@ -1111,7 +1181,7 @@ export default function Dashboard() {
                                             });
                                             const response = await res.json();
                                             if (response) {
-                                                toast.success('Lead structure saved!')
+                                                toast.success('Lead capture form saved!')
                                             }
                                 }} className='flex items-center py-2 px-2 bg-purple-800 rounded-md'>
                                     <Save className='h-4 text-white' />
@@ -1137,6 +1207,7 @@ export default function Dashboard() {
                                                     method: 'POST',
                                                     body: JSON.stringify({
                                                         id: localStorage.getItem('objectID'),
+                                                        organization: localStorage.getItem('organization'),
                                                         hubspot
                                                     })
                                                 });
@@ -1184,19 +1255,19 @@ export default function Dashboard() {
                 <>
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Settings</h3>
                     <p className='text-[14px] md:text-[16px]'>Customize your chatbot to align with your website’s style.</p>
-                    <div className='flex gap-4 pt-10 text-[14px] md:text-[16px]'>
+                    <div className='flex gap-4 pt-10 text-[14px]'>
                         <div className="flex flex-col gap-4 w-[50%]">
-                            <label htmlFor="botname" className="text-left">
+                            <label htmlFor="botname" className="text-left text-[14px]">
                                 Chatbot Name
                             </label>
-                            <input onChange={(e) => setData((prev) => { return { ...prev, botName: e.target.value } })} value={data.botName} id='botname' placeholder='Example: Lumi AI' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            <input onChange={(e) => setData((prev) => { return { ...prev, botName: e.target.value } })} value={data.botName} id='botname' placeholder='Example: Lumi AI' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                         </div>
-                        <div className="flex flex-col gap-4 w-[50%]">
+                        <div className="flex flex-col gap-4 w-[50%] text-[14px]">
                             <label htmlFor="domain" className="text-left">
-                                Color Theme
+                                Accent Color
                             </label>
                             <div className='flex gap-2'>
-                                <select value={data.color} onChange={(e) => setData((prev) => { return { ...prev, color: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
+                                <select value={data.color} onChange={(e) => setData((prev) => { return { ...prev, color: e.target.value } })} className='p-2 outline-none border-[1px] border-gray-400 rounded-sm w-full'>
                                     <option value='#046e00'>Green</option>
                                     <option value='#4A1D96'>Purple</option>
                                     <option value='#9B1C1C'>Red</option>
@@ -1206,45 +1277,27 @@ export default function Dashboard() {
                                     <option value='#9F580A'>Brown</option>
                                     <option value='#000000'>Black</option>
                                 </select>
-                                <span style={{ backgroundColor: data.color }} className={`w-[15%] rounded-md`}></span>
+                                <span style={{ backgroundColor: data.color }} className={`w-[40%] md:w-[10%] rounded-sm`}></span>
                             </div>
                         </div>
                     </div>
 
-                    <div className='flex gap-4 pt-10 pb-10 text-[14px] md:text-[16px]'>
+                    <div className='flex gap-4 pt-10 pb-10 text-[14px]'>
                         <div className="flex flex-col gap-4 w-[50%]">
-                            <label htmlFor="botname" className="text-left">
+                            <label htmlFor="botname" className="text-left text-[14px]">
                                 Chat window width (Preferred range: 350px to 450px)
                             </label>
-                            <input onChange={(e) => setData((prev) => { return { ...prev, cw: e.target.value } })} value={data.cw} id='cw' placeholder='Example: 400' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            <input onChange={(e) => setData((prev) => { return { ...prev, cw: e.target.value } })} value={data.cw} id='cw' placeholder='Example: 400' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                         </div>
-                        {/* <div className="flex flex-col gap-4 w-[50%]">
-                            <label htmlFor="domain" className="text-left">
-                                Color Theme
-                            </label>
-                            <div className='flex gap-2'>
-                                <select value={data.color} onChange={(e) => setData((prev) => { return { ...prev, color: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
-                                    <option value='#046e00'>Green</option>
-                                    <option value='#4A1D96'>Purple</option>
-                                    <option value='#9B1C1C'>Red</option>
-                                    <option value='#004b5c'>Green</option>
-                                    <option value='#1E429F'>Blue</option>
-                                    <option value='#362F78'>Indigo</option>
-                                    <option value='#9F580A'>Brown</option>
-                                    <option value='#000000'>Black</option>
-                                </select>
-                                <span style={{ backgroundColor: data.color }} className={`w-[15%] rounded-md`}></span>
-                            </div>
-                        </div> */}
                     </div>
 
-                    <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                    <div className='flex gap-4 pb-10 text-[14px]'>
                         <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex flex-col gap-4">
-                                <label htmlFor="botname" className="text-left">
+                                <label htmlFor="botname" className="text-left text-[14px]">
                                     Upload Bot Icon
                                 </label>
-                                <input key={1} type="file" onChange={(e) => handleBotIconChange(e)} />
+                                <input className='text-[14px]' key={1} type="file" onChange={(e) => handleBotIconChange(e)} />
                             </div>
                             <div className="flex flex-col gap-4">
                                 {data.botIcon ? <img className='h-[3rem] max-w-[3rem] rounded-lg object-cover border-[1px] border-gray-200 rounded-md p-1' src={`data:image/jpeg;base64,${data.botIcon}`} /> : <></>}
@@ -1254,10 +1307,10 @@ export default function Dashboard() {
 
                         <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex flex-col gap-4">
-                                <label htmlFor="botname" className="text-left">
+                                <label htmlFor="botname" className="text-left text-[14px]">
                                     Upload Bot Avatar
                                 </label>
-                                <input key={2} type="file" onChange={(e) => handleAvatarChange(e)} />
+                                <input className='text-[14px]' key={2} type="file" onChange={(e) => handleAvatarChange(e)} />
                             </div>
                             <div className="flex flex-col gap-4">
                                 {data.botAvatar ? <img className='h-[3rem] max-w-[3rem] rounded-lg object-cover border-[1px] border-gray-200 rounded-md p-1' src={`data:image/jpeg;base64,${data.botAvatar}`} /> : <></>}
@@ -1266,21 +1319,21 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                    <div className='flex gap-4 pb-10 text-[14px]'>
                         <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex flex-col gap-4">
                                 <label htmlFor="botname" className="text-left">
                                     Bot position
                                 </label>
                                 <div className='flex gap-2 w-full'>
-                                    <div onClick={() => setData((prev) => { return { ...prev, alignment: 'left' } })} className={`flex gap-4 rounded-lg border-2 ${data.alignment === 'left' ? 'border-5 border-purple-800' : 'border-gray-300'} p-5`}>
+                                    <div onClick={() => setData((prev) => { return { ...prev, alignment: 'left' } })} className={`flex gap-4 rounded-sm border-2 ${data.alignment === 'left' ? 'border-5 border-purple-800' : 'border-gray-300'} p-5`}>
                                         <div className='flex gap-2'>
                                             <AlignLeft />
                                             <span>Left</span>
                                         </div>
                                         <Check className={`text-purple-800 ${data.alignment === 'left' ? 'opacity-1' : 'opacity-0'} duration-200`} />
                                     </div>
-                                    <div onClick={() => setData((prev) => { return { ...prev, alignment: 'right' } })} className={`flex gap-4 rounded-lg border-2 ${data.alignment === 'right' ? 'border-5 border-purple-800' : 'border-gray-300'} p-5`}>
+                                    <div onClick={() => setData((prev) => { return { ...prev, alignment: 'right' } })} className={`flex gap-4 rounded-sm border-2 ${data.alignment === 'right' ? 'border-5 border-purple-800' : 'border-gray-300'} p-5`}>
                                         <div className='flex gap-2'>
                                             <AlignRight />
                                             <span>Right</span>
@@ -1292,12 +1345,12 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className='flex gap-4 pb-10 text-[14px] md:text-[16px]'>
+                    <div className='flex gap-4 pb-10 text-[14px]'>
                         <div className='flex flex-col gap-2 w-[50%]'>
                             <label htmlFor="initial" className="text-left">
                                 Initial message
                             </label>
-                            <textarea onChange={(e) => setData((prev) => { return { ...prev, initialmsg: e.target.value } })} value={data.initialmsg} placeholder='Enter the chatbot`s initial message.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                            <textarea onChange={(e) => setData((prev) => { return { ...prev, initialmsg: e.target.value } })} value={data.initialmsg} placeholder='Enter the chatbot`s initial message.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
                         </div>
 
 
@@ -1305,11 +1358,11 @@ export default function Dashboard() {
                             <label htmlFor="initial" className="text-left">
                                 Message box placeholder
                             </label>
-                            <textarea onChange={(e) => setData((prev) => { return { ...prev, placeholder: e.target.value } })} value={data.placeholder} placeholder='Enter the chat message box placeholder text.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
+                            <textarea onChange={(e) => setData((prev) => { return { ...prev, placeholder: e.target.value } })} value={data.placeholder} placeholder='Enter the chat message box placeholder text.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
                         </div>
                     </div>
 
-                        <div className='flex items-center gap-2 w-[50%]'>
+                        <div className='flex items-center gap-2 w-[50%] pb-10 text-[14px]'>
                             <div className="flex gap-4">
                                 <Switch 
                                     checked={data.hideBranding}
@@ -1324,12 +1377,13 @@ export default function Dashboard() {
                         </div>
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>
-                        <h3 className="md:text-[24px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3>
-                        <div className="flex flex-col gap-4 md:w-[50%]">
+                        <h3 className="text-[22px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3>
+                        <div className='flex gap-4 w-full'>
+                        <div className="flex flex-col gap-4 md:w-[50%] text-[14px]">
                             <label htmlFor="tone" className="text-left">
                                 Chatbot Tone
                             </label>
-                                <select value={data.tone} onChange={(e) => setData((prev) => { return { ...prev, tone: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
+                                <select value={data.tone} onChange={(e) => setData((prev) => { return { ...prev, tone: e.target.value } })} className='p-2 outline-none border-[1px] border-gray-400 rounded-sm w-full text-[14px]'>
                                     <option value='formal'>Formal - Polite, respectful</option>
                                     <option value='casual'>Casual - Conversational, approachable</option>
                                     <option value='enthusiastic'>Enthusiastic - Lively, motivational</option>
@@ -1340,24 +1394,27 @@ export default function Dashboard() {
                                 </select>
                         </div>
                         <div className="flex flex-col gap-4 md:w-[50%]">
-                            <label htmlFor="tone" className="text-left">
-                                Support email/contact number (To be shown when the queries are not being resolved or when users ask for human interaction)
+                            <label htmlFor="tone" className="text-left text-[14px]">
+                                Support email/contact Number
+                                {/* (To be shown when the queries are not being resolved or when users ask for human interaction) */}
                             </label>
-                            <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg' />                            
+                            <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm text-[14px]' />                            
                         </div>
+                        </div>
+                        
 
                         <div className="flex flex-col gap-4 md:w-[50%]">
-                            <label htmlFor="response_length" className="text-left">
+                            <label htmlFor="response_length" className="text-left text-[14px]">
                                 Chatbot response length
                             </label>
-                            <select value={data.responselength} onChange={(e) => setData((prev) => { return { ...prev, responselength: e.target.value } })} className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg w-full'>
+                            <select value={data.responselength} onChange={(e) => setData((prev) => { return { ...prev, responselength: e.target.value } })} className='p-2 outline-none border-[1px] border-gray-400 rounded-sm w-full text-[14px]'>
                                 <option value='short'>Short</option>
                                 <option value='medium'>Medium</option>
                                 <option value='long'>Long</option>
                             </select>                         
                         </div>
 
-                        <div className='flex items-center gap-2 w-[50%] mt-10'>
+                        <div className='flex items-center gap-2 w-[50%] mt-10 text-[14px]'>
                             <div className="flex gap-4 w-[50%]">
                                 <Switch 
                                     checked={data.showimg}
@@ -1386,62 +1443,159 @@ export default function Dashboard() {
                     <div className='flex justify-end mt-10'>
                         <button onClick={settingsUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Updating...' : 'Update'}</button>  
                     </div>
+                </>
+            )
+        } else if (section === 'Training') {
+
+            const deleteFile = async (id) => {
+                setIsDeleting(true);
+                const res = await fetch('/api/remove-kb', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id,
+                        organization: localStorage.getItem('organization')
+                    })
+                });
+                if (res) {
+                    loadData();
+                    setIsDeleting(false);
+                    toast.success("File deleted.");
+                }
+            }
+            return (
+                <>
+                    <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Training</h3>
+                    <p className='text-[14px] md:text-[16px]'>Manage your Knowledge bases and train your AI bot from this section.</p>
+                    <div className='flex flex-col md:flex-row gap-3 pt-10 text-[14px] md:text-[16px]'>
+                        <div className='flex flex-col gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-500 shadow-sm p-3 text-[14px]'>
+                            <h1>Links</h1>
+                            <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
+                            <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                            <div className='flex justify-end w-full mt-10'>
+                                <button onClick={addLinks} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Add Links'}</button>  
+                            </div>
+                        </div>
+                        
+                        <div className='flex flex-col justify-between gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-500 shadow-sm p-3 text-[14px]'>
+                            <h1>PDF Document</h1>  
+                            <div className="flex flex-col gap-10 items-start justify-between w-full">
+                                <div className='flex flex-col gap-3 border-2 border-gray-500 border-dashed rounded-sm p-4 w-full'>
+                                    <strong>Current knowledge base:</strong>
+                                    {fileNames.length ? 
+                                    fileNames.map((item, index) => {
+                                        return (
+                                            <div key={item.id} className='flex flex-col justify-between gap-1'>
+                                                <div className='flex gap-2 items-center'>
+                                                    <p className='flex gap-1'><File /> {item.fileName}</p>
+                                                    <button onClick={() => deleteFile(item.id)} className='px-2 py-1'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-red-500 w-[16px]' />}</button>                                                    
+                                                </div>
+                                            </div>
+                                        )
+                                    }) :
+                                    <p className='flex gap-1'><FileX /> No documents uploaded</p>}
+                                </div>
+                                
+                                <form className='w-full' onSubmit={handleKBSubmit}>
+                                    <div className='flex flex-col gap-1'>
+                                        <input accept="application/pdf" id="kb-doc" type="file" onChange={handleKBChange} multiple />
+                                        <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                                    </div>
+                                    <div className='flex justify-end w-full pt-5 md:pt-0'>
+                                        <button type='submit' className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isKBLoading ? 'Processing...' : 'Sync Document'}</button>  
+                                    </div>
+                                </form>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
+                        <div className='flex justify-start items-center gap-2'>
+                            <h3 className="md:text-[16px] font-bold text-gray-500">Added Links</h3>
+                            <button onClick={linkSync} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-2 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'><BrainCircuitIcon className='h-3' /> Start training AI</button>
+                        </div>
+                        <Table className='border-2 border-purple-200'>
+                            {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
+                            <TableHeader className='bg-purple-200'>
+                                <TableRow>
+                                    <TableHead>Links</TableHead>
+                                    <TableHead>Status</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {addedLinks.length > 0 && addedLinks.map((item, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">{item.link}</TableCell>
+                                        <TableCell>
+                                            {item.status === 'pending' ? <Loader2 className='text-purple-800 animate-spin' /> : <></>}
+                                            {item.status === 'not-started' ? <Clock className='text-purple-800 h-4' /> : <></>}
+                                            {item.status === 'completed' ? <CheckCircleIcon className='text-emerald-500 h-4' /> : <></>}
+                                        </TableCell>
+                                        {/* <TableCell><button onClick={() => alert(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell> */}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300 mt-5'>
-                        <h3 className="md:text-[24px] font-bold text-gray-500 mb-2">Custom Workflows</h3>
-                        <p className='text-[14px] md:text-[16px]'>You can add your custom workflows here.</p>
-                        <div className='flex flex-col gap-5 pt-10 text-[14px] md:text-[16px]'>
+                        <h3 className="text-[22px] font-bold text-gray-500 mb-2">Custom Workflows</h3>
+                        <p className='text-[14px]'>You can add your custom workflows here.</p>
+                        <div className='flex flex-col gap-5 pt-10 text-[14px]'>
                             <div className='flex flex-col md:flex-row gap-2'>
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label className="text-left">
                                         Title
                                     </label>
-                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, title: e.target.value } })} value={workflow.title} id='title' placeholder='Enter the name of your workflow.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, title: e.target.value } })} value={workflow.title} id='title' placeholder='Enter the name of your workflow.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                                 </div>
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label className="text-left">
                                         Condition
                                     </label>
-                                    <textarea onChange={(e) => setWorkflow((prev) => { return { ...prev, condition: e.target.value } })} value={workflow.condition} id='condition' placeholder='Enter the condition in which the workflow is to be triggered.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg' />
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return { ...prev, condition: e.target.value } })} value={workflow.condition} id='condition' placeholder='Enter the condition in which the workflow is to be triggered.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm' />
                                 </div>
                             </div>
 
-                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
-                                <label htmlFor="botname" className="text-left">
-                                    Training Phrases
-                                </label>
-                                <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, phrases: e.target.value }})} value={workflow.phrases} placeholder="Example prompts to train the chatbot separated by commas" className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                            <div className='flex flex-col md:flex-row gap-2'>
+                                <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                    <label htmlFor="botname" className="text-left">
+                                        Training Phrases
+                                    </label>
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, phrases: e.target.value }})} value={workflow.phrases} placeholder="Example prompts to train the chatbot separated by commas" className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
+                                </div>
+                                <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                    <label htmlFor="botname" className="text-left">
+                                        Action
+                                    </label>
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, action: e.target.value }})} value={workflow.action} placeholder="The action that the chatbot must take." className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
+                                </div>
                             </div>
+                            
+                            <div className='flex flex-col md:flex-row gap-2'>
+                                <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                    <label className="text-left">
+                                        Webhook (if any)
+                                    </label>
+                                    <input type='url' onChange={(e) => setWorkflow((prev) => { return { ...prev, webhook: e.target.value } })} value={workflow.webhook} id='webhook' placeholder='Enter any webhooks you need to call.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
+                                </div>
 
-                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
-                                <label htmlFor="botname" className="text-left">
-                                    Action
-                                </label>
-                                <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, action: e.target.value }})} value={workflow.action} placeholder="The action that the chatbot must take." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                                <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                    <label className="text-left">
+                                        Webhook parameters
+                                    </label>
+                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters, comma separated' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
+                                </div>
                             </div>
-
-                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
-                                <label className="text-left">
-                                    Webhook (if any)
-                                </label>
-                                <input type='url' onChange={(e) => setWorkflow((prev) => { return { ...prev, webhook: e.target.value } })} value={workflow.webhook} id='webhook' placeholder='Enter any webhooks you need to call.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
-                            </div>
-
-                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
-                                <label className="text-left">
-                                    Webhook parameters
-                                </label>
-                                <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters, comma separated' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
-                            </div>
-
+                            
                             <div className='flex justify-end items-end'>
                                 <button onClick={workflowUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
                             </div>
 
                             <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
-                                <Table>
+                                <h3 className="md:text-[16px] font-bold text-gray-500 mb-2">Workflows</h3>
+                                <Table className='border-2 border-purple-200'>
                                     {workflowsList.length === 0 ? <TableCaption className='mt-5'>No workflows have been added.</TableCaption> : <></>}
-                                    <TableHeader>
+                                    <TableHeader className='bg-purple-200'>
                                         <TableRow>
                                             <TableHead>Title</TableHead>
                                             <TableHead>Condition</TableHead>
@@ -1449,6 +1603,7 @@ export default function Dashboard() {
                                             <TableHead>Action</TableHead>
                                             <TableHead>Webhook</TableHead>
                                             <TableHead>Parameters</TableHead>
+                                            <TableHead></TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -1470,63 +1625,24 @@ export default function Dashboard() {
                     </div>
                 </>
             )
-        } else if (section === 'Training') {
-            return (
-                <>
-                    <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Source</h3>
-                    <p className='text-[14px] md:text-[16px]'>Manage your Knowledge bases.</p>
-                    <div className='flex flex-col md:flex-row gap-3 pt-10 text-[14px] md:text-[16px]'>
-                        <div className='flex flex-col gap-2 md:w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
-                            <h1>Links</h1>
-                            <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-lg p-2' />
-                            <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
-                            <div className='flex justify-end w-full mt-10'>
-                                <button onClick={linkSync} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Add Links'}</button>  
-                            </div>
-                        </div>
-                        
-                        <div className='flex flex-col justify-between gap-2 md:w-[50%] rounded-md border-[1px] border-gray-500 shadow-sm p-3'>
-                            <h1>Knowldge Base PDF Document</h1>  
-                            <div className="flex flex-col gap-10 items-start justify-between w-full">
-                                <div className='flex flex-col gap-3 border-2 border-gray-500 border-dashed rounded-lg p-4 w-full'>
-                                    <strong>Current knowledge base:</strong>
-                                    {data && data.fileName ? 
-                                    <p className='flex gap-1 mt-4'><File /> {data.fileName}</p> :
-                                    <p className='flex gap-1'><FileX /> No documents uploaded</p>}
-                                </div>
-                                
-                                <form className='w-full' onSubmit={handleKBSubmit}>
-                                    <div className='flex flex-col gap-1'>
-                                        <input accept="application/pdf" id="kb-doc" type="file" onChange={handleKBChange} />
-                                        <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
-                                    </div>
-                                    <div className='flex justify-end w-full pt-5 md:pt-0'>
-                                        <button type='submit' className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isKBLoading ? 'Processing...' : 'Sync Document'}</button>  
-                                    </div>
-                                </form>
-                            </div> 
-                        </div>
-                    </div>
-                </>
-            )
         } else if (section === 'Articles') {
             return (
                 <>
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Articles (Blog)</h3>
                     <p className='text-[14px] md:text-[16px]'>You can add the articles posted in your website here.</p>
-                    <div className='flex flex-col gap-5 pt-10 text-[14px] md:text-[16px]'>
+                    <div className='flex flex-col gap-5 pt-10 text-[14px]'>
                         <div className='flex flex-col md:flex-row gap-2'>
                             <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                 <label className="text-left">
                                     Title
                                 </label>
-                                <input onChange={(e) => setArticle((prev) => { return { ...prev, title: e.target.value } })} value={article.title} id='title' placeholder='Enter the title of the article here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                <input onChange={(e) => setArticle((prev) => { return { ...prev, title: e.target.value } })} value={article.title} id='title' placeholder='Enter the title of the article here.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                             </div>
                             <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                 <label className="text-left">
                                     Link
                                 </label>
-                                <input onChange={(e) => setArticle((prev) => { return { ...prev, link: e.target.value } })} value={article.link} id='link' placeholder='Enter the link to the article here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                                <input onChange={(e) => setArticle((prev) => { return { ...prev, link: e.target.value } })} value={article.link} id='link' placeholder='Enter the link to the article here.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                             </div>
                         </div>
 
@@ -1534,11 +1650,11 @@ export default function Dashboard() {
                             <label htmlFor="botname" className="text-left">
                                 Description
                             </label>
-                            <textarea onChange={(e) => setArticle((prev) => { return {...prev, description: e.target.value }})} value={article.description} placeholder="Type the description here." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                            <textarea onChange={(e) => setArticle((prev) => { return {...prev, description: e.target.value }})} value={article.description} placeholder="Type the description here." className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
                         </div>
 
                         <div className="flex flex-col gap-4 md:w-[50%]">
-                            <label className="text-left">Upload Image</label>
+                            <label className="text-left">Upload Article Thumbnail</label>
                             <input type="file" onChange={handleArticleFileChange} />
                         </div>
                         <div className='flex justify-end items-end'>
@@ -1546,9 +1662,10 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
-                        <Table>
+                        <h3 className="md:text-[16px] font-bold text-gray-500 mb-2">Articles</h3>
+                        <Table className='border-2 border-purple-200'>
                             {articlesList.length === 0 ? <TableCaption className='mt-5'>There are no records at the moment.</TableCaption> : <></>}
-                            <TableHeader>
+                            <TableHeader className='bg-purple-200'>
                                 <TableRow>
                                     <TableHead>Title</TableHead>
                                     <TableHead>Description</TableHead>
@@ -1577,29 +1694,29 @@ export default function Dashboard() {
                 <>
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">FAQs</h3>
                     <p className='text-[14px] md:text-[16px]'>You can add the questions that are frequently asked by your users here.</p>
-                    <div className='flex flex-col gap-5 pt-10'>
+                    <div className='flex flex-col gap-5 pt-10 text-[14px]'>
                         <div className="flex flex-col gap-4 md:w-[50%]">
                             <label htmlFor="botname" className="text-left">
                                 Enter an FAQ.
                             </label>
-                            <input onChange={(e) => setFaq((prev) => { return { ...prev, question: e.target.value } })} value={faq.question} id='question' placeholder='Type you question here.' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
+                            <input onChange={(e) => setFaq((prev) => { return { ...prev, question: e.target.value } })} value={faq.question} id='question' placeholder='Type you question here.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                         </div>
                         <div className="flex flex-col gap-4 md:w-[50%]">
                             <label htmlFor="botname" className="text-left">
                                 Enter the answer to you FAQ.
                             </label>
-                            <textarea onChange={(e) => setFaq((prev) => { return {...prev, answer: e.target.value }})} value={faq.answer} placeholder="Type your answer here." className='px-5 py-5 outline-none  border-[1px] border-gray-400  rounded-lg resize-none'></textarea>
+                            <textarea onChange={(e) => setFaq((prev) => { return {...prev, answer: e.target.value }})} value={faq.answer} placeholder="Type your answer here." className='p-2 outline-none  border-[1px] border-gray-400 rounded-sm resize-none'></textarea>
                         </div>
                         <div className='flex justify-end items-end'>
                             <button onClick={faqsUpdate} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Saving...' : 'Save'}</button>  
                         </div>
                     </div>
-                    {faqList && faqList.length > 0 ? <Accordion type="single" collapsible className="w-full">
-                        <h1 className='mt-5'>FAQs List</h1>
-                        {faqList.map((item) => {
+                    {faqList && faqList.length > 0 ? <Accordion type="single" collapsible className="w-full border-2 border-gray-200 p-2 px-5 rounded-sm shadow-md mt-5">
+                        <h1 className='mt-5 text-purple-800 font-semibold'>FAQs List</h1>
+                        {faqList.map((item, index) => {
                             return (
-                                <AccordionItem key={item.id} value={`item-${item.id}`}>
-                                    <AccordionTrigger className='text-[20px]'>{item.question}</AccordionTrigger>
+                                <AccordionItem className={index === faqList.length - 1 ? 'border-0' : ''} key={item.id} value={`item-${item.id}`}>
+                                    <AccordionTrigger className='text-[14px] font-semibold'>{index + 1 + '. ' + item.question}</AccordionTrigger>
                                     <AccordionContent>
                                         <div className='flex justify-between items-start'>
                                             <div className='w-[90%]'>
@@ -1639,8 +1756,8 @@ export default function Dashboard() {
                     <div className='flex flex-col items-center gap-5 border-2 border-slate-200 px-4 py-3 rounded-lg'>
                         
                         <div className='flex flex-col'>
-                            <h3 className="flex gap-2 md:text-[14px] font-bold text-gray-500 mb-2"><span>Messages:</span> <span>{messageCount}/5000</span></h3>   
-                            <Progress indicatorClass='bg-purple-700' value={messageCount * 100/5000} />
+                            <h3 className="flex gap-2 md:text-[14px] font-bold text-gray-500 mb-2"><span>Chats:</span> <span>{messageCount}/500</span></h3>   
+                            <Progress indicatorClass='bg-purple-700' value={messageCount * 100/500} />
                         </div>
                         <Dialog open={logoutModalOpen}>
                             <DialogTrigger asChild>
@@ -1666,7 +1783,7 @@ export default function Dashboard() {
                         </Dialog>
                     </div>
                 </ul>
-                <div className={`p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-lg w-full ${data ? '' : 'flex justify-center items-center'}`}>
+                <div className={`p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-sm w-full shadow-md ${data ? '' : 'flex justify-center items-center'}`}>
                     {data ? getContent(activeSection, data) : <Loader />}
                 </div>
             </div>

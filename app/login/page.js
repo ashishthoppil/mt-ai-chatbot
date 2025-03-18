@@ -1,9 +1,9 @@
 'use client';
 
 import { BuildCircleOutlined, Google } from '@mui/icons-material';
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 })

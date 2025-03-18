@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from "rehype-raw";
 import { useChat } from 'ai/react';
 import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
-import { Clock, ExternalLinkIcon, Loader2, Newspaper } from 'lucide-react';
+import { Check, CheckCircle, Clock, ExternalLinkIcon, Loader2, Newspaper } from 'lucide-react';
 import HubspotForm from 'react-hubspot-form';
 import {
     Accordion,
@@ -20,6 +20,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     const [section, setSection] = useState(0);
     const [sessionTracked, setSessionTracked] = useState(false);
     const [leadForm, setLeadForm] = useState([]);
+    const [leadSubmitted, setLeadSubmitted] = useState(false);
     const messageEnd = useRef();
     const inputRef = useRef();
  
@@ -27,7 +28,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
         api: `/api/chat`,
         body: {
             id: botInfo.id,
-            org: botInfo.organization
+            org: botInfo.organization,
+            userId: botInfo.userId
         },
         initialMessages: [
             {
@@ -71,14 +73,22 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
             method: 'GET',
         });
         const locationInfo = await response.json();
-        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=location&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
+        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=location&flag=${locationInfo.flag.img}&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
             method: 'GET'
         })
     }
 
     useEffect(() => {
-        getLocation();
+        if (!botInfo.isSandBox) {
+            getLocation();
+        }
     }, [])
+
+    // useEffect(() => {
+    //     if (leadForm.length > 0) {
+    //         setLeadSubmitted(false);
+    //     }
+    // }, [leadForm])
 
     return (
         <>
@@ -103,26 +113,42 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                 <HubspotForm
                                     portalId={botInfo.hubspot.portal}
                                     formId={botInfo.hubspot.form}
-                                    loading={<div className='flex gap-1 items-center w-full'><Loader2 className='h-4 text-gray-500 animate-spin' /> Loading</div>}
+                                    loading={<div className='flex gap-1 justify-center items-center w-full'><Loader2 className='h-4 text-gray-500 animate-spin' /> Loading</div>}
                                 />
                             </div> : <></>
                         }
-                        {leadForm.length > 0 && (botInfo.leadSave === 'email' || botInfo.leadSave === 'kulfi' || botInfo.leadSave === 'webhook') ?
+                        {leadForm.length > 0 && !leadSubmitted && (botInfo.leadSave === 'email' || botInfo.leadSave === 'kulfi' || botInfo.leadSave === 'webhook') ?
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
                                 <div className='flex flex-col gap-5 w-[75%]'>
                                     <h1 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest. Please fill the form below so that our team can get back to you.</h1>
                                     <form style={{ border: `1px solid ${botInfo.color}` }} className='flex flex-col gap-3 rounded-md shadow-md px-5 py-3 w-full' onSubmit={async (e) => {
+                                        setLeadSubmitted(true);
                                         e.preventDefault();
-                                        const formData = {};
+                                        let formData = {};
                                         for (var i = 0; i < e.target.length - 1; i++) {
                                             formData[e.target[i].name] = e.target[i].value
                                         }
 
                                         if (botInfo.leadSave === 'email') {
-                                            alert(`Sending to ${botInfo.leadEmail}`)
+                                            const emailLead = await fetch(`/api/send-lead?email=${botInfo.leadEmail}`, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                                body: JSON.stringify(formData)
+                                            })
+                                            const data = await emailLead.json();
                                         } else if (botInfo.leadSave === 'webhook') {
+                                            const webhookLead = await fetch(`/api/send-webhook`, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                                body: JSON.stringify({ webhook: botInfo.leadWebhook, ...formData })
+                                            })
+                                            const data = await webhookLead.json();
                                             alert(`Sending to the webhook`)
                                         } else if (botInfo.leadSave === 'kulfi') {
                                             const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=lead&leadData=${JSON.stringify(formData)}`, {
@@ -145,6 +171,11 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     </form> 
                                 </div>
                             </div>: <></>}
+                            
+                        {leadSubmitted && leadForm.length > 0 ? <div className='flex flex-col justify-center items-center gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
+                                        <CheckCircle style={{ color: botInfo.color }} />
+                                        <h3 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest, our team will get back to you shortly.</h3>
+                        </div> : <></>}
                         {isLoading && (
                             <div className='flex gap-2 px-[20px]'>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="64px" viewBox="0 0 512 50" xmlSpace="preserve">
@@ -168,8 +199,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         if (!isLoading) {
                             handleSubmit(event);
                             setLeadForm([]);
+                            setLeadSubmitted(false);
                             inputRef.current.blur();
-                            if (!sessionTracked) {
+                            if (!sessionTracked && !botInfo.isSandBox) {
                                 eventTracker();
                             }
                             setSessionTracked(true);
@@ -186,8 +218,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     if (event.key === 'Enter') { 
                                         handleSubmit(event); 
                                         setLeadForm([]);
+                                        setLeadSubmitted(false);
                                         inputRef.current.blur();        
-                                        if (!sessionTracked) {
+                                        if (!sessionTracked && !botInfo.isSandBox) {
                                             eventTracker();
                                         }
                                         setSessionTracked(true);
@@ -196,7 +229,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             }
                             placeholder={botInfo.placeholder ? botInfo.placeholder : "Ask me anything..."}
                         />
-                        <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500 w-[10%]`}>
+                        <div className='flex justify-end w-[10%]'>
+                            <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
                                 <Image
                                     src="/icons/send.png"
                                     width={20}
@@ -204,16 +238,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     alt="Send Message"
                                 />
                             </button>
-                        {/* <div className='flex justify-end'>  
-                            <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] relative bottom-4 ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
-                                <Image
-                                    src="/icons/send.png"
-                                    width={20}
-                                    height={20}
-                                    alt="Send Message"
-                                />
-                            </button>
-                        </div> */}
+                        </div>
                     </div>
                     {!botInfo.hideBranding ? <span className='text-[14px]' style={{ color: botInfo.color }}><span className='font-semibold'>Powered by</span> <span style={{ backgroundColor: botInfo.color }} className='text-white rounded-full py-1 px-2'>Kulfi AI</span></span> : <></>}
                 </form>

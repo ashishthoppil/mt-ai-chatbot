@@ -1,35 +1,31 @@
 import { chunkText } from "@/lib/chunkText";
 import clientPromise from "@/lib/mongodb";
+import { getDbName } from "@/lib/utils";
 import { load } from "cheerio";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 export async function POST(req) {
-    const client = await clientPromise;
-    const DB_NAME = process.env.DB_NAME;
-    const db = client.db(DB_NAME);
     const request = await req.json();
+
+    const client = await clientPromise;
+    const DB_NAME = getDbName(request.organization);
+    const db = client.db(DB_NAME);
     
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
 
     try {
-        const sanitizedLinks = []
-        request.links.forEach(item => {
-          if (item) {
-            sanitizedLinks.push(item)
-          }
-        });
+        const link = request.link.link;
 
         let chunks = [];
-        for (const url of sanitizedLinks) {
-            const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
+        const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
             const endpoint = `https://chrome.browserless.io/scrape?token=${BROWSERLESS_TOKEN}`;
 
             const payload = {
-                url,
+                url: link,
                 gotoOptions: { waitUntil: "networkidle2" },
                 elements: [
                   {
@@ -62,7 +58,7 @@ export async function POST(req) {
                 if ($(element).attr('src').includes('https') || $(element).attr('src').includes('ftp')) {
                     src = $(element).attr('src');
                 } else {
-                    src = url + $(element).attr('src').slice(1);
+                    src = link + $(element).attr('src').slice(1);
                 }
                 const alt = $(element).attr('alt'); 
                 if (src) {
@@ -72,9 +68,8 @@ export async function POST(req) {
 
             const intermediateChunk = chunkText(text, 5000);
             for (const ic of intermediateChunk) {
-                chunks.push(`The reference url for the following data is ${url} - ${ic} \n ${imageUrls}`);
+                chunks.push(`The reference url for the following data is ${link} - ${ic} \n ${imageUrls}`);
             }
-        }
 
         if (chunks.length > 0) {
             const embeddings = [];
@@ -95,15 +90,27 @@ export async function POST(req) {
             }
 
             if (embeddings.length > 0) {
-                const result = await db.collection('clients').updateOne(
-                    { _id: new ObjectId(request.id) },
+                const result = await db.collection('knowledge_base').insertOne({ embeddings });
+                const prevLinks = await db.collection('links').find().toArray();
+
+                const updatedLinks = prevLinks[0].links.map((item) => {
+                    if (item.link === link) {
+                        return {
+                            link,
+                            status: 'completed'
+                        }
+                    } else {
+                        return item
+                    }
+                })
+                await db.collection('links').updateOne(
+                    {},
                     {
-                      $set: { links: sanitizedLinks, scrapedData: embeddings },
-                      $currentDate: { lastModified: true }
+                        $set: { links: updatedLinks },
+                        $currentDate: { lastModified: true }
                     }
                 );
-
-                return NextResponse.json({ success: true, message: result });
+                return NextResponse.json({ success: true, message: updatedLinks });
             }
         }
 

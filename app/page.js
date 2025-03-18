@@ -15,18 +15,27 @@ export default function Home() {
 
   return (
         <>
-          <div className='flex flex-col gap-20 items-center justify-center bg-purple-800 w-full rounded-[30px] md:h-[88vh] py-[3rem] text-white px-[15px]'>
-            <h1 className='text-[20px] md:text-[26px] text-center'>Transform Interactions with a Customized AI Chatbot</h1>
-            <h1 className='text-[24px] md:text-[4rem] font-bold text-center'>In just 10 minutes,<br/>for 1/2 the price.</h1>
-            <h1 className='text-[18px] text-center'>Enhance customer engagement with our intelligent AI chatbot.</h1>
-            <button onClick={() => scrollToHowItWorks()} className='bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'><span>See how it works</span></button>
+          <div className='flex flex-col gap-20 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-300'>
+            <div className='flex flex-col items-center justify-center text-gray-800'>
+              <h1 className='text-[20px] md:text-[26px] text-center font-semibold'>Transform Interactions with a <span className='text-purple-700 font-bold'>Customized AI Chatbot</span></h1>
+              <h1 className='text-[24px] md:text-[4rem] font-bold text-center'>In just <span className='text-purple-800'>10</span> minutes,<br/>for <span className='text-purple-800 font-bold'>1/2</span> the price.</h1>
+              <h1 className='text-[18px] text-center'>Enhance customer engagement with our intelligent AI chatbot.</h1>
+            </div>
+            <div className='flex gap-2'>
+              <button onClick={() => console.log()} className='bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100'><span>Book a free demo</span></button>
+              <button onClick={() => console.log()} className='bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100'><span>Get started for free! </span></button>
+            </div>
           </div>
           {/* Features */}
-          <div className='flex flex-col-reverse md:flex-row gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-20 text-white bg-white rounded-[30px] md:px-[75px]'>
-            <div className="flex justify-center md:w-[50%]">
-              <img className='w-[75%] h-auto object-cover' src='/images/features.jpg' />
+          <div className='flex flex-col-reverse md:flex-col gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-20 text-white bg-white rounded-[30px] md:px-[75px]'>
+            <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
+              <h1 className='text-[20px] md:text-[36px] text-center font-semibold'>Automate your business with our <span className='text-purple-700 font-bold'>AI agents.</span></h1>
+              <p>How you can leverage Kulfi AI for your business</p>
             </div>
-            <div className="flex flex-col items-center md:items-start justify-start md:w-[50%]">
+            {/* <div className="flex justify-center md:w-[50%]">
+              <img className='w-[75%] h-auto object-cover' src='/images/features.jpg' />
+            </div> */}
+            {/* <div className="flex flex-col items-center md:items-start justify-start md:w-[50%]">
               <h1 className='text-purple-800 font-bold text-[24px] md:text-[3rem]'>Features</h1>
               <p className='text-[16px] md:text-[22px] text-gray-500 text-center md:text-left'>Built for Simplicity, Customization, and Scalable Interaction.</p>
               <div className='flex flex-col gap-5 md:gap-8 text-[18px] mt-10 px-[10px] md:px-0'>
@@ -35,7 +44,7 @@ export default function Home() {
                 <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[18px]'><CircleCheckBigIcon />Engage customers using Natural Language.</p>
                 <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[18px]'><CircleCheckBigIcon />Feed your own data.</p>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* How it works */}
           <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-20 text-white rounded-[30px] px-[10px] md:px-[75px]'>

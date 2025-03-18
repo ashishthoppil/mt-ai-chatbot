@@ -2,12 +2,12 @@
 
 import { Star } from '@mui/icons-material';
 import { CircleCheck, CopyrightIcon } from 'lucide-react';
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useEffect, useRef, useState } from 'react';
 
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 })

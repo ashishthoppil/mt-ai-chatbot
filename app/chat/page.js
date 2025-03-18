@@ -1,12 +1,12 @@
 'use client';
 
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
 import tinycolor from 'tinycolor2';
 import { Loader2 } from 'lucide-react';
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 })
@@ -23,11 +23,14 @@ export default function Chat() {
       var url = new URL(pathname);
       const id = url.searchParams.get('id');
       const userId = url.searchParams.get('u');
+      const organization = url.searchParams.get('o');
+      const isSandBox = url.searchParams.get('sandbox');
 
       const res = await fetch('/api/dashboard', {
         method: 'POST',
         body: JSON.stringify({
-            id
+            id,
+            organization: organization ? organization : 'Lumiscent India'
         })
       });
             
@@ -52,19 +55,21 @@ export default function Chat() {
           leadSave: data.data.leadSave,
           leadEmail: data.data.leadEmail,
           leadWebhook: data.data.leadWebhook,
-          hubspot: data.data.hubspot
+          hubspot: data.data.hubspot,
+          isSandBox: isSandBox === true || isSandBox === 'true'
         });  
-        loadFaqs(id);
-        loadArticles(id);   
+        loadFaqs(id, organization);
+        loadArticles(id, organization);   
       }
          
     }
 
-    const loadFaqs = async (id) => {
+    const loadFaqs = async (id, organization) => {
       const res = await fetch('/api/get-questions', {
           method: 'POST',
           body: JSON.stringify({
-              id
+              id,
+              organization: organization ? organization : 'Lumiscent India'
           })
       });
       const data = await res.json();
@@ -75,11 +80,12 @@ export default function Chat() {
       }
   }
 
-  const loadArticles = async (id) => {
+  const loadArticles = async (id, organization) => {
     const res = await fetch('/api/get-articles', {
         method: 'POST',
         body: JSON.stringify({
-            id
+            id,
+            organization: organization ? organization : 'Lumiscent India'
         })
     });
     const data = await res.json();

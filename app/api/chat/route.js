@@ -7,19 +7,6 @@ import { z } from 'zod';
 
 export const runtime = 'edge'
 
-// Helper to extract email and phone from a message
-function extractContactDetails(message) {
-  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-  const phoneRegex = /(\+?\d{1,3}[-.\s]?)?(\d{3}[-.\s]?){2}\d{4}/;
-  const emailMatch = message.match(emailRegex);
-  const phoneMatch = message.match(phoneRegex);
-  return {
-    email: emailMatch ? emailMatch[0] : null,
-    phone: phoneMatch ? phoneMatch[0] : null
-  };
-}
-
-
 const getResponseLength = (length) => {
   console.log('lengthlength', length);
   if (length === 'short') {
@@ -53,13 +40,13 @@ const getSourcePrompt = () => {
 export async function POST(request) {
   try {
     const response = await request.json();
-    let { id, messages, org } = response;
+    let { id, messages, org, userId } = response;
     const BASE_URL = process.env.BASE_URL
 
     const res = await fetch(`${BASE_URL}/api/get-workflows`, {
       method: 'POST',
       body: JSON.stringify({
-          id
+        organization: org
       })
     });
     const data = await res.json();
@@ -81,7 +68,7 @@ export async function POST(request) {
 
     const myToolSet = {
       create_lead: tool({
-        description: 'When user is interested in a service or product. Example: I am interested in your service, I need help with an ad campaign, I want to buy a product.',
+        description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
         parameters: z.object({ message: z.string().describe('The whole user query') }),
         execute: async ({ message }) =>  message,
       }),
@@ -91,16 +78,18 @@ export async function POST(request) {
     const initialResponse = await generateText({
       model: openai('gpt-4o'),
       tools: myToolSet,
-      messages,
+      prompt: messages[messages.length - 1].content
     });
 
     if (initialResponse.toolCalls && initialResponse.toolResults) {
+      console.log('toolstools', initialResponse.toolCalls[0]);
       if (initialResponse.toolCalls[0]) {
         if (initialResponse.toolCalls[0].toolName === 'create_lead') {
           const formRes = await fetch(`${BASE_URL}/api/dashboard`, {
             method: 'POST',
             body: JSON.stringify({
-                id
+                id,
+                organization: org
             })
           });
 
@@ -136,8 +125,9 @@ export async function POST(request) {
           }});
         } else {
           const intentResult = await streamText({
-            model: openai('gpt-4o'),
-            system: 'You are a helpful assistant, you always do what is asked of you without any questions.',
+            model: openai('gpt-4o-mini'),
+            system: `You are a helpful assistant. You must strictly follow the given command without deviation. 
+                    DO NOT interpret, rephrase, or add additional information. Just execute the command exactly as stated.`,
             prompt: `DO NOT VIOLATE THIS COMMAND: ${initialResponse.toolResults[0].result}`,
             temperature: 0
           });
@@ -211,7 +201,7 @@ export async function POST(request) {
     const queryEmbedding = embeddingResponse.data[0].embedding
   
     // Retrieve embeddings
-    const embeddingsRes = await fetch(`${BASE_URL}/api/retrieve-embeddings?id=${id}`);
+    const embeddingsRes = await fetch(`${BASE_URL}/api/retrieve-embeddings?id=${id}&organization=${org}`);
   
     const embeddingsArray = await embeddingsRes.json();
     const organization = embeddingsArray.data.organization;
@@ -222,7 +212,7 @@ export async function POST(request) {
     const showimg = embeddingsArray.data.showimg;
     const showsource = embeddingsArray.data.showsource;
 
-    if (!embeddingsArray.data.embeddingsArray[0].embedding.length) {
+    if (!embeddingsArray.data.embeddingsArray.length) {
       return NextResponse.json({ success: false, data: 'No knowledge base found for this client. Please upload or scrape data first.' });
     }
   
@@ -245,8 +235,7 @@ export async function POST(request) {
         2. If the answer is not in the context, disclaim that you don't have information on that.
         3. ${getResponseLength(responseLength)}
         4. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks.
-        5. If the user asks for human interaction, politely ask the user to call or email at ${escalation}.
-        6. If the user is interested or wants any service or products, answer the user as follows: "Could you please provide your email address or phone number so we can follow up with you?". DO NOT disobey this instruction.
+        5. If the user asks for human interaction, or you are not able to resolve the user query, politely ask the user to call or email at ${escalation}.
 
         ${showimg === 'true' || showimg === true ? getImagePrompt() : ''}
         ${showsource === 'true' || showsource === true ? getSourcePrompt() : ''}
@@ -254,123 +243,32 @@ export async function POST(request) {
     }, ...messages];
   
     const result = await streamText({
-      model: openai('gpt-4o'),
+      model: openai('gpt-4o-mini'),
       messages: instructions,
       temperature: 0
     });
 
-  
-    // const systemMessage = {
-    //   role: 'system',
-    //   content: `You are a helpful assistant. Please classify the user query
-    //             as 'Complaint', 'Feedback', or 'General query' only.`
-    // };
-  
-    // const userMessage = {
-    //   role: 'user',
-    //   content: messages[messages.length - 1].content
-    // };
-  
-    // const queryTypeInstructions = [systemMessage, userMessage];
-  
-  
-    // const queryTypeRes = await generateText({
-    //   model: openai('gpt-4o-mini'),
-    //   messages: queryTypeInstructions,
-    //   temperature: 0
-    // });
-  
-    // if (queryTypeRes.text && messages[messages.length - 1].content) {
-    //   const saveQueryType = await fetch(`${BASE_URL}/api/query-type`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       id: id,
-    //       queryType: queryTypeRes.text,
-    //       query: messages[messages.length - 1].content
-    //     }),
-    //   });
-  
-    //   const saveQueryRes = await saveQueryType.json();
-    //   console.log('info: ', saveQueryRes);
-    // }
-    // return new StreamingTextResponse(stream);
+    let responseText = '';
+    for await (const chunk of result.textStream) {
+      responseText += chunk;
+    }
+
+    const querySaveResponse = await fetch(`${BASE_URL}/api/query-type`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: userId,
+        organization: org,
+        messages: [...messages, { role: 'assistant', content: responseText }]
+      }),
+    });
+
+    console.log('querySaveResponsequerySaveResponse', await querySaveResponse.json())
+
     return result.toDataStreamResponse();  
   } catch (e) {
     console.log('Error has occured:', e.message);
   }
 }
-
-// import { OpenAI } from 'openai';
-// import { experimental_streamingAssistantResponse } from 'ai';
-
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
-// export async function POST(req) {
-//   const { messages } = await req.json();
-
-//   // Define the available functions
-//   const functions = [
-//     {
-//       name: "get_weather",
-//       description: "Get the current weather for a given location",
-//       parameters: {
-//         type: "object",
-//         properties: {
-//           location: { type: "string", description: "The city and country name" },
-//         },
-//         required: ["location"],
-//       },
-//     },
-//     {
-//       name: "book_appointment",
-//       description: "Book an appointment for a given date and time",
-//       parameters: {
-//         type: "object",
-//         properties: {
-//           date: { type: "string", description: "The date of the appointment (YYYY-MM-DD)" },
-//           time: { type: "string", description: "The time of the appointment (HH:MM)" },
-//         },
-//         required: ["date", "time"],
-//       },
-//     },
-//   ];
-
-//   // Call OpenAI with function calling enabled
-//   const response = await openai.chat.completions.create({
-//     model: "gpt-4-turbo",
-//     messages,
-//     functions,
-//     function_call: "auto", // Let OpenAI decide if a function should be called
-//   });
-
-//   // If OpenAI requests a function call
-//   if (response.choices[0] && response.choices[0]?.message?.function_call) {
-//     const functionCall = response.choices[0].message.function_call;
-    
-//     let functionResponse;
-    
-//     if (functionCall.name === "get_weather") {
-//       functionResponse = await getWeather(JSON.parse(functionCall.arguments));
-//     } else if (functionCall.name === "book_appointment") {
-//       functionResponse = await bookAppointment(JSON.parse(functionCall.arguments));
-//     }
-
-//     return Response.json({ functionResponse });
-//   }
-
-//   return Response.json({ response });
-// }
-
-// // Example function implementations
-// async function getWeather({ location }) {
-//   return `The weather in ${location} is sunny with a temperature of 25°C.`;
-// }
-
-// async function bookAppointment({ date, time }) {
-//   return `Your appointment has been booked for ${date} at ${time}.`;
-// }

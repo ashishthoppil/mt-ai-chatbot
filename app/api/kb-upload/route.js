@@ -4,6 +4,7 @@ import pdfParse from 'pdf-parse'
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { ObjectId } from "mongodb";
+import { getDbName } from "@/lib/utils";
 
 export const config = {
     api: {
@@ -13,8 +14,10 @@ export const config = {
 }
 
 export async function POST(req) {
+    const { searchParams } = new URL(req.url);
+    const organization = searchParams.get('organization');
     const client = await clientPromise;
-    const DB_NAME = process.env.DB_NAME;
+    const DB_NAME = getDbName(organization);
     const db = client.db(DB_NAME);
     
     const openai = new OpenAI({
@@ -52,13 +55,7 @@ export async function POST(req) {
                 }
     
                 if (embeddings.length > 0) {
-                    const result = await db.collection('clients').updateOne(
-                        { _id: new ObjectId(id) },
-                        {
-                            $set: { fileName: file.name, kb: embeddings },
-                            $currentDate: { lastModified: true }
-                        }
-                    );
+                    const result = await db.collection('documents').insertOne({ fileName: file.name, kb: embeddings });
                     return NextResponse.json({ success: true, message: result });
                 }
         }

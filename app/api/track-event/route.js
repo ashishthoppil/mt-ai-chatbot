@@ -1,13 +1,10 @@
-import { getAnalyticsDb } from "@/lib/analytics";
 import clientPromise from "@/lib/mongodb";
+import { getDbName } from "@/lib/utils";
 import { NextResponse, NextRequest } from "next/server";
 
 const bcrypt = require('bcrypt');
 
 export async function GET(req, res) {
-  const DB_NAME = process.env.DB_NAME
-  const client = await clientPromise;
-  const db = client.db(DB_NAME);
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
   const organization = searchParams.get('organization');
@@ -18,13 +15,19 @@ export async function GET(req, res) {
   const leadData = searchParams.get('leadData');
   const email = searchParams.get('email');
   const phone = searchParams.get('phone');
+  const flag = searchParams.get('flag');
+
+  const DB_NAME = getDbName(organization)
+  const client = await clientPromise;
+  const db = client.db(DB_NAME);
 
   try {
-    const result = await db.collection(getAnalyticsDb(organization, id)).insertOne({
+    const result = await db.collection('analytics').insertOne({
       event,
       time: new Date(),
       user: userId ? userId : '',
       country: country ? country : '',
+      flag: flag ? flag : '',
       device: device ? device : '',
       leadData: leadData ? leadData : '',
       email: email ? email : '',

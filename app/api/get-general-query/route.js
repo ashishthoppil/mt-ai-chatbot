@@ -3,26 +3,28 @@ import { generateObject, generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getDbName } from '@/lib/utils';
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    const organization = searchParams.get('organization');
 
     const mongoClient = await clientPromise
-    const db = mongoClient.db('kulfi')
-    const queryCursor = await db.collection('queries').find({ "id": id, "queryType": 'General query' });
+    const DB_NAME = getDbName(organization);
+    const db = mongoClient.db(DB_NAME)
+    const queryCursor = await db.collection('chats').find({ "queryType": 'General query' });
     
     const queryDocs = await queryCursor.toArray();
 
-    let generalQueries = ''
+    let generalQueries = []
     
     for (let i = 0; i < queryDocs.length; i++) {
-        generalQueries += `${queryDocs[i].query} `
+        generalQueries = [...generalQueries, ...queryDocs[i].messages]
     }
-    if (generalQueries) {
+    if (generalQueries.length) {
         const systemMessage = [{
             role: 'system',
-            content: `You are a helpful assistant. Summarize the following text and extract the 5 most queried topics and their occurences (most to least order): ${generalQueries}. 
+            content: `You are a helpful assistant. Summarize the user's queries and extract the 5 most queried topics and their occurences (most to least order). 
                 Return an object in the following format:
                     {
                         summary: 'Concise summary of the text',
@@ -41,7 +43,8 @@ export async function GET(request) {
                             },
                         ]
                     }
-                Never just return the text provided to you.`,
+                Never just return the text provided to you.
+                IMPORTANT: Refer to the user role as 'visitors'`,
         }];
 
         const hotTopicsSchema = z.object({
@@ -51,7 +54,7 @@ export async function GET(request) {
         
         const summary = await generateObject({
             model: openai('gpt-4o-mini'),
-            messages: systemMessage,
+            messages: [...generalQueries, ...systemMessage],
             temperature: 0,
             schema: z.object({
                 summary: z.string(),
@@ -59,7 +62,6 @@ export async function GET(request) {
             }),
         });
 
-        console.log('summarysummarysummary123', summary.object.hotTopics);
         return NextResponse.json({ success: true, data: { summary: summary.object.summary, count: queryDocs.length, graphData: summary.object.hotTopics } });
     }
     return NextResponse.json({ success: false, data: 'There seems to be something wrong.' });

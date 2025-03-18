@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowCircleLeftRounded, ArrowCircleRightOutlined, ArrowLeftOutlined, ArrowLeftRounded, CheckBox, CheckCircle, CheckCircleOutline, CheckOutlined, SelectAllRounded, Timer } from '@mui/icons-material';
-import { CopyrightIcon, LucideEye, LucideEyeClosed } from 'lucide-react';
+import { LucideEye, LucideEyeClosed } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import {
@@ -12,9 +12,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Poppins } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 });
@@ -37,7 +37,7 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
                     <Link href='/'><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></Link>
                     <div className='flex flex-col gap-4'>
                         <h1 className='font-semibold md:text-2xl text-purple-800'>What is your organization called?</h1>
-                        <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                        <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
                     </div> 
                 </div>
                 <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
@@ -174,7 +174,7 @@ const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
         <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
                 <h1 className='font-semibold md:text-2xl text-purple-800'>What is your website url?</h1>
-                <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
             </div>
             </div>
             <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
@@ -208,7 +208,7 @@ const Step4 = ({ formData, setFormData, nextStep, prevStep }) => {
         <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
                 <h1 className='font-semibold md:text-2xl text-purple-800'>What is your organization about?</h1>
-                <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
             </div>
             </div>
             <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
@@ -242,7 +242,7 @@ const Step5 = ({ formData, setFormData, nextStep, prevStep }) => {
             <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
                 <div className='flex flex-col gap-4'>
                     <h1 className='font-semibold md:text-2xl text-purple-800'>What would you like to call your AI chatbot?</h1>
-                    <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                    <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
                 </div>
             </div>
             <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
@@ -267,7 +267,7 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
                 <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
                 <div className='flex flex-col gap-4'>
                     <h1 className='font-semibold md:text-2xl text-purple-800'>Choose a color for your chatbot.</h1>
-                    <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us to customize the chatbot for your needs.</h1>
+                    <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
                 </div>
             </div>
             <Dialog>
@@ -361,10 +361,12 @@ const MultiStepForm = () => {
         body: JSON.stringify(formData),
     });
     const data = await res.json();
+    console.log('datadata', data);
     if (data.success && data.data.acknowledged) {
         setIsLoading(false);
         const id = data.data.insertedId;
         localStorage.setItem('objectID', id);
+        localStorage.setItem('organization', formData.organization);
         localStorage.setItem('color', formData.color.slice(1));
         localStorage.setItem('botname', formData.botName);
         localStorage.setItem('cw', '400');
@@ -397,12 +399,14 @@ const MultiStepForm = () => {
     }
   };
 
-  return <><div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10 h-[80vh]'>
-            <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
-            {renderStep()}
+  return (
+        <div className='flex justify-center w-full'>
+            <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10 h-[80vh]'>
+                <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
+                {renderStep()}
+            </div>
         </div>
-        <footer className={`bottom-0 flex gap-2 justify-center text-gray-500 py-[20px] w-full`}>Copyright <CopyrightIcon /> 2025 Kulfi AI.</footer> : <></>
-        </>
+    )
 };
 
 export default MultiStepForm;

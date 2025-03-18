@@ -1,9 +1,6 @@
 import clientPromise from '@/lib/mongodb';
-import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
+import { getDbName } from '@/lib/utils';
 import { NextResponse } from 'next/server';
-import { getAnalyticsDb } from '@/lib/analytics';
-
 
 function groupByDate(records, event) {
     // A map from "formattedDate" => number of clicks on that date
@@ -135,29 +132,33 @@ function groupByYear(records, event) {
   }
 
 export async function GET(request) {
-    const mongoClient = await clientPromise
-    const db = mongoClient.db('kulfi')
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const organization = searchParams.get('organization');
     const event = searchParams.get('event');
     const type = searchParams.get('type');
 
+    const mongoClient = await clientPromise;
+    const DB_NAME = getDbName(organization);
+    const db = mongoClient.db(DB_NAME);
+
     if (event === 'location') {
-        const locCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "location" });
+        const locCursor = await db.collection('analytics').find({ "event": "location" });
         const locDocs = await locCursor.toArray();
 
         const groupedByCountry = locDocs.reduce((acc, item) => {
-            const { country, device } = item;
+            const { country, device, flag } = item;
             if (!acc[country]) {
-              acc[country] = { country, mobile: 0, desktop: 0 };
+              acc[country] = { country, mobile: 0, desktop: 0, flag, total: 0 };
             }
           
             if (device) {
               if (device.toLowerCase() === 'mobile') {
                 acc[country].mobile += 1;
+                acc[country].total += 1;
               } else if (device.toLowerCase() === 'desktop') {
                 acc[country].desktop += 1;
+                acc[country].total += 1;
               }
             }
             return acc;
@@ -167,20 +168,20 @@ export async function GET(request) {
           return NextResponse.json({ success: true, data: result });
 
     } else if (event === 'lead') {
-      const leadsCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "lead" });
+      const leadsCursor = await db.collection('analytics').find({ "event": "lead" });
       const leadsDocs = await leadsCursor.toArray();
       return NextResponse.json({ success: true, data: leadsDocs });
     } else if (event === 'count') {
-        const count = await db.collection(getAnalyticsDb(organization, id)).count();
+        const count = await db.collection('chats').count();
         return NextResponse.json({ success: true, data: count });
     } else if (event === 'engagement') {
-        const clickCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "click" });
+        const clickCursor = await db.collection('analytics').find({ "event": "click" });
         const clickDocs = await clickCursor.toArray();
-        const sessionCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": "session" });
+        const sessionCursor = await db.collection('analytics').find({ "event": "session" });
         const sessionDocs = await sessionCursor.toArray();
         return NextResponse.json({ success: true, data: ((sessionDocs.length / clickDocs.length).toFixed(2) * 100) });
     } else {
-        const queryCursor = await db.collection(getAnalyticsDb(organization, id)).find({ "event": event });
+        const queryCursor = await db.collection('analytics').find({ "event": event });
         const queryDocs = await queryCursor.toArray();
         
         if (type === 'Day') {

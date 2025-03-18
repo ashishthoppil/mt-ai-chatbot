@@ -1,16 +1,18 @@
 import clientPromise from "@/lib/mongodb";
+import { getDbName } from "@/lib/utils";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  const request = await req.json();
+
   const client = await clientPromise;
-  const DB_NAME = process.env.DB_NAME;
+  const DB_NAME = getDbName(request.organization);
   const db = client.db(DB_NAME);
 
-  const request = await req.json();
     try {
-        const result = await db.collection('clients').updateOne(
-            { _id: new ObjectId(request.id) },
+        const result = await db.collection('settings').updateOne(
+            {},
             {
               $set: { 
                 leadSave: request.leadSave, 

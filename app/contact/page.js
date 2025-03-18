@@ -2,10 +2,10 @@
 
 import { BuildCircleOutlined, LocationOn } from '@mui/icons-material';
 import { CopyrightIcon } from 'lucide-react';
-import { Poppins } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { useState } from 'react';
 
-export const poppins = Poppins({
+export const poppins = Inter({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 })
