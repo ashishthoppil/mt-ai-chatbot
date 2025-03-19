@@ -1,7 +1,7 @@
 'use client';
 
 import { AppRegistrationRounded, ContentPaste, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
-import { CircleCheckBigIcon, Copy, CopyrightIcon, Database, LucidePartyPopper } from 'lucide-react';
+import { CircleCheckBigIcon, Copy, CopyrightIcon, Database, LucidePartyPopper, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 
@@ -23,8 +23,8 @@ export default function Home() {
                 <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1>
               </div>
               <div className='flex gap-2'>
-                <button onClick={() => console.log()} className='bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px]'><span>Book a free demo</span></button>
-                <button onClick={() => console.log()} className='bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px]'><span>Try Kulfi AI for free! </span></button>
+                <button onClick={() => console.log()} className='flex gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a free demo</span></button>
+                <button onClick={() => console.log()} className='flex gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
               </div>
             </div>
         </div>
