@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import { Header } from "./components/layout/Header";
 import { ToastContainer } from "react-toastify";
+import TagManager from 'react-gtm-module'
 
 import "./globals.css";
 
@@ -15,17 +16,16 @@ export const poppins = Inter({
 })
 
 export default function RootLayout({ children }) {
+
+  const tagManagerArgs = {
+    gtmId: 'G-SEBEB303B9'
+  }
+
+  TagManager.initialize(tagManagerArgs)
+
+
   return (
     <html lang="en">
-      <head></head>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEBEB303B9"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments)}
-        gtag('js', new Date());
-
-        gtag('config', 'G-SEBEB303B9');
-      </script>
       <body>
         <main className={`flex bg-white flex-col items-center justify-between flex-grow !focus:ring-0 ${poppins.className}`}>
           <Header />
