@@ -27,16 +27,4 @@ export async function POST(req, res) {
   } else {
     return NextResponse.json({ success: true, message: 'No such email address in our records!' });
   }
-
-
-  const DB_NAME = process.env.DB_NAME;
-  const db = client.db(DB_NAME);
-  try {
-    const exists = await db.collection('clients').find({ email: data.email }).toArray();
-    if (exists.length > 0) {
-
-    }
-  } catch (error) {
-    return NextResponse.json({ success: false, message: error.message });
-  }
 }

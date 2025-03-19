@@ -49,6 +49,7 @@ export const Header = () => {
             setIsLoading(false);
             if (data.message._id) {
                 localStorage.setItem('objectID', data.message._id)
+                localStorage.setItem('organization', data.message.organization)
                 localStorage.setItem('color', data.message.color.slice(1))
                 localStorage.setItem('botname', data.message.botName)
                 localStorage.setItem('cw', data.message.cw)
