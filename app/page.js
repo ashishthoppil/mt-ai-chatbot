@@ -15,17 +15,20 @@ export default function Home() {
 
   return (
         <>
-          <div className='flex flex-col gap-20 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-300'>
-            <div className='flex flex-col items-center justify-center text-gray-800'>
-              <h1 className='text-[20px] md:text-[26px] text-center font-semibold'>Transform Interactions with a <span className='text-purple-700 font-bold'>Customized AI Chatbot</span></h1>
-              <h1 className='text-[24px] md:text-[4rem] font-bold text-center'>In just <span className='text-purple-800'>10</span> minutes,<br/>for <span className='text-purple-800 font-bold'>1/2</span> the price.</h1>
-              <h1 className='text-[18px] text-center'>Enhance customer engagement with our intelligent AI chatbot.</h1>
+        <div className='px-2 md:px-10'>
+          <div className='flex flex-col gap-20 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-800 rounded-[30px]'>
+              <div className='flex flex-col gap-8 md:gap-1 px-1 py-5 items-center justify-center text-gray-800'>
+                <h1 className='text-[22px] md:text-[36px] text-center font-semibold text-white'>Transform Interactions with a <span className='text-purple-400 font-bold'>Customized AI Chatbot.</span></h1>
+                <h1 className='text-[32px] md:text-[5rem] font-black text-center md:leading-[1.3] text-gray-200'>In just <span className='text-purple-400'>10</span> minutes,<br/>for <span className='text-purple-400 font-bold'>1/2</span> the price.</h1>
+                <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1>
+              </div>
+              <div className='flex gap-2'>
+                <button onClick={() => console.log()} className='bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px]'><span>Book a free demo</span></button>
+                <button onClick={() => console.log()} className='bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px]'><span>Try Kulfi AI for free! </span></button>
+              </div>
             </div>
-            <div className='flex gap-2'>
-              <button onClick={() => console.log()} className='bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100'><span>Book a free demo</span></button>
-              <button onClick={() => console.log()} className='bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100'><span>Get started for free! </span></button>
-            </div>
-          </div>
+        </div>
+          
           {/* Features */}
           <div className='flex flex-col-reverse md:flex-col gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-20 text-white bg-white rounded-[30px] md:px-[75px]'>
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
