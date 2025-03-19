@@ -71,8 +71,10 @@ export const Header = () => {
     }, [pathname])
 
     useEffect(() => {
-        if (localStorage && localStorage.getItem('objectID')) {
-            setLs(true);
+        if (localStorage) {
+            if (localStorage.getItem('objectID')) {
+                setLs(true);
+            }
         }
     }, [])
 
@@ -92,7 +94,7 @@ export const Header = () => {
                     <button className='text-purple-800' onClick={() => setIsOpen((prev) => !prev)}>{isOpen ? <CloseTwoTone /> : <MenuIcon />}</button>}
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
-                    {localStorage && !localStorage.getItem('objectID') ? <div className='flex items-center gap-5'>
+                    {!ls && localStorage && !localStorage.getItem('objectID') ? <div className='flex items-center gap-5'>
                         <Link className='flex gap-1 text-purple-800 font-semibold' href=''><WorkflowIcon /> Use Cases</Link>
                         <button className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
