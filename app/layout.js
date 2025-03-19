@@ -17,6 +17,15 @@ export const poppins = Inter({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head></head>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEBEB303B9"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments)}
+        gtag('js', new Date());
+
+        gtag('config', 'G-SEBEB303B9');
+      </script>
       <body>
         <main className={`flex bg-white flex-col items-center justify-between flex-grow !focus:ring-0 ${poppins.className}`}>
           <Header />
