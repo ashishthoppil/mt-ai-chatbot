@@ -37,43 +37,43 @@ export const PricingSub = ({ selected }) => {
     //     console.error("PayPal subscription error:", err);
     // };
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://www.paypal.com/sdk/js?client-id=AQXrW7T_PxeDN_ZoGvbof0wZua1Yuy0QbfVHZiStxMkM8HYWSY1NHe8ZnT8MERmrOk8T0W3vNCPPexCs&intent=capture'
-        script.addEventListener('load', () => setIsLoaded(true))
-        document.body.append(script);
+    // useEffect(() => {
+    //     const script = document.createElement('script');
+    //     script.src = 'https://www.paypal.com/sdk/js?client-id=AQXrW7T_PxeDN_ZoGvbof0wZua1Yuy0QbfVHZiStxMkM8HYWSY1NHe8ZnT8MERmrOk8T0W3vNCPPexCs&intent=capture'
+    //     script.addEventListener('load', () => setIsLoaded(true))
+    //     document.body.append(script);
 
-        if (isLoaded) {
+    //     if (isLoaded) {
 
-            setTimeout(() => {
-                window.paypal.Buttons({
-                    style: {
-                        shape: 'rect',
-                        color: 'gold',
-                        layout: 'vertical',
-                        label: 'subscribe'
-                    },
-                    createOrder: function(data, actions) {
-                      return actions.order.create({
-                        purchase_units: [
-                            {
-                                description: 'Test',
-                                amount: {
-                                    currency_code: 'USD',
-                                    value: 1
-                                }
-                            }
-                        ]
-                      });
-                    },
-                    onApprove: async (data, actions) => {
-                        const order = await actions.order.capture();
-                        console.log('orderorder', order);
-                    }
-                }).render('#paypal-button-container');
-            });
-        }
-    })
+    //         setTimeout(() => {
+    //             window.paypal.Buttons({
+    //                 style: {
+    //                     shape: 'rect',
+    //                     color: 'gold',
+    //                     layout: 'vertical',
+    //                     label: 'subscribe'
+    //                 },
+    //                 createOrder: function(data, actions) {
+    //                   return actions.order.create({
+    //                     purchase_units: [
+    //                         {
+    //                             description: 'Test',
+    //                             amount: {
+    //                                 currency_code: 'USD',
+    //                                 value: 1
+    //                             }
+    //                         }
+    //                     ]
+    //                   });
+    //                 },
+    //                 onApprove: async (data, actions) => {
+    //                     const order = await actions.order.capture();
+    //                     console.log('orderorder', order);
+    //                 }
+    //             }).render('#paypal-button-container');
+    //         });
+    //     }
+    // })
 
     return (
         <div className='flex flex-col gap-10 items-center justify-center bg-purple-800 w-full rounded-[30px] py-[5rem]'>
