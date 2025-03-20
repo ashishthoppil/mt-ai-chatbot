@@ -5,9 +5,11 @@ import { CircleCheckBigIcon, Copy, CopyrightIcon, Database, LucidePartyPopper, S
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Header } from './components/layout/Header';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
+  const router = useRouter()
   const workRef = useRef();
 
   const scrollToHowItWorks = () => {
@@ -31,29 +33,93 @@ export default function Home() {
             </div>
         </div>
           
-          {/* Features */}
-          <div className='flex flex-col md:flex-col gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-[10rem] text-white bg-white rounded-[30px] px-[40px] md:px-[75px]'>
+          {/* Knowledge Base */}
+          <div className='flex flex-col md:flex-col gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-[10rem] text-white bg-white rounded-[30px] px-[40px] md:px-[80px]'>
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
-              <h1 className='text-[30px] md:text-[42px] text-center font-bold leading-8'>Chatbots that run on <span className='text-purple-700 font-bold'>your own data.</span></h1>
-              <p className='mt-4 md:mt-0 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>Leverage Kulfi AI and automate your business</p>
+              <h1 className='text-[30px] md:text-[42px] text-center font-bold leading-8'>AI Chatbots that run on <span className='text-purple-700 font-bold'>your own data.</span></h1>
+              <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>You control what the AI understands.</p>
             </div>
 
             <div className='flex flex-col md:flex-row gap-10 md:gap-5 mt-0 md:mt-10'>
               <div className="flex flex-col gap-2 justify-center items-center md:items-start justify-start md:w-[35%]">
                 <h1 className='text-purple-800 font-bold text-[24px] md:text-[1.8rem] leading-[2.5rem]'></h1>
                 <p className='text-[16px] md:text-[26px] font-semibold text-gray-500 text-center md:text-left'>Built for Simplicity, Customization, and Scalable Interaction.</p>
-                <div className='flex flex-col gap-5 md:gap-8 text-[18px] px-[10px] mt-8 md:px-0'>
+                <div className='flex flex-col gap-5 md:gap-5 text-[18px] px-[10px] mt-8 md:px-0'>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Scrape website pages.</p>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Upload multiple PDF documents.</p>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Manage your own data.</p>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Data segregated by organisation.</p>
+                  <div className='flex justify-start'>
+                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>                
+                  </div>
                 </div>
               </div>
               <div className="flex justify-center md:w-[65%]">
                 <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/custom_knowledge.png' />
               </div>
             </div>
-        
+          </div>
+          {/* Use cases */}
+          <div className='flex flex-col md:flex-col gap-10 items-center justify-center w-full  py-[2rem] md:py-[5rem] mt-10 md:mt-[15rem] text-white bg-white rounded-[30px] px-[20px] md:px-[80px]'>
+            <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
+              <h1 className='text-[30px] md:text-[42px] text-center font-bold leading-8'>Make the Most out of <span className='text-purple-700 font-bold'>Kulfi AI.</span></h1>
+              <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>Leverage Kulfi AI and automate your business</p>
+            </div>
+
+            <div className='flex flex-col gap-5 md:gap-5 mt-0 md:mt-16'>
+              <div className='flex flex-col-reverse md:flex-row px-5 md:px-0 md:justify-center gap-10 bg-purple-100 py-10 rounded-[30px] shadow-lg'>
+                <div className="flex justify-center md:w-[30%]">
+                  <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/customer-care.png' />
+                </div>
+                <div className='flex flex-col gap-5 justify-center md:w-[40%]'>
+                  <h1 className='text-[22px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Streamline Customer Support with <span className='text-purple-700 font-bold'>Kulfi AI </span>Automation.</h1>
+                  <div className='flex flex-col gap-5'>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Provide quick and accurate responses to customer inquiries 24/7.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Understand user preferences and past interactions to deliver tailored support.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Identify complex issues and transfer them to human agents when needed.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Analyze conversations to improve customer experience and business decisions.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className='flex flex-col md:flex-row md:justify-center gap-10 bg-indigo-100 py-10 px-5 md:px-0  rounded-[30px] shadow-lg mt-10'>
+
+                <div className='flex flex-col gap-5 justify-center md:w-[40%]'>
+                  <h1 className='text-[22px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Enhance Learning Experiences with <span className='text-purple-700 font-bold'>Kulfi AI </span>Automation.</h1>
+                  <div className='flex flex-col gap-5'>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Provide real-time answers to student queries related to lessons, assignments, and concepts.                    </p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Assist students with explanations, summaries, and study tips anytime.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Recommend courses, topics, and study materials based on student progress and performance.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Track student interaction with the chatbot to improve learning strategies.</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-center md:w-[25%]">
+                  <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/edtech.png' />
+                </div>
+              </div>
+
+              {/* <div className='flex md:justify-center gap-10 bg-indigo-100 py-10 px-10 rounded-[30px] shadow-lg w-[50%]'>
+                <div className="flex justify-center md:w-[35%]">
+                  <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/customer-care.png' />
+                </div>
+                <div className='flex flex-col gap-5 justify-center md:w-[35%]'>
+                  <h1 className='text-[30px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Make the Most out of <span className='text-purple-700 font-bold'>Kulfi AI.</span></h1>
+                  <div className='flex flex-col gap-5'>
+                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Scrape website pages.</p>
+                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Upload multiple PDF documents.</p>
+                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Manage your own data.</p>
+                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Data segregated by organisation.</p>
+                  </div>
+                </div>
+              </div> */}
+              {/* <div className="flex flex-col gap-2 justify-center items-center md:items-start justify-start md:w-[35%]">
+                
+              </div>
+              <div className="flex justify-center md:w-[65%]">
+                <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/custom_knowledge.png' />
+              </div> */}
+            </div>
           </div>
           {/* How it works */}
           {/* <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-20 text-white rounded-[30px] px-[10px] md:px-[75px]'>
@@ -109,6 +175,7 @@ export default function Home() {
               </div>
             </div>
           </div> */}
+
           {/* Contact */}
           <div className='px-5'>
             <div className='flex gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] md:mt-20 text-white md:px-[75px]'>
