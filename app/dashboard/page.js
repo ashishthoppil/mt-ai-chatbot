@@ -29,6 +29,7 @@ import { Switch } from '@/components/ui/switch';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
+import { Header } from '../components/layout/Header';
 
 export const poppins = Inter({
   subsets: ['latin'],
@@ -484,33 +485,6 @@ export default function Dashboard() {
             Icon: Tag
         },
     ];
-
-    const profileUpdate = async () => {
-        // Validations
-        if (data.website === '' || data.domain === '') {
-            toast.error("Please enter all required fields!");
-            return;
-        }
-        const re = /^(https?|ftp):\/\/([^\s\/]*)\.([^\s\/]*)(?:\/[^\s]*)?$/i;
-        const websiteFormat = re.test(data.website);
-        if (!websiteFormat) {
-            toast.error("Please enter a valid website url!");
-            return;
-        }
-        setIsLoading(true);
-        const res = await fetch('/api/profile', {
-            method: 'POST',
-            body: JSON.stringify({
-                id: localStorage.getItem('objectID'),
-                ...data
-            })
-        });
-        const response = await res.json();
-        if (response) {
-            setIsLoading(false);
-            toast.success("Profile updated!");  
-        }
-    }
 
     const settingsUpdate = async () => {
         // Validations
@@ -1467,19 +1441,19 @@ export default function Dashboard() {
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Training</h3>
                     <p className='text-[14px] md:text-[16px]'>Manage your Knowledge bases and train your AI bot from this section.</p>
                     <div className='flex flex-col md:flex-row gap-3 pt-10 text-[14px] md:text-[16px]'>
-                        <div className='flex flex-col gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-500 shadow-sm p-3 text-[14px]'>
+                        <div className='flex flex-col gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
                             <h1>Links</h1>
-                            <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
+                            <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-200 shadow-inner bg-gray-50 rounded-sm p-2' />
                             <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
                             <div className='flex justify-end w-full mt-10'>
                                 <button onClick={addLinks} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Add Links'}</button>  
                             </div>
                         </div>
                         
-                        <div className='flex flex-col justify-between gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-500 shadow-sm p-3 text-[14px]'>
+                        <div className='flex flex-col justify-between gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
                             <h1>PDF Document</h1>  
                             <div className="flex flex-col gap-10 items-start justify-between w-full">
-                                <div className='flex flex-col gap-3 border-2 border-gray-500 border-dashed rounded-sm p-4 w-full'>
+                                <div className='flex flex-col gap-3 border-[1px] border-gray-200 shadow-inner border-dashed bg-gray-50 rounded-sm p-4 w-full'>
                                     <strong>Current knowledge base:</strong>
                                     {fileNames.length ? 
                                     fileNames.map((item, index) => {
@@ -1742,7 +1716,10 @@ export default function Dashboard() {
     }
 
     return (
-        <main className={`flex items-center gap-4 w-full md:py-[4rem] md:px-[5rem] bg-white rounded-[30px] my-[10px] ${poppins.className}`}>
+        
+        <>
+        <Header />
+        <main className={`flex items-center gap-4 w-full md:py-[4rem] md:px-[5rem] bg-white rounded-[30px] my-[10px] ${poppins.className}`}>            
             <div className="md:flex w-full">
                 <ul className="flex md:flex-col gap-2 md:gap-0 md:space-y md:space-y-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0 overflow-x-auto md:overflow-visible py-3 md:py-0">
                     {sideMenu.map(({ Icon, ...item}) => (
@@ -1776,7 +1753,16 @@ export default function Dashboard() {
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter className='flex gap-2 justify-end pt-[25px]'>
-                                    <button onClick={() => logout()} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Yes</button>  
+                                    <button onClick={async () => {
+                                        const response = await fetch('/api/logout', {
+                                            method: 'GET',
+                                        });
+                                        const data = await response.json();
+                                        if (data.message) {
+                                            logout();
+                                            router.push('/');
+                                        }
+                                    }} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Yes</button>  
                                     <button onClick={() => setLogoutModalOpen(false)} className='bg-white border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-purple-500 py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>No</button>  
                                 </DialogFooter>
                             </DialogContent>
@@ -1788,5 +1774,7 @@ export default function Dashboard() {
                 </div>
             </div>
         </main>
+        </>
+        
     );
 }

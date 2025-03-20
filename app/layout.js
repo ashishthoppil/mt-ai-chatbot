@@ -21,7 +21,6 @@ export default function RootLayout({ children }) {
       <GoogleTagManager gtmId="G-SEBEB303B9" />
       <body>
         <main className={`flex bg-white flex-col items-center justify-between flex-grow !focus:ring-0 ${poppins.className}`}>
-          <Header />
           <div className="w-full">
             {children}
           </div>

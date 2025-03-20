@@ -13,6 +13,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Inter } from 'next/font/google';
+import { Header } from '../components/layout/Header';
 
 export const poppins = Inter({
   subsets: ['latin'],
@@ -40,7 +41,7 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
                         <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
                     </div> 
                 </div>
-                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
             </div>
             <div className='flex flex-col gap-4 w-full'>
                 <input autoFocus placeholder='Example: Acme Pvt Ltd' onChange={(e) => setFormData({ ...formData, organization: e.target.value })} onKeyDown={(e) => {
@@ -94,7 +95,7 @@ const Step2 = ({ formData, setFormData, nextStep, prevStep }) => {
                 <h1 className='font-normal text-sm md:text-md text-gray-500'>We will use this email address for updates and future support.</h1>
             </div>
             </div>
-            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input autoFocus placeholder='Example: www.web-address.com' onKeyDown={(e) => {
@@ -132,7 +133,7 @@ const PasswordStep = ({ formData, setFormData, nextStep, prevStep }) => {
                         <h1 className='font-normal text-sm md:text-md text-gray-500'>Please keep your password confidential.</h1>
                     </div> 
                 </div>
-                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
             </div>
             <div className='flex flex-col gap-4 w-full'>
                     <input autoFocus onKeyDown={(e) => {
@@ -177,7 +178,7 @@ const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
                 <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
             </div>
             </div>
-            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input autoFocus onKeyDown={(e) => {
@@ -211,7 +212,7 @@ const Step4 = ({ formData, setFormData, nextStep, prevStep }) => {
                 <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
             </div>
             </div>
-            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4 w-full'>
             <input autoFocus onKeyDown={(e) => {
@@ -245,7 +246,7 @@ const Step5 = ({ formData, setFormData, nextStep, prevStep }) => {
                     <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
                 </div>
             </div>
-            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+            <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
         </div>
         <div className='flex flex-col gap-4  w-full'>
             <input autoFocus onKeyDown={(e) => {
@@ -400,12 +401,15 @@ const MultiStepForm = () => {
   };
 
   return (
-        <div className='flex justify-center w-full'>
-            <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10 h-[80vh]'>
-                <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
-                {renderStep()}
+        <>
+            <Header />
+            <div className='flex justify-center w-full'>            
+                <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10 h-[80vh]'>
+                    <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
+                    {renderStep()}
+                </div>
             </div>
-        </div>
+        </>
     )
 };
 

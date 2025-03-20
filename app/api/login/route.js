@@ -1,4 +1,5 @@
 import clientPromise from "@/lib/mongodb";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const bcrypt = require('bcrypt');
@@ -20,6 +21,20 @@ export async function POST(req, res) {
     const match = await bcrypt.compareSync(data.password, hashedPass);
     if (match) {
         const settings = await db.collection('settings').find().toArray();
+        // set cookies
+        const cookieStore = await cookies();
+        const expiry = new Date(Date.now()+ 86400*1000);
+        const salt = bcrypt.genSaltSync(10);
+        cookieStore.set({
+          name: 'organization',
+          value: bcrypt.hashSync(account[0].organization, salt),
+          expires: expiry
+        });
+        cookieStore.set({
+          name: 'email',
+          value: bcrypt.hashSync(data.email, salt),
+          expires: expiry
+        });
         return NextResponse.json({ success: true, message: { ...account[0], ...settings[0] } });
     } else {
         return NextResponse.json({ success: true, message: 'Wrong Password!' });

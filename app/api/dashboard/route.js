@@ -1,6 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import { getDbName } from "@/lib/utils";
 import { ObjectId } from "mongodb";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
@@ -10,6 +11,8 @@ export async function POST(req, res) {
     const db = client.db(DB_NAME);
 
     try {
+        const cookieStore = await cookies()
+        console.log('cookieStorecookieStore', cookieStore.getAll())
         const account = await db.collection('account').find().toArray();
         const settings = await db.collection('settings').find().toArray();
         const links = await db.collection('links').find().toArray();

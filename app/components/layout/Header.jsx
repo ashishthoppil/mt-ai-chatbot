@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/dialog"
 import { Inter } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { Eye, HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, ShapesIcon, Tag, UserCheck, WorkflowIcon } from 'lucide-react';
+import { Eye, HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, ShapesIcon, SquareMousePointerIcon, Tag, UserCheck, WorkflowIcon } from 'lucide-react';
+import { checkAuth, getCookie } from '@/lib/helper';
 
 export const poppins = Inter({
   subsets: ['latin'],
@@ -28,12 +29,14 @@ export const Header = () => {
         password: ''
     });
     const [showPassword, setShowPassword] = useState(false);
+    const [auth, setAuth] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [ls, setLs] = useState(false);
     const router = useRouter();
     const loginRef = useRef();
+    const isAuth = getCookie('organization') && getCookie('email')
 
     const submitHandler = async () => {
         setIsLoading(true);
@@ -68,15 +71,7 @@ export const Header = () => {
 
     useEffect(() => {
         setIsOpen(false);
-    }, [pathname])
-
-    useEffect(() => {
-        if (localStorage) {
-            if (localStorage.getItem('objectID')) {
-                setLs(true);
-            }
-        }
-    }, [])
+    }, [pathname]);
 
     return (
         pathname !== '/chat' && 
@@ -90,11 +85,11 @@ export const Header = () => {
                 {pathname !== '/get-started' && 
                 <>
                 <div className='md:hidden flex flex-col'>
-                    {ls ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> :
+                    {isAuth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> :
                     <button className='text-purple-800' onClick={() => setIsOpen((prev) => !prev)}>{isOpen ? <CloseTwoTone /> : <MenuIcon />}</button>}
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
-                    {ls && localStorage && !localStorage.getItem('objectID') ? <div className='flex items-center gap-5'>
+                    {!isAuth ? <div className='flex items-center gap-5'>
                         <Link className='flex gap-1 text-purple-800 font-semibold' href=''><WorkflowIcon /> Use Cases</Link>
                         <button className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
@@ -106,7 +101,7 @@ export const Header = () => {
                             }
                         }}>
                             <DialogTrigger asChild>
-                                <button ref={loginRef} href="/login" className='flex gap-1 bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-purple-200 hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Login</button>
+                                <button ref={loginRef} className='flex gap-1 bg-purple-800 border-2 border-purple-800 shadow-md hover:bg-purple-200 hover:text-purple-800 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Login</button>
                             </DialogTrigger>
                             <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
                                 <DialogHeader className='flex flex-col gap-2'>
@@ -130,7 +125,7 @@ export const Header = () => {
                                         <input onChange={(e) => setCredentials((prev) => { return { ...prev, password: e.target.value } })} value={credentials.password} type={showPassword ? 'text' : 'password'} id='password' placeholder='Enter your password' className='px-5 py-5 outline-none border-[1px] border-gray-400 rounded-lg'></input>
                                         <div className='flex justify-end'>
                                             <button onClick={() => setShowPassword(prev => !prev)}>
-                                                {!showPassword ? <LucideEye className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' /> :<LucideEyeClosed className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' />} 
+                                                {!showPassword ? <LucideEye className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' /> : <LucideEyeClosed className='relative top-[-60px] right-4 text-purple-800 cursor-pointer' />} 
                                             </button>
                                         </div>
                                     </div>
@@ -144,16 +139,16 @@ export const Header = () => {
                             </DialogContent>
                         </Dialog>
                         <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Try for free!</Link>
-                        </div> : ls ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
+                        </div> : isAuth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
                 </div></>}
             </header>
             {isOpen ?
-            <div className='absolute top-[65px] left-0 bg-white md:hidden flex flex-col w-full border-[1px] border-gray-400'>
+            <div className={`absolute top-[80px] left-0 bg-white md:hidden flex flex-col w-full border-[1px] border-gray-400 ${isOpen ? 'opacity-1' : 'opacity-0'} duration-1000`}>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
                     <Link href="/" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><WorkflowIcon /> Use cases</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link href="/pricing" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Deom</Link>
+                    <Link href="/pricing" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
                     <Dialog>
@@ -190,7 +185,7 @@ export const Header = () => {
                 </div>
 
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link href="/get-started" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><LucidePlaneTakeoff /> Try for free!</Link>
+                    <Link href="/get-started" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><SquareMousePointerIcon /> Try for free!</Link>
                 </div>
             </div> : <></>}
         </div>
