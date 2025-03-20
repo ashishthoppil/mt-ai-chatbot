@@ -29,14 +29,13 @@ export const Header = () => {
         password: ''
     });
     const [showPassword, setShowPassword] = useState(false);
-    const [auth, setAuth] = useState(false);
+    const [auth, setAuth] = useState();
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [ls, setLs] = useState(false);
     const router = useRouter();
     const loginRef = useRef();
-    const isAuth = getCookie('organization') && getCookie('email')
 
     const submitHandler = async () => {
         setIsLoading(true);
@@ -72,6 +71,10 @@ export const Header = () => {
     useEffect(() => {
         setIsOpen(false);
     }, [pathname]);
+
+    useEffect(() => {
+        setAuth(getCookie('organization') && getCookie('email'));
+    }, [])
 
     return (
         pathname !== '/chat' && 
