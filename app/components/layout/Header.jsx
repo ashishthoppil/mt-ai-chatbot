@@ -88,11 +88,11 @@ export const Header = () => {
                 {pathname !== '/get-started' && 
                 <>
                 <div className='md:hidden flex flex-col'>
-                    {isAuth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> :
+                    {auth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> :
                     <button className='text-purple-800' onClick={() => setIsOpen((prev) => !prev)}>{isOpen ? <CloseTwoTone /> : <MenuIcon />}</button>}
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
-                    {!isAuth ? <div className='flex items-center gap-5'>
+                    {!auth ? <div className='flex items-center gap-5'>
                         <Link className='flex gap-1 text-purple-800 font-semibold' href=''><WorkflowIcon /> Use Cases</Link>
                         <button className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
@@ -142,7 +142,7 @@ export const Header = () => {
                             </DialogContent>
                         </Dialog>
                         <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Try for free!</Link>
-                        </div> : isAuth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
+                        </div> : auth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
                 </div></>}
             </header>
             {isOpen ?
