@@ -37,6 +37,11 @@ export const Header = () => {
     const router = useRouter();
     const loginRef = useRef();
 
+    const scrollToUseCases = (e) => {
+        e.preventDefault();
+        document.getElementById('use-cases').scrollIntoView({ behavior: 'smooth' });
+    }
+
     const submitHandler = async () => {
         setIsLoading(true);
         const response = await fetch('/api/login', {
@@ -93,7 +98,7 @@ export const Header = () => {
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
                     {!auth ? <div className='flex items-center gap-5'>
-                        <Link className='flex gap-1 text-purple-800 font-semibold' href=''><WorkflowIcon /> Use Cases</Link>
+                        <Link onClick={(e) => scrollToUseCases(e)} className='flex gap-1 text-purple-800 font-semibold' href='#'><WorkflowIcon /> Use Cases</Link>
                         <button className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
                             if (!open) {
@@ -148,7 +153,7 @@ export const Header = () => {
             {isOpen ?
             <div className={`absolute top-[80px] left-0 bg-white md:hidden flex flex-col w-full border-[1px] border-gray-400 ${isOpen ? 'opacity-1' : 'opacity-0'} duration-1000`}>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link href="/" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><WorkflowIcon /> Use cases</Link>
+                    <Link onClick={(e) => scrollToUseCases(e)} href="#" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><WorkflowIcon /> Use cases</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
                     <Link href="/pricing" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
