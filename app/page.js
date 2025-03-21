@@ -49,7 +49,7 @@ export default function Home() {
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Upload multiple PDF documents.</p>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Manage your own data.</p>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Data segregated by organisation.</p>
-                  <div className='flex justify-start'>
+                  <div className='flex justify-center my-5 md:justify-start'>
                     <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>                
                   </div>
                 </div>
@@ -66,36 +66,36 @@ export default function Home() {
               <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>Leverage Kulfi AI and automate your business</p>
             </div>
 
-            <div className='flex flex-col gap-5 md:gap-5 mt-0 md:mt-16'>
-              <div className='flex flex-col-reverse md:flex-row px-5 md:px-0 md:justify-center gap-10 bg-purple-100 py-10 rounded-[30px] shadow-lg'>
-                <div className="flex justify-center md:w-[30%]">
-                  <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/customer-care.png' />
+            <div className='flex flex-col gap-5 md:gap-5 mt-0 md:mt-16 md:px-[10rem]'>
+              <div className='flex flex-col-reverse md:flex-row px-5 md:px-0 py-5 md:py-0 md:justify-center gap-10 bg-purple-100 rounded-[30px] shadow-lg'>
+                <div className="flex justify-center items-center md:w-[35%]">
+                  <img className='w-full h-[80%] object-contain' src='/images/customer-care.gif' />
                 </div>
                 <div className='flex flex-col gap-5 justify-center md:w-[40%]'>
                   <h1 className='text-[22px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Streamline Customer Support with <span className='text-purple-700 font-bold'>Kulfi AI </span>Automation.</h1>
                   <div className='flex flex-col gap-5'>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Provide quick and accurate responses to customer inquiries 24/7.</p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Understand user preferences and past interactions to deliver tailored support.</p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Identify complex issues and transfer them to human agents when needed.</p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Analyze conversations to improve customer experience and business decisions.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Provide quick and accurate responses to customer inquiries 24/7.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Understand user preferences and past interactions to deliver tailored support.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Identify complex issues and transfer them to human agents when needed.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Analyze conversations to improve customer experience and business decisions.</p>
                   </div>
                 </div>
               </div>
 
-              <div className='flex flex-col md:flex-row md:justify-center gap-10 bg-indigo-100 py-10 px-5 md:px-0  rounded-[30px] shadow-lg mt-10'>
+              <div className='flex flex-col md:flex-row md:justify-center gap-10 bg-indigo-100 px-5 md:px-0 py-5 md:py-0 rounded-[30px] shadow-lg mt-10'>
 
                 <div className='flex flex-col gap-5 justify-center md:w-[40%]'>
                   <h1 className='text-[22px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Enhance Learning Experiences with <span className='text-purple-700 font-bold'>Kulfi AI </span>Automation.</h1>
                   <div className='flex flex-col gap-5'>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Provide real-time answers to student queries related to lessons, assignments, and concepts.                    </p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Assist students with explanations, summaries, and study tips anytime.</p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Recommend courses, topics, and study materials based on student progress and performance.</p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Track student interaction with the chatbot to improve learning strategies.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Provide real-time answers to student queries related to lessons, assignments, and concepts.                    </p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Assist students with explanations, summaries, and study tips anytime.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Recommend courses, topics, and study materials based on student progress and performance.</p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[10%]' />Track student interaction with the chatbot to improve learning strategies.</p>
                   </div>
                 </div>
 
-                <div className="flex justify-center md:w-[25%]">
-                  <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/edtech.png' />
+                <div className="flex justify-center items-center md:w-[35%]">
+                  <img className='w-full h-[80%] object-contain' src='/images/edtech.gif' />
                 </div>
               </div>
 
