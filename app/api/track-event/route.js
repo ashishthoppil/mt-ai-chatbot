@@ -5,6 +5,12 @@ import { NextResponse, NextRequest } from "next/server";
 const bcrypt = require('bcrypt');
 
 export async function GET(req, res) {
+
+  const headers = new Headers();
+  headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
+  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
   const organization = searchParams.get('organization');
@@ -35,11 +41,22 @@ export async function GET(req, res) {
     });
 
     if (result.acknowledged) {
-      return NextResponse.json({ success: true, data: result });
+      return NextResponse.json({ success: true, data: result }, { headers });
     }
-    return NextResponse.json({ success: false, message: 'Something went wrong!' });
+    return NextResponse.json({ success: false, message: 'Something went wrong!' }, { headers });
 
   } catch (error) {
-    return NextResponse.json({ success: false, message: error.message });
+    return NextResponse.json({ success: false, message: error.message }, { headers });
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+      status: 204,
+      headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+  });
 }

@@ -116,6 +116,7 @@
             if (isOpen) {
                 const response = await fetch(`https://kulfi-ai.com/api/track-event?id=${id}&organization=Lumiscent%20India&event=click`, {
                     method: 'GET',
+                    mode: "cors",
                 });
                 const data = await response.json();
                 console.log('data', data);
