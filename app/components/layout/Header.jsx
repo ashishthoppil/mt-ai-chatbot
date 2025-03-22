@@ -60,6 +60,7 @@ export const Header = () => {
                 localStorage.setItem('color', data.message.color.slice(1))
                 localStorage.setItem('botname', data.message.botName)
                 localStorage.setItem('cw', data.message.cw)
+                localStorage.setItem('al', data.message.alignment)
                 router.push('/dashboard');
             } else {
                 setError(data.message);

@@ -103,7 +103,8 @@ export default function Dashboard() {
         color: '',
         lColor: '',
         mColor: '',
-        cw: ''
+        cw: '',
+        al: ''
     });
 
     const leadRef = useRef();

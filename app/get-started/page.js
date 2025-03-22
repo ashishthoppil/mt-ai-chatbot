@@ -371,6 +371,8 @@ const MultiStepForm = () => {
         localStorage.setItem('color', formData.color.slice(1));
         localStorage.setItem('botname', formData.botName);
         localStorage.setItem('cw', '400');
+        localStorage.setItem('al', 'r');
+
         setTimeout(() => {
             window.location.href = `/dashboard`;   
         }, 5000);
