@@ -63,7 +63,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     }
 
     const eventTracker = async () => {
-        await fetch(`/api/track-event?id=${botInfo.id}&organization=Acme&event=session&user=${botInfo.userId}`, {
+        await fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=session&user=${botInfo.userId}`, {
             method: 'GET'
         });
     }

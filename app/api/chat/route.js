@@ -141,54 +141,6 @@ export async function POST(request) {
     if (!messages?.length) {
       return NextResponse.json({ success: false, message: 'No messages provided' });
     }
-    
-    // const leadContact = extractContactDetails(messages[messages.length - 1].content);
-
-    // if (leadContact.email || leadContact.phone) {
-      // const emailInstructions = [{
-
-      //   role: 'system',
-      //   content: 'Check in the chat context if the user is interested in any service or products. Only reply with a "Yes" or "No"'
-      // }, ...messages]
-      
-    //   const emailRequest = await generateText({
-    //     model: openai('gpt-4o'),
-    //     messages: emailInstructions,
-    //     temperature: 0
-    //   });
-      
-    //   if (emailRequest.text.includes('Yes') || emailRequest.text.includes('yes')) {
-
-    //     const leadInstructions = [{
-    //       role: 'system',
-    //       content: 'Your job is to give a summary on what the user wants. From the chat context, give a description on what service or product the user is interested in. Only give the summary and not as a reply to someone.'
-    //     }, ...messages]
-
-        // const leadRequest = await generateText({
-        //   model: openai('gpt-4o'),
-        //   messages: leadInstructions,
-        //   temperature: 0
-        // });
-
-        // const track = fetch(`${BASE_URL}/api/track-event?id=${id}&organization=Acme&event=lead&summary=${leadRequest.text}&email=${leadContact.email}&phone=${leadContact.phone}`, {
-        //   method: 'GET'
-        // });
-
-    //     if (track) {
-          // const endRequest = await streamText({
-          //   model: openai('gpt-4o'),
-          //   messages: [{
-          //     role: 'system',
-          //     content: 'Thank the user for providing the email or phone number and let them know that we will get back to them as soon as possible.'
-          //   }, ...messages],
-          //   temperature: 0
-          // });
-
-          // return endRequest.toDataStreamResponse();
-    //     }
-
-    //   }
-    // }
 
     // Create embeddings
     const embedAI = new OpenAI({
