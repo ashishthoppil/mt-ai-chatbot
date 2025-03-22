@@ -120,6 +120,7 @@
             popup.style.display = isOpen ? 'flex' : 'none';
             const img = new Image();
             if (isOpen) {
+                console.log('here');
                 img.src = `https://kulfi-ai.com/api/track-event?id=${id}&organization=Acme&event=click`;
             } else {
                 img.src = ``;
