@@ -2,6 +2,8 @@
     var loaderScriptURL = document.currentScript.src;
     var urlObject = new URL(loaderScriptURL);
     var organization = urlObject.searchParams.get('organization');
+    var cw = urlObject.searchParams.get('cw');
+    var al = urlObject.searchParams.get('al');
 
     window.chatbotConfig = { organization };
 

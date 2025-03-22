@@ -512,6 +512,7 @@ export default function Dashboard() {
             const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
             const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
             const cw = data.cw;
+            const al = data.alignment;
             setUrlParams(prev => ({
                 ...prev,
                 botName,
@@ -519,11 +520,13 @@ export default function Dashboard() {
                 lColor,
                 mColor,
                 cw,
+                al,
                 organization: localStorage.getItem('organization')
             }));
             localStorage.setItem('botname', botName);
             localStorage.setItem('color', color);
             localStorage.setItem('cw', cw);
+            localStorage.setItem('al', al);
             setIsLoading(false);
             toast.success("Settings updated!");            
         } 
@@ -662,6 +665,7 @@ export default function Dashboard() {
         const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
         const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
         const cw = localStorage.getItem('cw');
+        const al = localStorage.getItem('al');
         
         if (id && botName && color && cw) {
             setUrlParams({
@@ -671,6 +675,7 @@ export default function Dashboard() {
                 lColor,
                 mColor,
                 cw,
+                al,
                 organization: localStorage.getItem('organization')
             });
         } else {
@@ -854,7 +859,7 @@ export default function Dashboard() {
                         
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-[14px] text-yellow-500 px-1'>
-                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src=${encodeURI(`https://kulfi-ai.com/js/loader.js?organization=${urlParams.organization}`)}></script>`}</span>
+                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='${encodeURI(`https://kulfi-ai.com/js/loader.js?organization=${urlParams.organization}&al=${urlParams.al}&cw=${urlParams.cw}`)}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");

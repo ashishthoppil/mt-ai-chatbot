@@ -47,7 +47,7 @@
             overflow: hidden;
         }
         `;
-        var { organization } = window.chatbotConfig || {};
+        var { organization, al, cw } = window.chatbotConfig || {};
 
         document.head.appendChild(style);
         
