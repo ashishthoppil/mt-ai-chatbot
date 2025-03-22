@@ -84,7 +84,7 @@
         const iframe = document.createElement('iframe');
 
         iframe.style.overflow = 'none';
-        iframe.src = `https://kulfi-ai.com/chat?id=${id}&bn=${bn}&cc=${cc}&lc=${lc}&mc=${mc}&cw=${cw}&u=${Math.floor(100000000 + Math.random() * 900000000)}`;
+        iframe.src = `https://kulfi-ai.com/chat`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
@@ -95,12 +95,6 @@
     
         const chatButton = document.createElement('button');
         chatButton.className = 'my-chatbot-button';
-        // chatButton.style.border = `2px solid #${cc}`;
-        // chatButton.style.backgroundColor = `#ffffff`;
-        // chatButton.style.boxShadow = `rgba(0, 0, 0, 0.24) 0px 3px 8px`;
-        // chatButton.style.display = `flex`;
-        // chatButton.style.justifyContent = `center`;
-        // chatButton.style.alignItems = `center`;
 
         const message = document.createElement('div');
         message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
@@ -120,8 +114,11 @@
             popup.style.display = isOpen ? 'flex' : 'none';
             const img = new Image();
             if (isOpen) {
-                console.log('here');
-                img.src = `https://kulfi-ai.com/api/track-event?id=${id}&organization=Acme&event=click`;
+                const response = await fetch(`https://kulfi-ai.com/api/track-event?id=${id}&organization=Lumiscent%20India&event=click`, {
+                    method: 'GET',
+                });
+                const data = await response.json();
+                console.log('data', data);
             } else {
                 img.src = ``;
             }

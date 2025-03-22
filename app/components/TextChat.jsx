@@ -299,6 +299,6 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                     <span>FAQs</span>
                 </div> : <></>}
             </div> : <></>}
-            </>
+        </>
     )
 }
