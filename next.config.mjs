@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     serverExternalPackages: ["pdf-parse"],
-    async headers() {
+    headers: async () =>  {
         return [
           {
             // matching all API routes
@@ -14,7 +14,7 @@ const nextConfig = {
             ]
           }
         ]
-      }
+    }
 };
 
 export default nextConfig;
