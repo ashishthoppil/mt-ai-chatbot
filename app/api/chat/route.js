@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
 import { OpenAI } from 'openai'
-import { generateText, streamText, tool } from 'ai';
+import { generateText, streamText, tool, jsonSchema } from 'ai';
 import { NextResponse } from 'next/server';
 import { cosineSimilarity } from '@/lib/utils';
 import { z } from 'zod';
@@ -37,6 +37,23 @@ const getSourcePrompt = () => {
   `
 }
 
+const getBodyParams = (params) => {
+  const paramArr = params.split(',').map(item => item.trim());
+  const resultant = {};
+  paramArr.forEach(item => {
+    resultant[item] = {
+      type: 'string',
+      description: `This is the ${item} in the user query`
+    }
+  })
+
+  return jsonSchema({
+    type: 'object',
+    properties: resultant,
+    required: paramArr
+  });
+}
+
 export async function POST(request) {
   try {
     const response = await request.json();
@@ -51,14 +68,30 @@ export async function POST(request) {
     });
     const data = await res.json();
     let custom_workflows = {};
+
     if (data.data) {
       data.data.forEach(element => {
         custom_workflows = {
           ...custom_workflows,
           [element.title.toLowerCase().replace(/\s+/g, '_')]: tool({
             description: element.condition + `. Example: ${element.phrases}`,
-            parameters: z.object({ message: z.string().describe('The whole user query') }),
-            execute: async ({ message }) => {
+            parameters: getBodyParams(element.parameters),
+            execute: async (args) => {
+              if (element.webhook) {
+                const response = await fetch(element.webhook, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(args)
+                });
+
+                const data = response.json();
+
+                if (data) {
+                  return element.action
+                }
+              }
               return element.action
             }
           })
@@ -66,12 +99,26 @@ export async function POST(request) {
       });
     }
 
+    console.log('custom_workflowscustom_workflows', custom_workflows)
+
+    // parameters: z.object(getBodyParams(element.parameters)),
+    //         execute: async (args) => {
+    //           console.log('argsargsargsargsargs', args);
+    //           return element.action
+    //         }
+    // if (element.webhook) {
+    //   const response = fetch(element.webhook, {
+    //     method: 'POST',
+    //     body: 
+    //   })
+    // }
+
     const myToolSet = {
-      create_lead: tool({
-        description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
-        parameters: z.object({ message: z.string().describe('The whole user query') }),
-        execute: async ({ message }) =>  message,
-      }),
+      // create_lead: tool({
+      //   description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
+      //   parameters: z.object({ message: z.string().describe('The whole user query') }),
+      //   execute: async ({ message }) =>  message,
+      // }),
       ...custom_workflows
     };
 
@@ -216,8 +263,6 @@ export async function POST(request) {
         messages: [...messages, { role: 'assistant', content: responseText }]
       }),
     });
-
-    console.log('querySaveResponsequerySaveResponse', await querySaveResponse.json())
 
     return result.toDataStreamResponse();  
   } catch (e) {

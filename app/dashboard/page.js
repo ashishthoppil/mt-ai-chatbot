@@ -4,6 +4,7 @@ import { logout } from '@/lib/helper';
 import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Queue, QueueOutlined, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -59,7 +60,7 @@ export default function Dashboard() {
     const [clickData, setClickData] = useState([]);
     const [sessionData, setSessionData] = useState([]);
     const [KB, setKB] = useState(null);
-    const [links, setLinks] = useState('');
+    const [links, setLinks] = useState([]);
     const [addedLinks, setAddedLinks] = useState([]);
     const [leads, setLeads] = useState([]);
     const [leadForm, setLeadForm] = useState([]);
@@ -69,6 +70,7 @@ export default function Dashboard() {
     const [engagementRate, setEngagementRate] = useState(0);
     const [activeSection, setActiveSection] = useState('Code');
     const [isLoading, setIsLoading] = useState();
+    const [isLinkSynced, setIsLinkSynced] = useState(false);
     const [isDeleting, setIsDeleting] = useState();
     const [isKBLoading, setIsKBLoading] = useState();
     const [clickSelector, setClickSelector] = useState('Day');
@@ -179,16 +181,12 @@ export default function Dashboard() {
                 portal: '',
                 form: ''
             });
-            let updatedLinks = '';
+            let updatedLinks = [];
 
             if (data.links) {
                 data.links.forEach((element, index) => {
                     if (element !== "") {
-                        if (index !== data.links.length - 1) {
-                            updatedLinks += element.link + '\n';
-                        } else {
-                            updatedLinks += element.link;
-                        }
+                        updatedLinks.push(element.link);
                     }
                 });
                 setLinks(updatedLinks);
@@ -291,6 +289,13 @@ export default function Dashboard() {
         ])
     }
 
+    const linkFieldAdder = () => {
+        setLinks((prev) => [
+            ...prev,
+            ''
+        ])
+    }
+
     const inputTypeHandler = (id, type, value) => {
         setLeadForm((prev) => {
             const data = prev.map((item) => {
@@ -323,12 +328,12 @@ export default function Dashboard() {
             switch (item.type) {
                 case 'text':
                     return (
-                        <div className='flex justify-between items-center gap-5 w-full'>
-                            <div className='flex flex-col w-[20%]'>
+                        <div className='flex flex-col md:flex-row justify-between items-center gap-5 w-full'>
+                            <div className='flex flex-col w-full md:w-[20%]'>
                                 <label>Field label</label>
                                 <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                             </div>
-                            <div className='flex flex-col w-[20%]'>
+                            <div className='flex flex-col w-full md:w-[20%]'>
                                 <label>Field type</label>
                                 <select onChange={(e) => inputTypeHandler(item.id, 'type' , e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='text'>
                                     <option value='text'>Text</option>
@@ -337,11 +342,11 @@ export default function Dashboard() {
                                     <option value='email'>Email</option>
                                 </select>
                             </div>
-                            <div className='flex flex-col  w-[20%]'>
+                            <div className='flex flex-col  w-full md:w-[20%]'>
                                 <label>Field Placeholder</label>
                                 <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                             </div>
-                            <div className='flex gap-2 items-center w-[20%]'>
+                            <div className='flex gap-2 items-center w-full md:w-[20%]'>
                                 <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
                                 <span>Required</span>
                             </div>
@@ -353,12 +358,12 @@ export default function Dashboard() {
                 
                     case 'textarea':
                         return (
-                            <div className='flex justify-between items-center gap-2 w-full'>
-                                <div className='flex flex-col w-[20%]'>
+                            <div className='flex flex-col md:flex-row flex-col md:flex-row justify-between items-center gap-2 w-full'>
+                                <div className='flex flex-col w-full md:w-[20%]'>
                                     <label>Field label</label>
                                     <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                                 </div>
-                                <div className='flex flex-col w-[20%]'>
+                                <div className='flex flex-col w-full md:w-[20%]'>
                                     <label>Field type</label>
                                     <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='textarea'>
                                         <option value='text'>Text</option>
@@ -367,11 +372,11 @@ export default function Dashboard() {
                                         <option value='email'>Email</option>
                                     </select>
                                 </div>
-                                <div className='flex flex-col w-[20%]'>
+                                <div className='flex flex-col w-full md:w-[20%]'>
                                     <label>Field Placeholder</label>
                                     <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                                 </div>
-                                <div className='flex gap-2 items-center w-[20%]'>
+                                <div className='flex gap-2 items-center w-full md:w-[20%]'>
                                     <input checked={item.isRequired} type='checkbox' onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} />
                                     <span>Required</span>
                                 </div>
@@ -382,12 +387,12 @@ export default function Dashboard() {
                         );
                         case 'tel':
                         return (
-                            <div className='flex justify-between items-center gap-2 w-full'>
-                                <div className='flex flex-col w-[20%]'>
+                            <div className='flex flex-col md:flex-row justify-between items-center gap-2 w-full'>
+                                <div className='flex flex-col w-full md:w-[20%]'>
                                     <label>Field label</label>
                                     <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                                 </div>
-                                <div className='flex flex-col w-[20%]'>
+                                <div className='flex flex-col w-full md:w-[20%]'>
                                     <label>Field type</label>
                                     <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='tel'>
                                         <option value='text'>Text</option>
@@ -396,11 +401,11 @@ export default function Dashboard() {
                                         <option value='email'>Email</option>
                                     </select>
                                 </div>
-                                <div className='flex flex-col w-[20%]'>
+                                <div className='flex flex-col w-full md:w-[20%]'>
                                     <label>Field Placeholder</label>
                                     <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                                 </div>
-                                <div className='flex gap-2 items-center w-[20%]'>
+                                <div className='flex gap-2 items-center w-full md:w-[20%]'>
                                     <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
                                     <span>Required</span>
                                 </div>
@@ -411,12 +416,12 @@ export default function Dashboard() {
                         );
                         case 'email':
                             return (
-                                <div className='flex justify-between items-center gap-2 w-full'>
-                                    <div className='flex flex-col w-[20%]'>
+                                <div className='flex flex-col md:flex-row justify-between items-center gap-2 w-full'>
+                                    <div className='flex flex-col w-full md:w-[20%]'>
                                         <label>Field label</label>
                                         <input value={item.label} onChange={(e) => inputTypeHandler(item.id, 'label' , e.target.value)} placeholder='Label' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                                     </div>
-                                    <div className='flex flex-col w-[20%]'>
+                                    <div className='flex flex-col w-full md:w-[20%]'>
                                         <label>Field type</label>
                                         <select onChange={(e) => inputTypeHandler(item.id, e.target.value)} className='border-2 border-gray-200 rounded-md p-2' value='email'>
                                             <option value='text'>Text</option>
@@ -425,11 +430,11 @@ export default function Dashboard() {
                                             <option value='email'>Email</option>
                                         </select>
                                     </div>
-                                    <div className='flex flex-col w-[20%]'>
+                                    <div className='flex flex-col w-full md:w-[20%]'>
                                         <label>Field Placeholder</label>
                                         <input value={item.placeholder} onChange={(e) => inputTypeHandler(item.id, 'placeholder' , e.target.value)} placeholder='Placeholder' className='border-2 border-gray-200 rounded-md p-2' type='text' />
                                     </div>
-                                    <div className='flex gap-2 items-center w-[20%]'>
+                                    <div className='flex gap-2 items-center w-full md:w-[20%]'>
                                         <input checked={item.isRequired} onChange={(e) => inputTypeHandler(item.id, 'isRequired' , e.target.checked)} type='checkbox' />
                                         <span>Required</span>
                                     </div>
@@ -659,6 +664,22 @@ export default function Dashboard() {
         }
     }
 
+    const deleteWorkflow = async (id) => {
+        setIsDeleting(true);
+        const res = await fetch('/api/remove-workflow', {
+            method: 'POST',
+            body: JSON.stringify({
+                workflowId: id,
+                organization: localStorage.getItem('organization')
+            })
+        });
+        if (res) {
+            loadWorkflows();
+            setIsDeleting(false);
+            toast.success("Item deleted.");
+        }
+    }
+
     useEffect(() => {
         const id = localStorage.getItem('objectID');
         const botName = localStorage.getItem('botname');
@@ -687,26 +708,24 @@ export default function Dashboard() {
 
     const addLinks = async () => {
         setIsLoading(true);
-        const splitLinks = links.split('\n');
         const res = await fetch('/api/add-links', {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
                 organization: localStorage.getItem('organization'),
-                links: splitLinks, 
+                links, 
             })
         });
         const data = await res.json()
         if (data) {
-            setAddedLinks(data.message)
+            setAddedLinks(data.message);
             setIsLoading(false);
-            toast.success("Links have been added and ready to be synced!");
+            toast.success("Links have been added and are ready to be synced!");
         }
     }
 
     const linkSync = async () => {
-        // setIsLoading(true);
-        const splitLinks = links.split('\n');
+        setIsLinkSynced(true);
         for (const link of addedLinks) {
             const res = await fetch('/api/sync-links', {
                 method: 'POST',
@@ -718,11 +737,11 @@ export default function Dashboard() {
             });
             const data = await res.json();
             if (data) {
-            console.log('datadata', data.message);
-
-                setAddedLinks(data.message)
-                // setIsLoading(false);
-                // toast.success("Links have been synced!");
+                setAddedLinks(data.message);
+                if (data.message[addedLinks.length - 1].status === 'completed') {
+                    setIsLinkSynced(false);
+                    toast.success("Links have been synced!");
+                }
             }
         }
     }
@@ -744,7 +763,8 @@ export default function Dashboard() {
             })
       
             if (response) {
-              loadData()
+              loadData();
+              toast.success("The AI has been trained using your documents.");
             }
           }
         } catch (error) {
@@ -853,9 +873,9 @@ export default function Dashboard() {
                     <h3 className="font-bold text-gray-900 mb-2 md:text-[32px]">Welcome {data && data.organization}, </h3>
                     <p className='text-[14px] md:text-[16px]'>This section provides an overview of the information you provided during registration. You can update or manage any details by editing the fields below.</p>
                     <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg text-[14px]'>
-                        <div className='flex justify-between'>
+                        <div className='flex justify-between items-start'>
                             <p className='text-[14px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
-                            <a target='_blank' href={`/chat?sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 px-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'><TestTube height={15} /> Test chatbot</a>
+                            <a target='_blank' href={`/chat?sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 pl-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'>Test <TestTube height={15} /></a>
                         </div>
                         
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
@@ -1106,10 +1126,10 @@ export default function Dashboard() {
                     <h3 className="font-bold text-gray-500 mb-2 text-[22px]">Lead Form</h3>
                     <p className='text-[14px]'>Where do you wish to save your leads?</p>
                     <RadioGroup className='flex gap-2' defaultValue={leadSave}>
-                        <div className="flex items-center space-x-2">
+                        {/* <div className="flex items-center space-x-2">
                             <RadioGroupItem onClick={(e) => leadSaveHandler('kulfi')} value="kulfi" id="kulfi" />
                             <label htmlFor="kulfi">Save with Kulfi AI</label>
-                        </div>
+                        </div> */}
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem onClick={(e) => leadSaveHandler('email')} value="email" id="email" />
                             <label htmlFor="email">Send as an Email</label>
@@ -1273,28 +1293,28 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className='flex gap-4 pb-10 text-[14px]'>
-                        <div className='flex items-center gap-2 w-[50%]'>
-                            <div className="flex flex-col gap-4">
+                    <div className='flex flex-col md:flex-row gap-4 pb-10 text-[14px]'>
+                        <div className='flex items-center md:gap-2 w-full md:w-[50%]'>
+                            <div className="flex flex-col gap-4 w-[50%] md:w-full">
                                 <label htmlFor="botname" className="text-left text-[14px]">
                                     Upload Bot Icon
                                 </label>
                                 <input className='text-[14px]' key={1} type="file" onChange={(e) => handleBotIconChange(e)} />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-4 w-[50%] md:w-full">
                                 {data.botIcon ? <img className='h-[3rem] max-w-[3rem] rounded-lg object-cover border-[1px] border-gray-200 rounded-md p-1' src={`data:image/jpeg;base64,${data.botIcon}`} /> : <></>}
                                 {data.botIcon ? <div><button onClick={() => setData((prev) => { return { ...prev, botIcon: null } })} className='bg-transparent text-red-500 text-[12px]'><Close className='text-red-500 text-[12px]' /> Remove image</button></div> : <></>}
                             </div>
                         </div>
 
-                        <div className='flex items-center gap-2 w-[50%]'>
-                            <div className="flex flex-col gap-4">
+                        <div className='flex items-center md:gap-2 w-full md:w-[50%]'>
+                            <div className="flex flex-col gap-4 w-[50%] md:w-full">
                                 <label htmlFor="botname" className="text-left text-[14px]">
                                     Upload Bot Avatar
                                 </label>
                                 <input className='text-[14px]' key={2} type="file" onChange={(e) => handleAvatarChange(e)} />
                             </div>
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-4 w-[50%] md:w-full">
                                 {data.botAvatar ? <img className='h-[3rem] max-w-[3rem] rounded-lg object-cover border-[1px] border-gray-200 rounded-md p-1' src={`data:image/jpeg;base64,${data.botAvatar}`} /> : <></>}
                                 {data.botAvatar ? <div><button onClick={() => setData((prev) => { return { ...prev, botAvatar: null } })} className='bg-transparent text-red-500 text-[12px]'><Close className='text-red-500 text-[12px]' /> Remove image</button></div> : <></>}
                             </div>
@@ -1360,8 +1380,8 @@ export default function Dashboard() {
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>
                         <h3 className="text-[22px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3>
-                        <div className='flex gap-4 w-full'>
-                        <div className="flex flex-col gap-4 md:w-[50%] text-[14px]">
+                        <div className='flex flex-col md:flex-row gap-4 w-full'>
+                        <div className="flex flex-col gap-4 w-full md:w-[50%] text-[14px]">
                             <label htmlFor="tone" className="text-left">
                                 Chatbot Tone
                             </label>
@@ -1375,7 +1395,7 @@ export default function Dashboard() {
                                     <option value='neutral'>Neutral - Clear, straightforward, and objective</option>
                                 </select>
                         </div>
-                        <div className="flex flex-col gap-4 md:w-[50%]">
+                        <div className="flex flex-col gap-4 w-full md:w-[50%]">
                             <label htmlFor="tone" className="text-left text-[14px]">
                                 Support email/contact Number
                                 {/* (To be shown when the queries are not being resolved or when users ask for human interaction) */}
@@ -1385,7 +1405,7 @@ export default function Dashboard() {
                         </div>
                         
 
-                        <div className="flex flex-col gap-4 md:w-[50%]">
+                        <div className="flex flex-col gap-4 w-full md:w-[50%]">
                             <label htmlFor="response_length" className="text-left text-[14px]">
                                 Chatbot response length
                             </label>
@@ -1448,77 +1468,120 @@ export default function Dashboard() {
                 <>
                     <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Training</h3>
                     <p className='text-[14px] md:text-[16px]'>Manage your Knowledge bases and train your AI bot from this section.</p>
-                    <div className='flex flex-col md:flex-row gap-3 pt-10 text-[14px] md:text-[16px]'>
-                        <div className='flex flex-col gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
-                            <h1>Links</h1>
-                            <textarea onChange={(e) => setLinks(e.target.value)} value={links} placeholder='Enter the links in your website containing information.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-200 shadow-inner bg-gray-50 rounded-sm p-2' />
-                            <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
-                            <div className='flex justify-end w-full mt-10'>
-                                <button onClick={addLinks} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Add Links'}</button>  
-                            </div>
-                        </div>
-                        
-                        <div className='flex flex-col justify-between gap-2 md:w-[50%] rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
-                            <h1>PDF Document</h1>  
-                            <div className="flex flex-col gap-10 items-start justify-between w-full">
-                                <div className='flex flex-col gap-3 border-[1px] border-gray-200 shadow-inner border-dashed bg-gray-50 rounded-sm p-4 w-full'>
-                                    <strong>Current knowledge base:</strong>
-                                    {fileNames.length ? 
-                                    fileNames.map((item, index) => {
-                                        return (
-                                            <div key={item.id} className='flex flex-col justify-between gap-1'>
-                                                <div className='flex gap-2 items-center'>
-                                                    <p className='flex gap-1'><File /> {item.fileName}</p>
-                                                    <button onClick={() => deleteFile(item.id)} className='px-2 py-1'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-red-500 w-[16px]' />}</button>                                                    
-                                                </div>
-                                            </div>
-                                        )
-                                    }) :
-                                    <p className='flex gap-1'><FileX /> No documents uploaded</p>}
+                    <div className='flex flex-col gap-3 pt-10 text-[14px] md:text-[16px]'>
+                        <Tabs defaultValue="links" className="w-full">
+                            <TabsList>
+                                <TabsTrigger value="links">Links</TabsTrigger>
+                                <TabsTrigger value="documents">Documents</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="links">
+                                <div className='flex flex-col gap-2 rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
+                                    <h1>Links</h1>
+                                    {links.map((item, index) => {
+                                        return <div key={index} className='flex items-center gap-2'>
+                                        <input onChange={(e) => setLinks((prev) => {
+                                            const updatedData = [];
+                                            for (let i = 0; i < prev.length; i++) {
+                                                if (index === i) {
+                                                    updatedData.push(e.target.value);
+                                                } else {
+                                                    updatedData.push(prev[i])
+                                                }
+                                            }
+                                            return updatedData;
+                                        })} value={item} type='text' className='outline-none resize-none w-[95%] border-[1px] border-gray-200 shadow-inner bg-gray-50 rounded-sm p-2' />
+                                        <button onClick={() => setLinks((prev) => {
+                                            const updatedData = [];
+                                            for (let i = 0; i < prev.length; i++) {
+                                                if (i !== index) {
+                                                    updatedData.push(prev[i]);
+                                                }
+                                            }
+                                            return updatedData;
+                                        })} className='px-2 py-1 w-[5%]'><TrashIcon className='text-red-500 w-[16px]' /></button>
+                                        </div>
+                                    })}
+                                    <button onClick={linkFieldAdder} className='flex items-center'>
+                                        <PlusIcon className='h-4 text-purple-800' />
+                                        <h3 className="font-bold text-purple-800 text-[14px]">Add new link</h3>
+                                    </button>
+                                    <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                                    <div className='flex justify-end w-full mt-10'>
+                                        <button onClick={addLinks} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isLoading ? 'Processing...' : 'Update Links'}</button>  
+                                    </div>
                                 </div>
-                                
-                                <form className='w-full' onSubmit={handleKBSubmit}>
-                                    <div className='flex flex-col gap-1'>
-                                        <input accept="application/pdf" id="kb-doc" type="file" onChange={handleKBChange} multiple />
-                                        <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                                <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
+                                    <div className='flex justify-start items-center gap-2'>
+                                        <h3 className="md:text-[16px] font-bold text-gray-500">Added Links</h3>
+                                        <button onClick={() => {
+                                            setAddedLinks((prev) => {
+                                                return prev.map((item) => {
+                                                    return {
+                                                        link: item.link,
+                                                        status: 'pending'
+                                                    }
+                                                })
+                                            });
+                                            linkSync();
+                                        }} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-1 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'>{isLinkSynced ? <span className='flex items-center'><Loader2 className='h-3 animate-spin' /> Training AI</span> : <span className='flex items-center'><BrainCircuitIcon className='h-3' /> Start training AI</span>}</button>
                                     </div>
-                                    <div className='flex justify-end w-full pt-5 md:pt-0'>
-                                        <button type='submit' className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isKBLoading ? 'Processing...' : 'Sync Document'}</button>  
-                                    </div>
-                                </form>
-                            </div> 
-                        </div>
+                                    <Table className='border-2 border-purple-200'>
+                                        {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
+                                        <TableHeader className='bg-purple-200'>
+                                            <TableRow>
+                                                <TableHead>Links</TableHead>
+                                                <TableHead className='text-center'>Status</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {addedLinks.length > 0 && addedLinks.map((item, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell className="font-medium">{item.link}</TableCell>
+                                                    <TableCell>
+                                                        {item.status === 'pending' ? <div className='flex items-center justify-center gap-1'><Loader2 className='text-purple-800 animate-spin h-4' /><span>In progress</span></div> : <></>}
+                                                        {item.status === 'not-started' ? <div className='flex items-center justify-center gap-1'><Clock className='text-purple-800 h-4' /><span>Pending</span></div> : <></>}
+                                                        {item.status === 'completed' ? <div className='flex items-center justify-center gap-1'><CheckCircleIcon className='text-emerald-500 h-4' /><span>Completed</span></div> : <></>}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </div>
+                            </TabsContent>
+                            <TabsContent value="documents">
+                                <div className='flex flex-col justify-between gap-2 rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
+                                    <h1>PDF Document</h1>  
+                                    <div className="flex flex-col gap-10 items-start justify-between w-full">
+                                        <div className='flex flex-col gap-3 border-[1px] border-gray-200 shadow-inner border-dashed bg-gray-50 rounded-sm p-4 w-full'>
+                                            <strong>Current knowledge base:</strong>
+                                            {fileNames.length ? 
+                                            fileNames.map((item, index) => {
+                                                return (
+                                                    <div key={item.id} className='flex flex-col justify-between gap-1'>
+                                                        <div className='flex gap-2 items-center'>
+                                                            <p className='flex gap-1'><File /> {item.fileName}</p>
+                                                            <button onClick={() => deleteFile(item.id)} className='px-2 py-1'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-red-500 w-[16px]' />}</button>                                                    
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }) :
+                                            <p className='flex gap-1'><FileX /> No documents uploaded</p>}
+                                        </div>
+                                        
+                                        <form className='w-full' onSubmit={handleKBSubmit}>
+                                            <div className='flex flex-col gap-1'>
+                                                <input accept="application/pdf" id="kb-doc" type="file" onChange={handleKBChange} multiple />
+                                                <span className='flex gap-1 item-center text-[10px] text-gray-500'><InfoRounded className='!h-[20px] !w-[20px]' /> <span className='flex items-center'>Please do not navigate away from this page until the knowledge base sync has finished.</span></span>
+                                            </div>
+                                            <div className='flex justify-end w-full pt-5 md:pt-0'>
+                                                <button type='submit' className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>{isKBLoading ? 'Processing...' : 'Sync Document'}</button>  
+                                            </div>
+                                        </form>
+                                    </div> 
+                                </div>   
+                            </TabsContent>
+                        </Tabs> 
                     </div>
-
-                    <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
-                        <div className='flex justify-start items-center gap-2'>
-                            <h3 className="md:text-[16px] font-bold text-gray-500">Added Links</h3>
-                            <button onClick={linkSync} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-2 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'><BrainCircuitIcon className='h-3' /> Start training AI</button>
-                        </div>
-                        <Table className='border-2 border-purple-200'>
-                            {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
-                            <TableHeader className='bg-purple-200'>
-                                <TableRow>
-                                    <TableHead>Links</TableHead>
-                                    <TableHead>Status</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {addedLinks.length > 0 && addedLinks.map((item, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{item.link}</TableCell>
-                                        <TableCell>
-                                            {item.status === 'pending' ? <Loader2 className='text-purple-800 animate-spin' /> : <></>}
-                                            {item.status === 'not-started' ? <Clock className='text-purple-800 h-4' /> : <></>}
-                                            {item.status === 'completed' ? <CheckCircleIcon className='text-emerald-500 h-4' /> : <></>}
-                                        </TableCell>
-                                        {/* <TableCell><button onClick={() => alert(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell> */}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300 mt-5'>
                         <h3 className="text-[22px] font-bold text-gray-500 mb-2">Custom Workflows</h3>
                         <p className='text-[14px]'>You can add your custom workflows here.</p>
@@ -1541,7 +1604,7 @@ export default function Dashboard() {
                             <div className='flex flex-col md:flex-row gap-2'>
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label htmlFor="botname" className="text-left">
-                                        Training Phrases
+                                        Training Phrases (separated by commas)
                                     </label>
                                     <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, phrases: e.target.value }})} value={workflow.phrases} placeholder="Example prompts to train the chatbot separated by commas" className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
                                 </div>
@@ -1563,9 +1626,9 @@ export default function Dashboard() {
 
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label className="text-left">
-                                        Webhook parameters
+                                        Webhook parameters (separated by commas)
                                     </label>
-                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters, comma separated' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
+                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                                 </div>
                             </div>
                             
@@ -1597,7 +1660,7 @@ export default function Dashboard() {
                                                 <TableCell>{item.action}</TableCell>
                                                 <TableCell>{item.webhook}</TableCell>
                                                 <TableCell>{item.parameters}</TableCell>
-                                                <TableCell><button onClick={() => alert(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell>
+                                                <TableCell><button onClick={() => deleteWorkflow(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -1728,17 +1791,17 @@ export default function Dashboard() {
         <>
         <Header />
         <main className={`flex items-center gap-4 w-full md:py-[4rem] md:px-[5rem] bg-white rounded-[30px] my-[10px] ${poppins.className}`}>            
-            <div className="md:flex w-full">
+            <div className="md:flex w-full px-3 md:px-0">
                 <ul className="flex md:flex-col gap-2 md:gap-0 md:space-y md:space-y-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0 overflow-x-auto md:overflow-visible py-3 md:py-0">
                     {sideMenu.map(({ Icon, ...item}) => (
                         <li key={item.id}>
-                            <button onClick={() => setActiveSection(item.title)} className={`inline-flex items-center px-4 py-3 ${activeSection === item.title ? 'border-l-4 hover:text-white border-purple-800 hover:bg-purple-700 text-purple-800' : 'hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
+                            <button onClick={() => setActiveSection(item.title)} className={`inline-flex items-center px-4 py-3 border-2 md:border-[0px] rounded-md md:rounded-[0px]  ${activeSection === item.title ? 'text-white bg-purple-700 md:border-l-4 md:border-purple-800 hover:text-white hover:bg-purple-700 text-purple-800' : 'hover:bg-gray-200'} w-full gap-2 duration-200`} aria-current="page">
                                 <Icon />
                                 {item.title}
                             </button>
                         </li>
                     ))}
-                    <div className='flex flex-col items-center gap-5 border-2 border-slate-200 px-4 py-3 rounded-lg'>
+                    <div className='hidden md:flex flex-col items-center gap-5 border-2 border-slate-200 px-4 py-3 rounded-lg'>
                         
                         <div className='flex flex-col'>
                             <h3 className="flex gap-2 md:text-[14px] font-bold text-gray-500 mb-2"><span>Chats:</span> <span>{messageCount}/500</span></h3>   

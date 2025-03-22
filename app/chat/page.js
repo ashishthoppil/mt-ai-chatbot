@@ -120,6 +120,6 @@ export default function Chat() {
           </div>
         </header>
         <TextChat data={data} botInfo={botInfo} articlesList={articlesList} faqList={faqList} />
-      </main> : <div className='flex flex-col items-center gap-3 absolute left-[50%] top-[50%]'><Loader2 className='animate-spin text-gray-400 size-10' /><span className={`text-[14px] text-gray-500 ${poppins.className}`}>LOADING</span></div>
+      </main> : <div className='flex flex-col items-center gap-3 absolute left-[42%] top-[50%]'><Loader2 className='animate-spin text-gray-400 size-10' /><span className={`text-[14px] text-gray-500 ${poppins.className}`}>LOADING</span></div>
     );
 }

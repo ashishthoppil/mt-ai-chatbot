@@ -248,18 +248,20 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <Newspaper /><h1 className='font-bold text-[32px]'>Articles</h1>
                     </div>
-                    {articlesList.map((item, index) => (
-                        <div key={index} className='flex flex-col gap-2 border-[2px] border-gray-300 rounded-lg shadow-md p-2'>
-                            {item.img ? <img className='h-[10rem] rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}
-                            <h1 className='text-[16px] font-bold' style={{ color: botInfo.color }}>{item.title}</h1>
-                            <p className='line-clamp-3'>
-                                {item.description}
-                            </p>
-                            <div className='flex justify-end'>
-                                <a style={{ color: botInfo.mColor }} className='flex gap-1' target='_blank' href={item.link}>Read more <ExternalLinkIcon height={20} /></a>
+                    <div className='flex flex-col gap-10'>
+                        {articlesList.map((item, index) => (
+                            <div key={index} className='flex flex-col gap-2 border-[2px] border-gray-100 rounded-md shadow-lg p-2'>
+                                {item.img ? <img className='h-[10rem] rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}
+                                <h1 className='text-[16px] font-bold' style={{ color: botInfo.color }}>{item.title}</h1>
+                                <p className='line-clamp-3 text-[14px] text-gray-600'>
+                                    {item.description}
+                                </p>
+                                <div className='flex justify-end'>
+                                    <a style={{ color: botInfo.mColor }} className='flex gap-1' target='_blank' href={item.link}>Read more <ExternalLinkIcon height={20} /></a>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             }
 

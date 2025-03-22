@@ -2,7 +2,6 @@ import { chunkText } from "@/lib/chunkText";
 import clientPromise from "@/lib/mongodb";
 import { getDbName } from "@/lib/utils";
 import { load } from "cheerio";
-import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
@@ -18,6 +17,8 @@ export async function POST(req) {
     });
 
     try {
+        const deletion = await db.collection('knowledge_base').drop();
+        console.log('deletiondeletion', deletion);
         const link = request.link.link;
 
         let chunks = [];
@@ -88,7 +89,6 @@ export async function POST(req) {
                     });  
                 }
             }
-
             if (embeddings.length > 0) {
                 const result = await db.collection('knowledge_base').insertOne({ embeddings });
                 const prevLinks = await db.collection('links').find().toArray();
