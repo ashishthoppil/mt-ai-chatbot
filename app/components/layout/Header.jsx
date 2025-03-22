@@ -99,7 +99,7 @@ export const Header = () => {
                 <div className='hidden md:flex items-center gap-16'>
                     {!auth ? <div className='flex items-center gap-5'>
                         <Link onClick={(e) => scrollToUseCases(e)} className='flex gap-1 text-purple-800 font-semibold' href='#'><WorkflowIcon /> Use Cases</Link>
-                        <button className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
+                        <button onClick={() => router.push('/contact')} className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
                             if (!open) {
                                 setCredentials({
@@ -156,7 +156,7 @@ export const Header = () => {
                     <Link onClick={(e) => scrollToUseCases(e)} href="#" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><WorkflowIcon /> Use cases</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link href="/pricing" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
+                    <Link href="/contact" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
                     <Dialog>

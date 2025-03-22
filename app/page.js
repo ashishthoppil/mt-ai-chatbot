@@ -1,5 +1,6 @@
 'use client';
 
+import Marquee from "react-fast-marquee";
 import { AppRegistrationRounded, ContentPaste, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
 import { BrainCircuitIcon, CircleCheckBigIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -29,8 +30,8 @@ export default function Home() {
                 {/* <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1> */}
               </div>
               <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
-                <button onClick={() => console.log()} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a free demo</span></button>
-                <button onClick={() => console.log()} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
+                <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a free demo</span></button>
+                <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
               </div>
             </div>
         </div>
@@ -82,8 +83,8 @@ export default function Home() {
                     <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Analyze conversations to improve customer experience and business decisions.</span></p>
                   </div>
                   <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
-                    <button onClick={() => console.log()} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></button>
-                    <button onClick={() => console.log()} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
+                    <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></button>
+                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
                   </div>
                 </div>
               </div>
@@ -99,8 +100,8 @@ export default function Home() {
                   </div>
                   
                   <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
-                    <button onClick={() => console.log()} className='flex justify-center gap-1 bg-indigo-500 hover:bg-indigo-700 border-2 border-indigo-500 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></button>
-                    <button onClick={() => console.log()} className='flex justify-center gap-1 bg-indigo-400 hover:bg-indigo-700 border-2 border-indigo-400 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
+                    <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-indigo-500 hover:bg-indigo-700 border-2 border-indigo-500 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></button>
+                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-indigo-400 hover:bg-indigo-700 border-2 border-indigo-400 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
                   </div>
                 </div>
                 <div className="flex justify-center items-center md:w-[35%]">
@@ -121,33 +122,26 @@ export default function Home() {
                     <p className='flex gap-2 items-start text-emerald-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Analyze user interactions to provide data-driven insights for better sales strategies.</span></p>
                   </div>
                   <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
-                    <button onClick={() => console.log()} className='flex justify-center gap-1 bg-emerald-500 hover:bg-emerald-700 border-2 border-emerald-500 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></button>
-                    <button onClick={() => console.log()} className='flex justify-center gap-1 bg-emerald-400 hover:bg-emerald-700 border-2 border-emerald-400 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
+                    <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-emerald-500 hover:bg-emerald-700 border-2 border-emerald-500 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></button>
+                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-emerald-400 hover:bg-emerald-700 border-2 border-emerald-400 shadow-md hover:text-white text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
                   </div>
                 </div>
               </div>
-
-              {/* <div className='flex md:justify-center gap-10 bg-indigo-100 py-10 px-10 rounded-[30px] shadow-lg w-[50%]'>
-                <div className="flex justify-center md:w-[35%]">
-                  <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/customer-care.png' />
-                </div>
-                <div className='flex flex-col gap-5 justify-center md:w-[35%]'>
-                  <h1 className='text-[30px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Make the Most out of <span className='text-purple-700 font-bold'>Kulfi AI.</span></h1>
-                  <div className='flex flex-col gap-5'>
-                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Scrape website pages.</p>
-                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Upload multiple PDF documents.</p>
-                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Manage your own data.</p>
-                    <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[14px]'><CircleCheckBigIcon className='h-4' />Data segregated by organisation.</p>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="flex flex-col gap-2 justify-center items-center md:items-start justify-start md:w-[35%]">
-                
-              </div>
-              <div className="flex justify-center md:w-[65%]">
-                <img className='w-full h-auto object-contain shadow-lg border-1 border-gray-100 rounded-lg' src='/images/custom_knowledge.png' />
-              </div> */}
             </div>
+            
+                <h1 className='mt-10 text-black text-[30px] md:text-[42px] text-center font-bold leading-8'><span className="text-purple-800">Kulfi AI</span>: Beyond Limits – Endless Possibilities Await!</h1>
+                <Marquee className="mt-10">
+                  <div className="flex gap-5 text-black text-[2rem] md:text-[3rem] font-bold opacity-25">
+                    <h1>Customer Support |</h1>
+                    <h1>Insurance |</h1>
+                    <h1>Healthcare |</h1>
+                    <h1>Software & Saas |</h1>
+                    <h1>eCommerce |</h1>
+                    <h1>EdTech |</h1>
+                    <h1>Real Estate |</h1>
+                  </div>
+                </Marquee>
+              
           </div>
           {/* How it works */}
           <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-0 rounded-[30px] px-[20px] md:px-[80px]'>
