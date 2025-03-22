@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata = {
   title: 'Kulfi AI',
-  description: 'Customized AI Chatbots for your website.',
+  description: 'Customized AI Chatbots for your website in a matter of minutes.',
 };
 
 export const poppins = Inter({
