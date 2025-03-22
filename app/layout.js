@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import { Header } from "./components/layout/Header";
 import { ToastContainer } from "react-toastify";
-import { GoogleTagManager } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 import "./globals.css";
 
@@ -18,7 +18,7 @@ export const poppins = Inter({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <GoogleTagManager gtmId="G-SEBEB303B9" />
+      <GoogleAnalytics gaId="G-SEBEB303B9" />
       <body>
         <main className={`flex bg-white flex-col items-center justify-between flex-grow !focus:ring-0 ${poppins.className}`}>
           <div className="w-full">
