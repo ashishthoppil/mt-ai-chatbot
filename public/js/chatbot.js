@@ -47,7 +47,7 @@
             overflow: hidden;
         }
         `;
-        var { id, bn, cc, lc, mc, cw, al } = window.chatbotConfig || {};
+        var { organization } = window.chatbotConfig || {};
 
         document.head.appendChild(style);
         
@@ -114,7 +114,7 @@
             popup.style.display = isOpen ? 'flex' : 'none';
             const img = new Image();
             if (isOpen) {
-                const response = await fetch(`https://kulfi-ai.com/api/track-event?id=${id}&organization=Lumiscent%20India&event=click`, {
+                const response = await fetch(`https://kulfi-ai.com/api/track-event?organization=${organization}&event=click`, {
                     method: 'GET',
                     mode: "cors",
                 });

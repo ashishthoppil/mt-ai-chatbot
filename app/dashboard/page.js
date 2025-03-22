@@ -518,7 +518,8 @@ export default function Dashboard() {
                 color,
                 lColor,
                 mColor,
-                cw
+                cw,
+                organization: localStorage.getItem('organization')
             }));
             localStorage.setItem('botname', botName);
             localStorage.setItem('color', color);
@@ -669,7 +670,8 @@ export default function Dashboard() {
                 color,
                 lColor,
                 mColor,
-                cw
+                cw,
+                organization: localStorage.getItem('organization')
             });
         } else {
             router.push('/');
@@ -847,12 +849,12 @@ export default function Dashboard() {
                     <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg text-[14px]'>
                         <div className='flex justify-between'>
                             <p className='text-[14px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
-                            <a target='_blank' href={`/chat?id=${urlParams.id}&cw=${urlParams.cw}&al=${data.alignment[0]}&sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 px-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'><TestTube height={15} /> Test chatbot</a>
+                            <a target='_blank' href={`/chat?sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 px-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'><TestTube height={15} /> Test chatbot</a>
                         </div>
                         
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-[14px] text-yellow-500 px-1'>
-                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?id=${urlParams.id}&cw=${urlParams.cw}&al=${data.alignment[0]}'></script>`}</span>
+                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='https://kulfi-ai.com/js/loader.js?organization=${urlParams.organization}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");
