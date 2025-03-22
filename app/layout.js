@@ -7,7 +7,7 @@ import "./globals.css";
 export const metadata = {
   title: "Kulfi AI | Customized AI Chatbot for Websites",
   description: "Customized AI Chatbots for your website in a matter of minutes.",
-  keywords: "AI chatbot, AI chatbot for website, website chatbot, chatbot integration, customer support AI, OpenAI chatbot",
+  keywords: "AI chatbot, AI chatbot for website, website chatbot, chatbot integration, customer support AI, OpenAI chatbot, Kulfi AI",
   openGraph: {
     title: "Kulfi AI | Customized AI Chatbot for Websites",
     description: "Customized AI Chatbots for your website in a matter of minutes.",
