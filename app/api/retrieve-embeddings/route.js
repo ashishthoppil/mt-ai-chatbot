@@ -11,16 +11,24 @@ export async function GET(request) {
     const mongoClient = await clientPromise
     const DB_NAME = getDbName(organization);
     const db = mongoClient.db(DB_NAME)
-    const link_knowledge = await db.collection('knowledge_base').findOne();
+    const link_knowledge = await db.collection('knowledge_base').findOne() ?? [];
     const document_knowledge = await db.collection('documents').find().toArray();
     let formatted_doc_knowledge = [];
     document_knowledge.forEach(element => {
         formatted_doc_knowledge = [...formatted_doc_knowledge, ...element.kb];
     });
+    console.log('organizationorganization', organization);
+    console.log('link_knowledge', link_knowledge);
+    console.log('document_knowledge', document_knowledge);
+
     const settings = await db.collection('settings').findOne()
-    // const embeddingsArray = knowledge?.embeddings || []
-    const embeddingsArray = [...link_knowledge?.embeddings, ...formatted_doc_knowledge] || [];
-    // const embeddingsArray = [...formatted_doc_knowledge] || [];
+    let embeddingsArray = [];
+    if (link_knowledge.length > 0) {
+        embeddingsArray = [...link_knowledge?.embeddings]
+    }
+    if (formatted_doc_knowledge.length > 0) {
+        embeddingsArray = [...embeddingsArray, ...formatted_doc_knowledge]
+    }
 
     return NextResponse.json({ success: true, data: { embeddingsArray, organization, botName: settings.botName, tone: settings.tone, escalation: settings.escalation, responseLength: settings.responselength, showsource: settings.showsource, showimg: settings.showimg } });
 }

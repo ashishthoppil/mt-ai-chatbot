@@ -876,7 +876,7 @@ export default function Dashboard() {
                     <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg text-[14px]'>
                         <div className='flex justify-between items-start'>
                             <p className='text-[14px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
-                            <a target='_blank' href={`/chat?sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 pl-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'>Test <TestTube height={15} /></a>
+                            <a target='_blank' href={`/chat?o=${urlParams.organization}&sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 pl-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'>Test <TestTube height={15} /></a>
                         </div>
                         
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
