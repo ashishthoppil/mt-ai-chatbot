@@ -1,11 +1,11 @@
 (function() {
     var loaderScriptURL = document.currentScript.src;
     var urlObject = new URL(loaderScriptURL);
-    var organization = urlObject.searchParams.get('organization');
+    var organization = urlObject.searchParams.get('o');
     var cw = urlObject.searchParams.get('cw');
     var al = urlObject.searchParams.get('al');
 
-    window.chatbotConfig = { organization };
+    window.chatbotConfig = { organization, cw, al };
 
     setTimeout(() => {
       var chatbotScript = document.createElement('script');
