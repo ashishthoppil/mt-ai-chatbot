@@ -84,7 +84,7 @@
         const iframe = document.createElement('iframe');
 
         iframe.style.overflow = 'none';
-        iframe.src = `https://kulfi-ai.com/chat`;
+        iframe.src = `https://kulfi-ai.com/chat?o=${organization}`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
