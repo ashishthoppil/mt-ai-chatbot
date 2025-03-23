@@ -38,19 +38,31 @@ const getSourcePrompt = () => {
 }
 
 const getBodyParams = (params) => {
-  const paramArr = params.split(',').map(item => item.trim());
-  const resultant = {};
-  paramArr.forEach(item => {
-    resultant[item] = {
-      type: 'string',
-      description: `This is the ${item} in the user query`
-    }
-  })
-
+  if (params) {
+    const paramArr = params.split(',').map(item => item.trim());
+    const resultant = {};
+    paramArr.forEach(item => {
+      resultant[item] = {
+        type: 'string',
+        description: `This is the ${item} in the user query`
+      }
+    })
+  
+    return jsonSchema({
+      type: 'object',
+      properties: resultant,
+      required: paramArr
+    });
+  }
   return jsonSchema({
     type: 'object',
-    properties: resultant,
-    required: paramArr
+    properties: {
+      message: {
+        type: 'string',
+        description: 'The whole user query',
+      }
+    },
+    required: ['message']
   });
 }
 
@@ -115,6 +127,7 @@ export async function POST(request) {
       // messages
     });
 
+    console.log('initialResponse.toolCallsinitialResponse.toolCalls', initialResponse.toolCalls);
     if (initialResponse.toolCalls && initialResponse.toolResults) {
       console.log('toolstools', initialResponse.toolCalls[0]);
       if (initialResponse.toolCalls[0]) {

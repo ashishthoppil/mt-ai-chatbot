@@ -39,6 +39,10 @@ export const poppins = Inter({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        {/* <script async src="https://assets.lemonsqueezy.com/lemon.js"></script> */}
+        <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+      </head>
       <GoogleAnalytics gaId="G-SEBEB303B9" />
       <body>
         <main className={`flex bg-white flex-col items-center justify-between flex-grow !focus:ring-0 ${poppins.className}`}>

@@ -1,10 +1,12 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Queue, QueueOutlined, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { AccountCircleOutlined, ChatBubbleOutlineOutlined, Close, EmailOutlined, InfoRounded, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Queue, QueueOutlined, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from "rehype-raw";
 
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -49,6 +51,8 @@ const Loader = () => {
 export default function Dashboard() {
     const [articleFile, setArticleFile] = useState(null);
     const [complaints, setComplaints] = useState();
+    const [chats, setChats] = useState([]);
+    const [selectedChat, setSelectedChat] = useState([]);
     const [hubspot, setHubspot] = useState({
         portal: '',
         form: ''
@@ -249,9 +253,26 @@ export default function Dashboard() {
         }
     }
 
+    const loadChats = async () => {
+        const res = await fetch('/api/get-chats', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: localStorage.getItem('objectID'),
+                organization: localStorage.getItem('organization')
+            })
+        });
+        const data = await res.json();
+        if (data.data) {
+            setChats(data.data);
+        } else {
+            setChats([]);
+        }
+    }
+
     useEffect(() => {
         loadData();
         loadWorkflows();
+        loadChats();
         loadFaqs();
         loadArticles();
     }, []);
@@ -296,6 +317,13 @@ export default function Dashboard() {
             ''
         ])
     }
+
+    // const handleCheckout = () => {
+    //     const checkoutButton = document.createElement("a");
+    //     checkoutButton.href = "https://yourstore.lemonsqueezy.com/checkout/buy/YOUR_PRODUCT_ID";
+    //     checkoutButton.className = "lemonsqueezy-button";
+    //     checkoutButton.click();
+    //   };
 
     const inputTypeHandler = (id, type, value) => {
         setLeadForm((prev) => {
@@ -468,26 +496,31 @@ export default function Dashboard() {
         },
         {
             id: 4,
+            title: 'Chats',
+            Icon: ChatBubbleOutlineOutlined
+        },
+        {
+            id: 5,
             title: 'Settings',
             Icon: Settings
         },
         {
-            id: 5,
+            id: 6,
             title: 'Training',
             Icon: Source
         },
         {
-            id: 6,
+            id: 7,
             title: 'Articles',
             Icon: Newspaper
         },
         {
-            id: 7,
+            id: 8,
             title: 'FAQs',
             Icon: QuestionAnswer
         },
         {
-            id: 8,
+            id: 9,
             title: 'Membership',
             Icon: Tag
         },
@@ -1253,6 +1286,43 @@ export default function Dashboard() {
                     })}
                 </div>
             </>)
+        } else if (section === 'Chats') { 
+                return(
+                    <div className='flex flex-col gap-10'>
+                        <div>
+                            <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Chats</h3>
+                            <p className='text-[14px] md:text-[16px]'>Access the chats that your visitors have with your Chatbot.</p>
+                        </div>
+                        <div className='flex border-[1px] border-gray-100 rounded-lg h-full w-[full]'>
+                            <div className='flex flex-col h-[75vh] w-[25%] overflow-y-auto'>
+                                {chats.map((item, index) => {
+                                    return (
+                                        <div onClick={() => { setSelectedChat(item.messages) }} key={index} className={`flex flex-col gap-2 justify-center cursor-pointer ${index % 2 === 0 ? 'bg-purple-50' : 'bg-purple-100'} border-[1px] border-gray-100 py-5 px-5 w-full text-[14px]`}>
+                                            <div>ID: {item.id}</div>
+                                            <div className='flex gap-1'><img className='h-[20px]' src={item.flag.img} /><span>{item.country}</span></div>
+                                            <div>IP: {item.ip}</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <div className='w-[75%] h-[75vh] overflow-y-auto p-5'>
+                                {selectedChat.length > 0 && selectedChat.map((msg, idx) => (
+                                    <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
+                                    <>{msg.role === 'user' ? 
+                                    <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg border-[1px] border-gray-100 shadow-md text-white bg-purple-800'>
+                                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                    </div>:
+                                    <div className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md text-purple-800 bg-purple-100`}>
+                                        {data.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${data.botAvatar}`} /> :
+                                        <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{data.botName[0]}</span>}
+                                        <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
+                                    </div>}</>
+                                </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
         } else if (section === 'Settings') {
             return (
                 <>
@@ -1353,7 +1423,7 @@ export default function Dashboard() {
                             <label htmlFor="initial" className="text-left">
                                 Initial message
                             </label>
-                            <textarea onChange={(e) => setData((prev) => { return { ...prev, initialmsg: e.target.value } })} value={data.initialmsg} placeholder='Enter the chatbot`s initial message.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
+                            <textarea onChange={(e) => setData((prev) => { return { ...prev, initialmsg: e.target.value } })} value={data.initialmsg ? data.initialmsg : ''} placeholder='Enter the chatbot`s initial message.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
                         </div>
 
 
@@ -1361,7 +1431,7 @@ export default function Dashboard() {
                             <label htmlFor="initial" className="text-left">
                                 Message box placeholder
                             </label>
-                            <textarea onChange={(e) => setData((prev) => { return { ...prev, placeholder: e.target.value } })} value={data.placeholder} placeholder='Enter the chat message box placeholder text.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
+                            <textarea onChange={(e) => setData((prev) => { return { ...prev, placeholder: e.target.value } })} value={data.placeholder ? data.placeholder : ''} placeholder='Enter the chat message box placeholder text.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
                         </div>
                     </div>
 
@@ -1584,21 +1654,21 @@ export default function Dashboard() {
                         </Tabs> 
                     </div>
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300 mt-5'>
-                        <h3 className="text-[22px] font-bold text-gray-500 mb-2">Custom Workflows</h3>
-                        <p className='text-[14px]'>You can add your custom workflows here.</p>
+                        <h3 className="text-[22px] font-bold text-gray-500 mb-2">Custom Responses</h3>
+                        <p className='text-[14px]'>You can add your custom responses here.</p>
                         <div className='flex flex-col gap-5 pt-10 text-[14px]'>
                             <div className='flex flex-col md:flex-row gap-2'>
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label className="text-left">
                                         Title
                                     </label>
-                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, title: e.target.value } })} value={workflow.title} id='title' placeholder='Enter the name of your workflow.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
+                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, title: e.target.value } })} value={workflow.title} id='title' placeholder='Enter the title for your response. Example: Complaint Response.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                                 </div>
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label className="text-left">
                                         Condition
                                     </label>
-                                    <textarea onChange={(e) => setWorkflow((prev) => { return { ...prev, condition: e.target.value } })} value={workflow.condition} id='condition' placeholder='Enter the condition in which the workflow is to be triggered.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm' />
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return { ...prev, condition: e.target.value } })} value={workflow.condition} id='condition' placeholder='Enter the condition in which the response is to be triggered. Example: When the user raises a complaint for anything.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm' />
                                 </div>
                             </div>
 
@@ -1607,13 +1677,13 @@ export default function Dashboard() {
                                     <label htmlFor="botname" className="text-left">
                                         Training Phrases (separated by commas)
                                     </label>
-                                    <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, phrases: e.target.value }})} value={workflow.phrases} placeholder="Example prompts to train the chatbot separated by commas" className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, phrases: e.target.value }})} value={workflow.phrases} placeholder="Example prompts to train the chatbot separated by commas. Example: I have a complaint, I am not satisfied with the service, The service does not meet my expectations." className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
                                 </div>
                                 <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                     <label htmlFor="botname" className="text-left">
-                                        Action
+                                        Chatbot Response
                                     </label>
-                                    <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, action: e.target.value }})} value={workflow.action} placeholder="The action that the chatbot must take." className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
+                                    <textarea onChange={(e) => setWorkflow((prev) => { return {...prev, action: e.target.value }})} value={workflow.action} placeholder="The response that the chatbot must give. Example: Apologize to the user for any convenience caused and politely ask them to send an email at xyz@domain.com" className='p-2 outline-none  border-[1px] border-gray-400  rounded-sm resize-none'></textarea>
                                 </div>
                             </div>
                             
@@ -1629,7 +1699,7 @@ export default function Dashboard() {
                                     <label className="text-left">
                                         Webhook parameters (separated by commas)
                                     </label>
-                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
+                                    <input onChange={(e) => setWorkflow((prev) => { return { ...prev, parameters: e.target.value } })} value={workflow.parameters} id='parameters' placeholder='Webhook parameters. Example: email, phone' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                                 </div>
                             </div>
                             
@@ -1638,9 +1708,9 @@ export default function Dashboard() {
                             </div>
 
                             <div className='flex flex-col gap-5 mt-2 pt-5 rounded-lg mt-[50px]'>
-                                <h3 className="md:text-[16px] font-bold text-gray-500 mb-2">Workflows</h3>
+                                <h3 className="md:text-[16px] font-bold text-gray-500 mb-2">Responses</h3>
                                 <Table className='border-2 border-purple-200'>
-                                    {workflowsList.length === 0 ? <TableCaption className='mt-5'>No workflows have been added.</TableCaption> : <></>}
+                                    {workflowsList.length === 0 ? <TableCaption className='mt-5'>No custom responses have been added.</TableCaption> : <></>}
                                     <TableHeader className='bg-purple-200'>
                                         <TableRow>
                                             <TableHead>Title</TableHead>
@@ -1661,7 +1731,7 @@ export default function Dashboard() {
                                                 <TableCell>{item.action}</TableCell>
                                                 <TableCell>{item.webhook}</TableCell>
                                                 <TableCell>{item.parameters}</TableCell>
-                                                <TableCell><button onClick={() => deleteWorkflow(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell>
+                                                <TableCell><button onClick={() => deleteWorkflow(item.id)} className='px-2 py-1'>{isDeleting ? <Loader2 className='text-purple-800 animate-spin' /> : <TrashIcon className='text-red-500 w-[16px]' />}</button></TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -1780,6 +1850,13 @@ export default function Dashboard() {
         } else if (section === 'Membership') {
             return (
                 <>
+                <a href="https://kulfi.lemonsqueezy.com/buy/094f774d-5de8-4834-b29d-da3953e4ceb6?embed=1" className="lemonsqueezy-button">Buy Kulfi AI - Basic Monthly</a>
+                    {/* <button 
+                        onClick={handleCheckout} 
+                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    >
+                        Buy Now
+                    </button> */}
                     <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plan</h3>
                     <p>You are currently subscribed to the <strong>Basic</strong> plan. If you wish to cancel this plan please email us at <a className='underline text-blue-600' href='mailto:support@kulfi-ai.com'>support@kulfi-ai.com</a></p>
                 </>
