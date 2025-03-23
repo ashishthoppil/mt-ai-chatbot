@@ -9,8 +9,8 @@ export async function POST(req) {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
 
-  if (payload.event_name === "subscription_created") {
-    const result = await db.collection('settings').updateOne(
+//   if (payload.event_name === "subscription_created") {
+    const result = await db.collection('account').updateOne(
         {},
         {
           $set: { 
@@ -19,7 +19,7 @@ export async function POST(req) {
           $currentDate: { lastModified: true }
         }
     );
-  }
+//   }
 
   return NextResponse.json({ success: true });
 }
