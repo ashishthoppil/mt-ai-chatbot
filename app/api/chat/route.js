@@ -99,26 +99,12 @@ export async function POST(request) {
       });
     }
 
-    console.log('custom_workflowscustom_workflows', custom_workflows)
-
-    // parameters: z.object(getBodyParams(element.parameters)),
-    //         execute: async (args) => {
-    //           console.log('argsargsargsargsargs', args);
-    //           return element.action
-    //         }
-    // if (element.webhook) {
-    //   const response = fetch(element.webhook, {
-    //     method: 'POST',
-    //     body: 
-    //   })
-    // }
-
     const myToolSet = {
-      // create_lead: tool({
-      //   description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
-      //   parameters: z.object({ message: z.string().describe('The whole user query') }),
-      //   execute: async ({ message }) =>  message,
-      // }),
+      create_lead: tool({
+        description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
+        parameters: z.object({ message: z.string().describe('The whole user query') }),
+        execute: async ({ message }) =>  message,
+      }),
       ...custom_workflows
     };
 
@@ -126,6 +112,7 @@ export async function POST(request) {
       model: openai('gpt-4o'),
       tools: myToolSet,
       prompt: messages[messages.length - 1].content
+      // messages
     });
 
     if (initialResponse.toolCalls && initialResponse.toolResults) {

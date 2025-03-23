@@ -93,7 +93,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     return (
         <>
             {section === 0 && <>
-                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'max-h-[64vh]' : 'h-[42vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
+                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'max-h-[64vh]' : 'h-[50vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
                     <div>
                         {messages.map((msg, idx) => (
                         <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>

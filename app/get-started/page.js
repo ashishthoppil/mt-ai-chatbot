@@ -344,7 +344,7 @@ const MultiStepForm = () => {
     website: '',
     domain: '',
     botName: '',
-    color: '#9B1C1C',
+    color: '#4A1D96',
   });
 
   const nextStep = () => setCurrentStep((prev) => prev + 1);

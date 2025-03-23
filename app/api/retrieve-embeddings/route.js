@@ -19,8 +19,8 @@ export async function GET(request) {
     });
     const settings = await db.collection('settings').findOne()
     // const embeddingsArray = knowledge?.embeddings || []
-    // const embeddingsArray = [...link_knowledge?.embeddings, ...formatted_doc_knowledge] || [];
-    const embeddingsArray = [...formatted_doc_knowledge] || [];
+    const embeddingsArray = [...link_knowledge?.embeddings, ...formatted_doc_knowledge] || [];
+    // const embeddingsArray = [...formatted_doc_knowledge] || [];
 
     return NextResponse.json({ success: true, data: { embeddingsArray, organization, botName: settings.botName, tone: settings.tone, escalation: settings.escalation, responseLength: settings.responselength, showsource: settings.showsource, showimg: settings.showimg } });
 }

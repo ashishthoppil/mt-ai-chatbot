@@ -170,8 +170,9 @@ export default function Dashboard() {
             })
         });
         const data = await res.json();
+
+        console.log('data.datadata.data', data.data);
         if (data.data) {
-            console.log('data.datadata.datadata.data', data.data);
             setData(data.data);
             setLeadForm(data.data.leadForm ? data.data.leadForm : []);
             setLeadSave(data.data.leadSave ? data.data.leadSave : '');
@@ -518,7 +519,7 @@ export default function Dashboard() {
             const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
             const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
             const cw = data.cw;
-            const al = data.alignment;
+            const al = data.alignment[0];
             setUrlParams(prev => ({
                 ...prev,
                 botName,
@@ -687,7 +688,7 @@ export default function Dashboard() {
         const lColor = tinycolor(`#${color}`).lighten(60).toHexString().slice(1)
         const mColor = tinycolor(`#${color}`).lighten(20).toHexString().slice(1)
         const cw = localStorage.getItem('cw');
-        const al = localStorage.getItem('al');
+        const al = localStorage.getItem('al')[0];
         
         if (id && botName && color && cw) {
             setUrlParams({
@@ -1790,7 +1791,7 @@ export default function Dashboard() {
         
         <>
         <Header />
-        <main className={`flex items-center gap-4 w-full md:py-[4rem] md:px-[5rem] bg-white rounded-[30px] my-[10px] ${poppins.className}`}>            
+        <main className={`flex items-center gap-4 w-full md:py-[2rem] md:px-[5rem] bg-white rounded-[30px] my-[10px] ${poppins.className}`}>            
             <div className="md:flex w-full px-3 md:px-0">
                 <ul className="flex md:flex-col gap-2 md:gap-0 md:space-y md:space-y-4 text-sm font-medium text-gray-500 md:me-4 mb-4 md:mb-0 overflow-x-auto md:overflow-visible py-3 md:py-0">
                     {sideMenu.map(({ Icon, ...item}) => (

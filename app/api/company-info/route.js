@@ -1,5 +1,6 @@
 import clientPromise from "@/lib/mongodb";
 import { getDbName } from "@/lib/utils";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const bcrypt = require('bcrypt');
@@ -43,7 +44,7 @@ export async function POST(req, res) {
             db_name: DB_NAME
           })
 
-          await clientdb.collection('links').insertOne({})
+          // await clientdb.collection('links').insertOne({})
 
           if (settings.acknowledged && email.acknowledged) {
             await fetch(ZAPIER_WEBHOOK, {
@@ -57,6 +58,20 @@ export async function POST(req, res) {
               }),
             });
           }
+
+          const cookieStore = await cookies();
+          const expiry = new Date(Date.now()+ 86400*1000);
+          const salt = bcrypt.genSaltSync(10);
+          cookieStore.set({
+            name: 'organization',
+            value: bcrypt.hashSync(data.organization, salt),
+            expires: expiry
+          });
+          cookieStore.set({
+            name: 'email',
+            value: bcrypt.hashSync(data.email, salt),
+            expires: expiry
+          });
           return NextResponse.json({ success: true, data: result });  
         }
       } catch (error) {
