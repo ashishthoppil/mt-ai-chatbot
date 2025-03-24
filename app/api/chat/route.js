@@ -8,7 +8,6 @@ import { z } from 'zod';
 export const runtime = 'edge'
 
 const getResponseLength = (length) => {
-  console.log('lengthlength', length);
   if (length === 'short') {
     return `Answer briefly in one or two sentences.`;
   } else if (length === 'medium') {
@@ -72,6 +71,29 @@ export async function POST(request) {
     let { id, messages, org, userId } = response;
     const BASE_URL = process.env.BASE_URL
 
+    const dashboardResponse = await fetch(`${BASE_URL}/api/dashboard`, {
+      method: 'POST',
+      body: JSON.stringify({
+          id,
+          organization: org
+      })
+    });
+
+    const dashboard = await dashboardResponse.json();
+
+    if (dashboard.count >= dashboard.data.chatCount || !dashboard.data.isSubscribed) {
+      const intentResult = await streamText({
+        model: openai('gpt-4o-mini'),
+        system: `You are a helpful assistant. You must strictly follow the given command without deviation. 
+                DO NOT interpret, rephrase, or add additional information. Just execute the command exactly as stated.`,
+        prompt: `Respond with: The chatbot is currently unavailable at the moment. Please try again after sometime.`,
+        temperature: 0
+      });
+
+      return intentResult.toDataStreamResponse();
+    }
+
+
     const res = await fetch(`${BASE_URL}/api/get-workflows`, {
       method: 'POST',
       body: JSON.stringify({
@@ -110,15 +132,18 @@ export async function POST(request) {
         }
       });
     }
+    let myToolSet = { ...custom_workflows };
 
-    const myToolSet = {
-      create_lead: tool({
-        description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
-        parameters: z.object({ message: z.string().describe('The whole user query') }),
-        execute: async ({ message }) =>  message,
-      }),
-      ...custom_workflows
-    };
+    if (!PLANS.BASIC.includes(dashboard.data.subscriptionName)) {
+      myToolSet = { 
+        ...myToolSet,
+        create_lead: tool({
+          description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
+          parameters: z.object({ message: z.string().describe('The whole user query') }),
+          execute: async ({ message }) =>  message,
+        })
+       }
+    }
 
     const initialResponse = await generateText({
       model: openai('gpt-4o'),
@@ -127,24 +152,13 @@ export async function POST(request) {
       // messages
     });
 
-    console.log('initialResponse.toolCallsinitialResponse.toolCalls', initialResponse.toolCalls);
     if (initialResponse.toolCalls && initialResponse.toolResults) {
-      console.log('toolstools', initialResponse.toolCalls[0]);
       if (initialResponse.toolCalls[0]) {
         if (initialResponse.toolCalls[0].toolName === 'create_lead') {
-          const formRes = await fetch(`${BASE_URL}/api/dashboard`, {
-            method: 'POST',
-            body: JSON.stringify({
-                id,
-                organization: org
-            })
-          });
-
-          const formData = await formRes.json()
           return new Response(JSON.stringify({
             type: "lead_form",
             title: "Lead Form",
-            fields: formData.data.leadForm ? formData.data.leadForm : [
+            fields: dashboard.data.leadForm ? dashboard.data.leadForm : [
               {
                 id: 1,
                 type: 'text',
@@ -236,7 +250,7 @@ export async function POST(request) {
         4. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks.
         5. If the user asks for human interaction, or you are not able to resolve the user query, politely ask the user to call or email at ${escalation}.
 
-        ${showimg === 'true' || showimg === true ? getImagePrompt() : ''}
+        ${!PLANS.BASIC.includes(dashboard.data.subscriptionName) && (showimg === 'true' || showimg === true) ? getImagePrompt() : ''}
         ${showsource === 'true' || showsource === true ? getSourcePrompt() : ''}
       `
     }, ...messages];

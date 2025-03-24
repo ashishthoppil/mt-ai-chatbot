@@ -1,7 +1,7 @@
 'use client';
 
 import { logout } from '@/lib/helper';
-import { AccountCircleOutlined, ChatBubbleOutlineOutlined, Close, EmailOutlined, InfoRounded, KeyboardDoubleArrowDown, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Queue, QueueOutlined, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
+import { AccountCircleOutlined, ChatBubbleOutlineOutlined, Close, EmailOutlined, EmailRounded, InfoRounded, KeyboardDoubleArrowDown, Leaderboard, Logout, Newspaper, NoAccounts, Phone, QuestionAnswer, Queue, QueueOutlined, RestartAlt, Restore, Settings, Source, UploadFileTwoTone } from '@mui/icons-material';
 import { Inter } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -33,6 +33,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Progress } from '@/components/ui/progress';
 import { Header } from '../components/layout/Header';
+import { PLANS } from '@/lib/constants';
 
 export const poppins = Inter({
   subsets: ['latin'],
@@ -53,6 +54,7 @@ export default function Dashboard() {
     const [complaints, setComplaints] = useState();
     const [chats, setChats] = useState([]);
     const [selectedChat, setSelectedChat] = useState([]);
+    const [sideMenu, setSideMenu] = useState([]);
     const [hubspot, setHubspot] = useState({
         portal: '',
         form: ''
@@ -103,6 +105,7 @@ export default function Dashboard() {
     const [articlesList, setArticlesList] = useState([]);
     const [workflowsList, setWorkflowsList] = useState([]);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+    const [unsubscribeModalOpen, setUnsubscribeModalOpen] = useState(false);
     const [urlParams, setUrlParams] = useState({
         id: '',
         botName: '',
@@ -170,12 +173,12 @@ export default function Dashboard() {
             method: 'POST',
             body: JSON.stringify({
                 id: localStorage.getItem('objectID'),
-                organization: localStorage.getItem('organization')
+                organization: localStorage.getItem('organization'),
+                isDashboard: true
             })
         });
         const data = await res.json();
 
-        console.log('data.datadata.data', data.data);
         if (data.data) {
             setData(data.data);
             setLeadForm(data.data.leadForm ? data.data.leadForm : []);
@@ -241,15 +244,38 @@ export default function Dashboard() {
         }
     }
     
+    const checkFileLimit = (files) => {
+        let totalSize = 0;
+        if (files.length > data.fileLimit) {
+            toast.error(`The file upload limit is ${data.fileLimit}, Please upgrade plan if you want to increase the limit.`)
+            return false;
+        }
+        const indexArr = Array.from({length: files.length}, (_, i) => i)
+        // Calculate total size
+        indexArr.forEach(i => {
+            totalSize += files[i].size;
+        });
+
+        if (totalSize/1000000 > data.fileSizeLimit) {
+            toast.error(`The file size limit is ${data.fileSizeLimit} MB, Please upgrade plan if you want to increase the limit.`)
+            return false;
+        }
+        return true;
+    }
 
     const handleKBChange = (e) => {
-        if (e.target.files) {
-            if (e.target.files[0].type !== 'application/pdf') {
-                toast.error("Please upload a valid PDF file");
-                e.target.value = '';
-                return;
+        const check = checkFileLimit(e.target.files);
+        if (check) {
+            if (e.target.files) {
+                if (e.target.files[0].type !== 'application/pdf') {
+                    toast.error("Please upload a valid PDF file");
+                    e.target.value = '';
+                    return;
+                }
+                setKB(e.target.files);
             }
-            setKB(e.target.files);
+        } else {
+            e.target.value = '';
         }
     }
 
@@ -272,29 +298,29 @@ export default function Dashboard() {
     useEffect(() => {
         loadData();
         loadWorkflows();
-        loadChats();
         loadFaqs();
         loadArticles();
     }, []);
 
     useEffect(() => {
-        if (data) {
+        if (data && !PLANS.BASIC.includes(data.subscriptionName)) {
             getClickData();
         }
     }, [data, clickSelector])
 
     useEffect(() => {
-        if (data) {
+        if (data && !PLANS.BASIC.includes(data.subscriptionName)) {
             getSessionData();
         }
     }, [data, sessionSelector]);
 
     useEffect(() => {
-        if (data) {
+        if (data && !PLANS.BASIC.includes(data.subscriptionName)) {
             getEngagementRate()
             getMessageCount()
             getLocation()
             getLeads()
+            loadChats();
         }
     }, [data])
 
@@ -312,10 +338,10 @@ export default function Dashboard() {
     }
 
     const linkFieldAdder = () => {
-        setLinks((prev) => [
-            ...prev,
-            ''
-        ])
+            setLinks((prev) => [
+                ...prev,
+                ''
+            ])
     }
 
     // const handleCheckout = () => {
@@ -478,53 +504,72 @@ export default function Dashboard() {
         }
     }
 
-    const sideMenu = [
-        {
-            id: 1,
-            title: 'Code',
-            Icon: Code
-        },
-        {
-            id: 2,
-            title: 'Analytics',
-            Icon: GaugeIcon
-        },
-        {
-            id: 3,
-            title: 'Leads',
-            Icon: NotebookTabsIcon
-        },
-        {
-            id: 4,
-            title: 'Chats',
-            Icon: ChatBubbleOutlineOutlined
-        },
-        {
-            id: 5,
-            title: 'Settings',
-            Icon: Settings
-        },
-        {
-            id: 6,
-            title: 'Training',
-            Icon: Source
-        },
-        {
-            id: 7,
-            title: 'Articles',
-            Icon: Newspaper
-        },
-        {
-            id: 8,
-            title: 'FAQs',
-            Icon: QuestionAnswer
-        },
-        {
-            id: 9,
-            title: 'Plan',
-            Icon: Tag
-        },
-    ];
+    useEffect(() => {
+        if (data) {
+            let items = [
+                {
+                    id: 1,
+                    title: 'Code',
+                    Icon: Code
+                },
+            ];
+    
+            if (!PLANS.BASIC.includes(data.subscriptionName) && data.isSubscribed) {
+                items.push({
+                    id: 2,
+                    title: 'Analytics',
+                    Icon: GaugeIcon
+                });
+                items.push({
+                    id: 3,
+                    title: 'Leads',
+                    Icon: NotebookTabsIcon
+                });
+                items.push({
+                    id: 4,
+                    title: 'Chats',
+                    Icon: ChatBubbleOutlineOutlined
+                });
+
+                if (!PLANS.PRO.includes(data.subscriptionName)) {
+                    items.push({
+                        id: 5,
+                        title: 'Articles',
+                        Icon: Newspaper
+                    });
+                    items.push({
+                        id: 6,
+                        title: 'FAQs',
+                        Icon: QuestionAnswer
+                    });
+                }
+            }
+
+            if (data.isSubscribed) {
+                items.push({
+                    id: 7,
+                    title: 'Settings',
+                    Icon: Settings
+                })
+            }
+            
+            items = [...items, ...[
+                
+                {
+                    id: 8,
+                    title: 'Training',
+                    Icon: Source
+                },            
+                {
+                    id: 9,
+                    title: 'Plan',
+                    Icon: Tag
+                },
+            ]];
+
+            setSideMenu(items);
+        }
+    }, [data])
 
     const settingsUpdate = async () => {
         // Validations
@@ -634,10 +679,21 @@ export default function Dashboard() {
                 workflow
             })
         });
-        if (res) {
+        const resData = await res.json();
+        if (resData.success) {
             setIsWorkflowSaving(false);
             loadWorkflows();
+            setWorkflow({
+                title: '',
+                condition: '',
+                phrases: '',
+                action: '',
+                webhook: '',
+                parameters: ''
+            });
             toast.success("Workflow has been added.");
+        } else {
+            toast.error(resData.message);
         }        
     }
     const articlesUpdate = async () => {
@@ -741,20 +797,24 @@ export default function Dashboard() {
     }, []);
 
     const addLinks = async () => {
-        setIsLoading(true);
-        const res = await fetch('/api/add-links', {
-            method: 'POST',
-            body: JSON.stringify({
-                id: localStorage.getItem('objectID'),
-                organization: localStorage.getItem('organization'),
-                links, 
-            })
-        });
-        const data = await res.json()
-        if (data) {
-            setAddedLinks(data.message);
-            setIsLoading(false);
-            toast.success("Links have been added and are ready to be synced!");
+        if (data && (links.length + 1) <= data.linkLimit) {
+            setIsLoading(true);
+            const res = await fetch('/api/add-links', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: localStorage.getItem('objectID'),
+                    organization: localStorage.getItem('organization'),
+                    links, 
+                })
+            });
+            const data = await res.json()
+            if (data) {
+                setAddedLinks(data.message);
+                setIsLoading(false);
+                toast.success("Links have been added and are ready to be synced!");
+            }
+        } else {
+            toast.error(`Cannot add more links as the limit is ${data.linkLimit}, upgrade your plan to get more.`);
         }
     }
 
@@ -939,8 +999,8 @@ export default function Dashboard() {
             return (
                 <div className='flex flex-col gap-4 pb-10'>
                         <h3 className="font-bold text-gray-900 mb-2 md:text-[32px]">Analytics</h3>
-                        <p className='text-[14px] md:text-[16px]'>This section provides an overview of basic analytics relating to the chatbot.</p>
-                        <div className='flex flex-col md:flex-row gap-2 w-full text-[12px]'>
+                        <p className='text-[14px] md:text-[16px]'>This section provides an overview of analytics relating to the chatbot.</p>
+                        {!PLANS.BASIC.includes(data.subscriptionName) ? <div className='flex flex-col md:flex-row gap-2 w-full text-[12px]'>
                             <div style={{ height: '20rem' }} className='w-full md:w-1/2'>
                                 <div className='flex gap-1 justify-end w-full pb-2'>
                                     <button onClick={() => setClickSelector('Day')} className={`px-2 py-1 rounded-md border-2 border-gray-200 text-[12px] hover:bg-gray-200 ${clickSelector === 'Day' ? 'bg-purple-800 hover:bg-purple-700 text-white' : ''}`}>
@@ -1003,11 +1063,11 @@ export default function Dashboard() {
                                 </ResponsiveContainer>
                                 <h1 className='text-center'>Number of chat sessions</h1>
                             </div>
-                        </div>
+                        </div> : <></>}
 
-                        <div className='flex items-center justify-center gap-2 mt-[6rem]'>
+                        {!PLANS.BASIC.includes(data.subscriptionName) ? <div className='flex items-center justify-center gap-2 mt-[6rem]'>
                             <h3 className="md:text-[14px] font-bold text-gray-500">Engagement Rate: </h3>{engagementRate && engagementRate <= 100 ? <span className='text-[26px] text-purple-800 font-semibold'>{engagementRate + '%'}</span> : <span>No data as of now.</span>}  
-                        </div>
+                        </div> : <></>}
                         <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
                             <Table className='border-2 border-purple-200'>
                                 <TableCaption className='mt-5'>Demographics</TableCaption>
@@ -1015,8 +1075,10 @@ export default function Dashboard() {
                                 <TableHeader className='bg-purple-200'>
                                     <TableRow>
                                         <TableHead>Country</TableHead>
+                                        {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) ? <>
                                         <TableHead>Desktop</TableHead>
                                         <TableHead>Mobile</TableHead>
+                                        </> : <></>}
                                         <TableHead>Total</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -1024,8 +1086,10 @@ export default function Dashboard() {
                                     {location.length > 0 && location.map((item, index) => (
                                         <TableRow key={index}>
                                             <TableCell className='flex gap-2 items-center'><img className='h-4' src={item.flag} /> {item.country}</TableCell>
+                                            {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) ? <>
                                             <TableCell>{item.desktop}</TableCell>
                                             <TableCell>{item.mobile}</TableCell>
+                                            </> : <></>}
                                             <TableCell>{item.total}</TableCell>
                                             {/* <TableCell><button onClick={() => alert(item.id)} className='px-2 py-1 bg-red-500 rounded-full shadow-md'>{isDeleting ? <Loader2 className='text-white animate-spin' /> : <TrashIcon className='text-white w-[16px]' />}</button></TableCell> */}
                                         </TableRow>
@@ -1033,31 +1097,7 @@ export default function Dashboard() {
                                 </TableBody>
                             </Table>
                         </div>
-                        <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
-                            {/* <div style={{ height: '20rem' }} className='w-full md:w-1/2 text-[12px]'>
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <BarChart
-                                        width={500}
-                                        height={300}
-                                        data={location}
-                                        margin={{
-                                            top: 5,
-                                            right: 30,
-                                            left: 20,
-                                            bottom: 5,
-                                        }}
-                                    >
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <XAxis dataKey="country" />
-                                        <YAxis />
-                                        <Tooltip />
-                                        <Legend />
-                                        <Bar dataKey="mobile" fill="#6B21A8" activeBar={<Rectangle fill="#6B21A8" stroke="#6B21A8" />} />
-                                        <Bar dataKey="desktop" fill="#FFA500" activeBar={<Rectangle fill="#FFA500" stroke="#FFA500" />} />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                                <h1 className='text-center'>Demographics</h1>
-                            </div> */}
+                        {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
                             <div className='flex flex-col justify-even gap-4 md:py-10 w-full md:w-1/2 md:pl-5'>
                                 <div className='flex gap-2 items-center'>
                                     <div className='flex gap-1 items-center w-[50%]'>
@@ -1149,7 +1189,7 @@ export default function Dashboard() {
                                     </Dialog>
                                 </div>
                             </div>
-                        </div>
+                        </div> : <></>}
                     </div>
             )
         } else if (section === 'Leads') {
@@ -1168,14 +1208,14 @@ export default function Dashboard() {
                             <RadioGroupItem onClick={(e) => leadSaveHandler('email')} value="email" id="email" />
                             <label htmlFor="email">Send as an Email</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        {data && !PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) ? <div className="flex items-center space-x-2">
                             <RadioGroupItem onClick={(e) => leadSaveHandler('webhook')} value="webhook" id="webhook" />
                             <label htmlFor="webhook">Webhook</label>
-                        </div>
-                        <div className="flex items-center space-x-2">
+                        </div> : <></>}
+                        {data && !PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <div className="flex items-center space-x-2">
                             <RadioGroupItem onClick={(e) => leadSaveHandler('hubspot')} value="hubspot" id="hubspot" />
                             <label htmlFor="hubspot">Use hubspot form</label>
-                        </div>
+                        </div> : <></>}
                     </RadioGroup>
                     {leadSave === 'kulfi' || leadSave === 'email' || leadSave === 'webhook' ? <div className='flex gap-5'>
                         <div ref={leadRef} className='flex flex-col gap-2 border-2 border-dashed border-gray-200 p-5 w-full rounded-md'>
@@ -1355,16 +1395,16 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    <div className='flex gap-4 pt-10 pb-10 text-[14px]'>
+                    {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) ? <div className='flex gap-4 pt-10 pb-10 text-[14px]'>
                         <div className="flex flex-col gap-4 w-[50%]">
                             <label htmlFor="botname" className="text-left text-[14px]">
                                 Chat window width (Preferred range: 350px to 450px)
                             </label>
                             <input onChange={(e) => setData((prev) => { return { ...prev, cw: e.target.value } })} value={data.cw} id='cw' placeholder='Example: 400' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm'></input>
                         </div>
-                    </div>
+                    </div> : <></>}
 
-                    <div className='flex flex-col md:flex-row gap-4 pb-10 text-[14px]'>
+                    {!PLANS.BASIC.includes(data.subscriptionName) ? <div className='flex flex-col md:flex-row gap-4 py-10 text-[14px]'>
                         <div className='flex items-center md:gap-2 w-full md:w-[50%]'>
                             <div className="flex flex-col gap-4 w-[50%] md:w-full">
                                 <label htmlFor="botname" className="text-left text-[14px]">
@@ -1390,9 +1430,9 @@ export default function Dashboard() {
                                 {data.botAvatar ? <div><button onClick={() => setData((prev) => { return { ...prev, botAvatar: null } })} className='bg-transparent text-red-500 text-[12px]'><Close className='text-red-500 text-[12px]' /> Remove image</button></div> : <></>}
                             </div>
                         </div>
-                    </div>
+                    </div> : <></>}
 
-                    <div className='flex gap-4 pb-10 text-[14px]'>
+                    {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) ? <div className='flex gap-4 pb-10 text-[14px]'>
                         <div className='flex items-center gap-2 w-[50%]'>
                             <div className="flex flex-col gap-4">
                                 <label htmlFor="botname" className="text-left">
@@ -1416,9 +1456,9 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> : <></>}
 
-                    <div className='flex gap-4 pb-10 text-[14px]'>
+                    {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) ? <div className='flex gap-4 pb-10 text-[14px]'>
                         <div className='flex flex-col gap-2 w-[50%]'>
                             <label htmlFor="initial" className="text-left">
                                 Initial message
@@ -1433,9 +1473,9 @@ export default function Dashboard() {
                             </label>
                             <textarea onChange={(e) => setData((prev) => { return { ...prev, placeholder: e.target.value } })} value={data.placeholder ? data.placeholder : ''} placeholder='Enter the chat message box placeholder text.' className='outline-none resize-none w-full h-[150px] border-[1px] border-gray-500 rounded-sm p-2' />
                         </div>
-                    </div>
+                    </div> : <></>}
 
-                        <div className='flex items-center gap-2 w-[50%] pb-10 text-[14px]'>
+                        <div className='flex items-center gap-2 w-[50%] py-10 text-[14px]'>
                             <div className="flex gap-4">
                                 <Switch 
                                     checked={data.hideBranding}
@@ -1450,33 +1490,33 @@ export default function Dashboard() {
                         </div>
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>
-                        <h3 className="text-[22px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3>
-                        <div className='flex flex-col md:flex-row gap-4 w-full'>
-                        <div className="flex flex-col gap-4 w-full md:w-[50%] text-[14px]">
-                            <label htmlFor="tone" className="text-left">
-                                Chatbot Tone
-                            </label>
-                                <select value={data.tone} onChange={(e) => setData((prev) => { return { ...prev, tone: e.target.value } })} className='p-2 outline-none border-[1px] border-gray-400 rounded-sm w-full text-[14px]'>
-                                    <option value='formal'>Formal - Polite, respectful</option>
-                                    <option value='casual'>Casual - Conversational, approachable</option>
-                                    <option value='enthusiastic'>Enthusiastic - Lively, motivational</option>
-                                    <option value='playful'>Playful - Lighthearted, fun, humorous</option>
-                                    <option value='empathetic'>Empathetic - Supportive, understanding</option>
-                                    <option value='analytical'>Analytical - Detailed, thorough, and data-focused</option>
-                                    <option value='neutral'>Neutral - Clear, straightforward, and objective</option>
-                                </select>
-                        </div>
-                        <div className="flex flex-col gap-4 w-full md:w-[50%]">
-                            <label htmlFor="tone" className="text-left text-[14px]">
-                                Support email/contact Number
-                                {/* (To be shown when the queries are not being resolved or when users ask for human interaction) */}
-                            </label>
-                            <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm text-[14px]' />                            
-                        </div>
-                        </div>
+                        {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <h3 className="text-[22px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3> : <></>}
+                        {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <div className='flex flex-col md:flex-row gap-4 w-full'>
+                            <div className="flex flex-col gap-4 w-full md:w-[50%] text-[14px]">
+                                <label htmlFor="tone" className="text-left">
+                                    Chatbot Tone
+                                </label>
+                                    <select value={data.tone} onChange={(e) => setData((prev) => { return { ...prev, tone: e.target.value } })} className='p-2 outline-none border-[1px] border-gray-400 rounded-sm w-full text-[14px]'>
+                                        <option value='formal'>Formal - Polite, respectful</option>
+                                        <option value='casual'>Casual - Conversational, approachable</option>
+                                        <option value='enthusiastic'>Enthusiastic - Lively, motivational</option>
+                                        <option value='playful'>Playful - Lighthearted, fun, humorous</option>
+                                        <option value='empathetic'>Empathetic - Supportive, understanding</option>
+                                        <option value='analytical'>Analytical - Detailed, thorough, and data-focused</option>
+                                        <option value='neutral'>Neutral - Clear, straightforward, and objective</option>
+                                    </select>
+                            </div>
+                            <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                                <label htmlFor="tone" className="text-left text-[14px]">
+                                    Support email/contact Number
+                                    {/* (To be shown when the queries are not being resolved or when users ask for human interaction) */}
+                                </label>
+                                <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm text-[14px]' />                            
+                            </div>
+                        </div> : <></>}
                         
 
-                        <div className="flex flex-col gap-4 w-full md:w-[50%]">
+                        {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <div className="flex flex-col gap-4 w-full md:w-[50%]">
                             <label htmlFor="response_length" className="text-left text-[14px]">
                                 Chatbot response length
                             </label>
@@ -1485,10 +1525,10 @@ export default function Dashboard() {
                                 <option value='medium'>Medium</option>
                                 <option value='long'>Long</option>
                             </select>                         
-                        </div>
+                        </div> : <></>}
 
                         <div className='flex items-center gap-2 w-[50%] mt-10 text-[14px]'>
-                            <div className="flex gap-4 w-[50%]">
+                            {!PLANS.BASIC.includes(data.subscriptionName) ? <div className="flex gap-4 w-[50%]">
                                 <Switch 
                                     checked={data.showimg}
                                     onCheckedChange={(e) => {
@@ -1498,7 +1538,7 @@ export default function Dashboard() {
                                 <label htmlFor="botname" className="text-left">
                                     Show images
                                 </label>
-                            </div>
+                            </div> : <></>}
                             <div className="flex gap-4 w-[50%]">
                                 <Switch 
                                     checked={data.showsource}
@@ -1548,6 +1588,7 @@ export default function Dashboard() {
                             <TabsContent value="links">
                                 <div className='flex flex-col gap-2 rounded-sm border-[1px] border-gray-200 shadow-lg p-3 text-[14px]'>
                                     <h1>Links</h1>
+                                    <div className='flex flex-col gap-2 md:max-h-[40vh] overflow-y-auto'>
                                     {links.map((item, index) => {
                                         return <div key={index} className='flex items-center gap-2'>
                                         <input onChange={(e) => setLinks((prev) => {
@@ -1572,7 +1613,14 @@ export default function Dashboard() {
                                         })} className='px-2 py-1 w-[5%]'><TrashIcon className='text-red-500 w-[16px]' /></button>
                                         </div>
                                     })}
-                                    <button onClick={linkFieldAdder} className='flex items-center'>
+                                    </div>
+                                    <button onClick={(e) => {
+                                        if (data && (links.length + 1) <= data.linkLimit) {
+                                            linkFieldAdder()
+                                        } else {
+                                            toast.error(`Cannot add more links as the limit is ${data.linkLimit}, upgrade your plan to get more.`);
+                                        }
+                                    }} className='flex items-center'>
                                         <PlusIcon className='h-4 text-purple-800' />
                                         <h3 className="font-bold text-purple-800 text-[14px]">Add new link</h3>
                                     </button>
@@ -1597,6 +1645,7 @@ export default function Dashboard() {
                                         }} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-1 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'>{isLinkSynced ? <span className='flex items-center'><Loader2 className='h-3 animate-spin' /> Training AI</span> : <span className='flex items-center'><BrainCircuitIcon className='h-3' /> Start training AI</span>}</button>
                                     </div>
                                     <Table className='border-2 border-purple-200'>
+                                        {console.log('addedLinks.length', addedLinks)}
                                         {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
                                         <TableHeader className='bg-purple-200'>
                                             <TableRow>
@@ -2088,26 +2137,99 @@ export default function Dashboard() {
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                     </TableRow>
 
-                                    <TableRow>
+                                    {/* <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Priority support</TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
+                                    </TableRow> */}
                                 </TableBody>
                             </Table>
                             </div>
                     </div> : 
                     <div className='flex flex-col'>
-                        <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plans & Add-ons</h3>
+                        <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plans</h3>
                         <div className='flex flex-col justify-center py-5'>
-                            <div className='flex justify-between items-center gap-1 p-5 rounded-md shadow-lg border-2 border-gray-100'>
+                            <div className='flex flex-col items-center md:flex-row justify-between items-center gap-1 p-5 rounded-md shadow-lg border-2 border-gray-100'>
                                 <div className='flex gap-1'>
                                     <h3 className=''>Current Plan:</h3>
                                     <p className='text-purple-800 font-bold'>{data.subscriptionName}</p>
                                 </div>
-                                <button onClick={() => alert('Un')} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Cancel subscription</button>  
+                                <Dialog open={unsubscribeModalOpen}>
+                                    <DialogTrigger asChild>
+                                        <button onClick={() => { setUnsubscribeModalOpen(true); }} className='bg-purple-500 mt-10 md:mt-0 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Cancel subscription</button>  
+                                    </DialogTrigger>
+                                    <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                                        <DialogHeader className='flex flex-col gap-2'>
+                                            <DialogTitle className='text-[32px]'>Cancel subscription?</DialogTitle>
+                                            <DialogDescription>
+                                                Are you sure you want to cancel the {data.subscriptionName} plan?
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter className='flex gap-2 justify-end pt-[25px]'>
+                                            <button onClick={async () => {
+                                                        const response = await fetch('/api/webhooks/unsubscribe', {
+                                                            method: 'POST',
+                                                            body: JSON.stringify({
+                                                                organization: localStorage.getItem('organization')
+                                                            })
+                                                        })
+                                                        const unsubscribed = await response.json();
+                                                        if (unsubscribed.success) {
+                                                            toast.success('You have successfully unsubscribed from the plan.')
+                                                            setUnsubscribeModalOpen(false);
+                                                            window.location.reload()
+                                                        }
+                                                    }} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Yes</button>  
+                                            <button onClick={() => setUnsubscribeModalOpen(false)} className='bg-white border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-purple-500 py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>No</button>  
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                            <div className='flex flex-col gap-5 py-10'>
+                                <h3 className="text-[26px] font-bold text-gray-600 mb-2">Add-ons</h3>
+                                <div className='flex flex-col md:flex-row items-center gap-5 md:gap-2'>
+                                    <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[90%] md:w-[25%]'>
+                                        <h3 className="text-[18px] font-bold text-gray-900 mb-2">Buy extra chats</h3>
+                                        <p className='font-normal text-[14px]'>You have {data.chatCount - messageCount} chats left. Purchasing extra chats will make that {(data.chatCount - messageCount) + 500}</p>
+                                        <p className='text-[16px]'><span className='text-[28px] font-bold'>$19</span> for 500 extra chats</p>
+                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Buy 500 extra chats</button>  
+                                    </div>
+
+                                    <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[90%] md:w-[25%]'>
+                                        {!data.brandingRemoved ?<>
+                                        <h3 className="text-[18px] font-bold text-gray-900 mb-2">Remove Kulfi branding</h3>
+                                        <p className='font-normal text-[14px]'>The option to remove Kulfi AI will be enabled to you in the settings.</p>
+                                        <p className='text-[16px]'><span className='text-[28px] font-bold'>$59</span> (One time purchase)</p>
+                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Remove branding</button>  
+                                        </> : <>
+                                            <h3 className="text-[18px] font-bold text-gray-900 mb-2">Removed Kulfi AI branding</h3>
+                                            <p className='font-normal text-[14px]'>The option to remove Kulfi AI has been enabled for you in the settings. You can hide the branding whenever you want.</p>
+                                            <p className='text-[16px]'><span className='text-[] font-bold'><a href='mailto:support@kulfi-ai.com'><EmailRounded className='text-purple-800' /> support@kulfi-ai.com</a></span></p>
+                                        </>}
+                                    </div>
+
+                                    <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[90%] md:w-[25%]'>
+                                        {!data.isServiced ? <>
+                                        <h3 className="text-[18px] font-bold text-gray-900 mb-2">Support & Maintenance</h3>
+                                        <p className='font-normal text-[14px]'>Support will be given on priority. This is a monthly fee.</p>
+                                        <p className='text-[16px]'><span className='text-[28px] font-bold'>$89</span> (One time purchase)</p>
+                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Get support</button>  
+                                        </> : <>
+                                            <h3 className="text-[18px] font-bold text-gray-900 mb-2">Support & Maintenance</h3>
+                                            <p className='font-normal text-[14px]'>This add on has been availed by you. Please feel free to contact us on our email given below for any queries or issues. We will make sure to address your query as soon as possible.</p>
+                                            <p className='text-[16px]'><span className='text-[] font-bold'><a href='mailto:support@kulfi-ai.com'><EmailRounded className='text-purple-800' /> support@kulfi-ai.com</a></span></p>
+                                        </>}
+                                    </div>
+
+                                    <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[90%] md:w-[25%]'>
+                                        <h3 className="text-[18px] font-bold text-gray-900 mb-2">Increase URLs limit</h3>
+                                        <p className='font-normal text-[14px]'>Purchasing this would make {parseInt(data.linkLimit) + 50} as your new URLs limit from which you can scrape data.</p>
+                                        <p className='text-[16px]'><span className='text-[28px] font-bold'>$29</span> for 50 extra links</p>
+                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Buy 50 extra link credit</button>  
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>}
@@ -2133,10 +2255,10 @@ export default function Dashboard() {
                     ))}
                     <div className='hidden md:flex flex-col items-center gap-5 border-2 border-slate-200 px-4 py-3 rounded-lg'>
                         
-                        <div className='flex flex-col'>
-                            <h3 className="flex gap-2 md:text-[14px] font-bold text-gray-500 mb-2"><span>Chats:</span> <span>{messageCount}/500</span></h3>   
-                            <Progress indicatorClass='bg-purple-700' value={messageCount * 100/500} />
-                        </div>
+                        {data ? <div className='flex flex-col'>
+                            <h3 className="flex gap-2 md:text-[14px] font-bold text-gray-500 mb-2"><span>Chats:</span> <span>{messageCount}/{data.chatCount}</span></h3>   
+                            <Progress indicatorClass='bg-purple-700' value={messageCount * 100/data.chatCount} />
+                        </div> : <></>}
                         <Dialog open={logoutModalOpen}>
                             <DialogTrigger asChild>
                             <li>

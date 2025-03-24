@@ -57,7 +57,6 @@
         const container = document.createElement('div');
         container.className = 'my-chatbot-container flex flex-col items-end';
 
-        console.log('check', al === 'l')
         if (al === 'l') {
             container.style.left = '15px';
         } else {
@@ -119,7 +118,6 @@
                     mode: "no-cors",
                 });
                 const data = await response.json();
-                console.log('data', data);
             } else {
                 img.src = ``;
             }

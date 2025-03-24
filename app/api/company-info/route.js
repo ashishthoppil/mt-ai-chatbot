@@ -22,7 +22,10 @@ export async function POST(req, res) {
           website: data.website,
           domain: data.domain,
           password: hashedpass,
-          chatCount: 500
+          chatCount: 500,
+          fileLimit: 1,
+          fileSizeLimit: 100,
+          linkLimit: 10
         }
         const result = await db.collection('account').insertOne(formattedData);
       

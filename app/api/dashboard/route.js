@@ -6,8 +6,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
     const request = await req.json();
+    const isDashboard = request.isDashboard;
     const cookieStore = await cookies();
-    if (!cookieStore.get('organization') || !cookieStore.get('email')) {
+    if (isDashboard && !cookieStore.get('organization')) {
         return NextResponse.json({ success: false, message: 'User is unauthenticated!' });
     }
     const client = await clientPromise;
@@ -19,6 +20,7 @@ export async function POST(req, res) {
         const settings = await db.collection('settings').find().toArray();
         const links = await db.collection('links').find().toArray();
         const documents = await db.collection('documents').find().toArray();
+        const count = await db.collection('chats').count();
         const fileNames = documents.map((item) => {
             return {
                 id: item._id.toString(),
@@ -26,7 +28,7 @@ export async function POST(req, res) {
             }
         })
         if (account.length > 0 && settings.length) {
-            return NextResponse.json({ success: true, data: { ...account[0], ...settings[0] }, links: links, fileNames });
+            return NextResponse.json({ success: true, data: { ...account[0], ...settings[0] }, links: links, fileNames, count });
         } 
         return NextResponse.json({ success: false, message: 'Something went wrong!' });
     } catch (error) {

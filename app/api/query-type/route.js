@@ -33,11 +33,9 @@ export async function POST(req) {
         temperature: 0
       });
 
-      console.log('conversationTypeRes.text', conversationTypeRes.text);
   
       if (conversationTypeRes.text) {
         const chatCursor = await db.collection('chats').find({ "chat_id": data.id }).toArray();
-      console.log('resultresultresult', chatCursor.length);
 
         if (chatCursor.length > 0) {
             const result = await db.collection('chats').updateOne(

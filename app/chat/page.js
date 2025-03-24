@@ -56,6 +56,7 @@ export default function Chat() {
           leadEmail: data.data.leadEmail,
           leadWebhook: data.data.leadWebhook,
           hubspot: data.data.hubspot,
+          subscriptionName: data.data.subscriptionName,
           isSandBox: isSandBox === true || isSandBox === 'true'
         });  
         loadFaqs(id, organization);

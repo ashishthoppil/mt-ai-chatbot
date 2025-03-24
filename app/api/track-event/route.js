@@ -1,3 +1,4 @@
+import { PLANS } from "@/lib/constants";
 import clientPromise from "@/lib/mongodb";
 import { getDbName } from "@/lib/utils";
 import { NextResponse, NextRequest } from "next/server";
@@ -26,8 +27,14 @@ export async function GET(req, res) {
   const DB_NAME = getDbName(organization)
   const client = await clientPromise;
   const db = client.db(DB_NAME);
-
   try {
+    const account = await db.collection('account').find().toArray();
+
+
+    if (PLANS.BASIC.includes(account[0].subscriptionName)) {
+      return NextResponse.json({ success: false, message: 'Not authorized, Please upgrade plan to track events' }, { headers });
+    }
+
     const result = await db.collection('analytics').insertOne({
       event,
       time: new Date(),

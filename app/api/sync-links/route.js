@@ -18,7 +18,6 @@ export async function POST(req) {
 
     try {
         const deletion = await db.collection('knowledge_base').drop();
-        console.log('deletiondeletion', deletion);
         const link = request.link.link;
 
         let chunks = [];

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/accordion"
 import tinycolor from 'tinycolor2';
 import { isMobile } from 'react-device-detect';
+import { PLANS } from '@/lib/constants';
 
 export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
 
@@ -79,7 +80,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     }
 
     useEffect(() => {
-        if (!botInfo.isSandBox) {
+        if (!botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
             getLocation();
         }
     }, [])
@@ -150,10 +151,6 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                             })
                                             const data = await webhookLead.json();
                                             alert(`Sending to the webhook`)
-                                        } else if (botInfo.leadSave === 'kulfi') {
-                                            const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=lead&leadData=${JSON.stringify(formData)}`, {
-                                                method: 'GET'
-                                            });
                                         }
                                     }}>
                                         {leadForm.map((item) => {
@@ -201,7 +198,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             setLeadForm([]);
                             setLeadSubmitted(false);
                             inputRef.current.blur();
-                            if (!sessionTracked && !botInfo.isSandBox) {
+                            if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
                                 eventTracker();
                             }
                             setSessionTracked(true);
@@ -220,7 +217,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                         setLeadForm([]);
                                         setLeadSubmitted(false);
                                         inputRef.current.blur();        
-                                        if (!sessionTracked && !botInfo.isSandBox) {
+                                        if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
                                             eventTracker();
                                         }
                                         setSessionTracked(true);

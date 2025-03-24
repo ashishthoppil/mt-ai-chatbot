@@ -362,7 +362,6 @@ const MultiStepForm = () => {
         body: JSON.stringify(formData),
     });
     const data = await res.json();
-    console.log('datadata', data);
     if (data.success && data.data.acknowledged) {
         setIsLoading(false);
         const id = data.data.insertedId;

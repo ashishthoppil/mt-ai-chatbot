@@ -17,9 +17,6 @@ export async function GET(request) {
     document_knowledge.forEach(element => {
         formatted_doc_knowledge = [...formatted_doc_knowledge, ...element.kb];
     });
-    console.log('organizationorganization', organization);
-    console.log('link_knowledge', link_knowledge);
-    console.log('document_knowledge', document_knowledge);
 
     const settings = await db.collection('settings').findOne()
     let embeddingsArray = [];

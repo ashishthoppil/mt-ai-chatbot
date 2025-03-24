@@ -25,7 +25,6 @@ export async function POST(req) {
         });
         
         const sample = await res.json();
-        console.log('samplesample', sample)
         return NextResponse.json({ success: true, data: res });
     } catch (error) {
         return NextResponse.json({ success: false, message: error.message });
