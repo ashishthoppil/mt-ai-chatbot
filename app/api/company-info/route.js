@@ -21,7 +21,8 @@ export async function POST(req, res) {
           email: data.email,
           website: data.website,
           domain: data.domain,
-          password: hashedpass 
+          password: hashedpass,
+          chatCount: 500
         }
         const result = await db.collection('account').insertOne(formattedData);
       
@@ -44,7 +45,6 @@ export async function POST(req, res) {
             db_name: DB_NAME
           })
 
-          // await clientdb.collection('links').insertOne({})
 
           if (settings.acknowledged && email.acknowledged) {
             await fetch(ZAPIER_WEBHOOK, {

@@ -521,7 +521,7 @@ export default function Dashboard() {
         },
         {
             id: 9,
-            title: 'Membership',
+            title: 'Plan',
             Icon: Tag
         },
     ];
@@ -1847,7 +1847,7 @@ export default function Dashboard() {
                     </Accordion> : <div className='flex justify-center items-center min-h-[10rem]'><h1>No FAQs added at the moment</h1></div>}
                 </>
             )
-        } else if (section === 'Membership') {
+        } else if (section === 'Plan') {
             return (
                 <>
                     {!data.isSubscribed ? <div className='flex flex-col'>
@@ -2098,7 +2098,19 @@ export default function Dashboard() {
                                 </TableBody>
                             </Table>
                             </div>
-                    </div> : <>You are subscribed to the <p className='font-bold w-full'>{data.isSubscribed.data.attributes.product_name}</p> plan.</>}
+                    </div> : 
+                    <div className='flex flex-col'>
+                        <h3 className="text-[32px] font-bold text-gray-900 mb-2">Plans & Add-ons</h3>
+                        <div className='flex flex-col justify-center py-5'>
+                            <div className='flex justify-between items-center gap-1 p-5 rounded-md shadow-lg border-2 border-gray-100'>
+                                <div className='flex gap-1'>
+                                    <h3 className=''>Current Plan:</h3>
+                                    <p className='text-purple-800 font-bold'>{data.subscriptionName}</p>
+                                </div>
+                                <button onClick={() => alert('Un')} className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Cancel subscription</button>  
+                            </div>
+                        </div>
+                    </div>}
                 </>
             )
         }

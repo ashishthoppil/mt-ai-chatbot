@@ -6,6 +6,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
     const request = await req.json();
+    const cookieStore = await cookies();
+    if (!cookieStore.get('organization') || !cookieStore.get('email')) {
+        return NextResponse.json({ success: false, message: 'User is unauthenticated!' });
+    }
     const client = await clientPromise;
     const DB_NAME = getDbName(request.organization);
     const db = client.db(DB_NAME);
