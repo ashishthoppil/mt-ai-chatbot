@@ -2098,7 +2098,7 @@ export default function Dashboard() {
                                 </TableBody>
                             </Table>
                             </div>
-                    </div> : <></>}
+                    </div> : <>You are subscribed to the <p className='font-bold w-full'>{data.isSubscribed.data.attributes.product_name}</p> plan.</>}
                 </>
             )
         }
