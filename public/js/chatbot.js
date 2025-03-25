@@ -47,7 +47,7 @@
             overflow: hidden;
         }
         `;
-        var { organization, al, cw } = window.chatbotConfig || {};
+        var { organization, al, cw, c } = window.chatbotConfig || {};
 
         document.head.appendChild(style);
         
@@ -93,7 +93,8 @@
         let isOpen = false;
     
         const chatButton = document.createElement('button');
-        chatButton.className = 'my-chatbot-button';
+        chatButton.className = 'my-chatbot-button p-[15px] rounded-full';
+        chatButton.style.backgroundColor = `#${c}`
 
         const message = document.createElement('div');
         message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
@@ -101,10 +102,9 @@
         message.style.position = 'relative';
         message.style.bottom = '10px';
 
-
         const img = document.createElement('img');
-        img.src = `https://www.kulfi-ai.com/images/kulfi-icon.png`;
-        img.style.width = '50px';
+        img.src = `https://img.icons8.com/parakeet-line/48/FFFFFF/speech-bubble-with-dots.png`;
+        img.style.width = '35px';
         chatButton.appendChild(img);
     
         chatButton.onclick = async () => {

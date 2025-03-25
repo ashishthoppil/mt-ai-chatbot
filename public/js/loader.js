@@ -4,8 +4,9 @@
     var organization = urlObject.searchParams.get('o');
     var cw = urlObject.searchParams.get('cw');
     var al = urlObject.searchParams.get('al');
+    var c = urlObject.searchParams.get('c');
 
-    window.chatbotConfig = { organization, cw, al };
+    window.chatbotConfig = { organization, cw, al, c };
 
     setTimeout(() => {
       var chatbotScript = document.createElement('script');

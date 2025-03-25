@@ -974,7 +974,7 @@ export default function Dashboard() {
                         
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
                             <div className='flex justify-between items-start text-[14px] text-yellow-500 px-1'>
-                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='${encodeURI(`https://kulfi-ai.com/js/loader.js?o=${urlParams.organization}&al=${urlParams.al}&cw=${urlParams.cw}`)}'></script>`}</span>
+                                <span className='w-[90%] overflow-hidden' ref={botLink}>{`<script src='${encodeURI(`https://kulfi-ai.com/js/loader.js?o=${urlParams.organization}&al=${urlParams.al}&cw=${urlParams.cw}&c=${urlParams.color}`)}'></script>`}</span>
                                 <button className='border-[1px] border-gray-600 hover:bg-gray-700 p-1 rounded-md' onClick={() => {
                                     navigator.clipboard.writeText(botLink.current.innerText);
                                     toast.success("Code snippet has been copied!");

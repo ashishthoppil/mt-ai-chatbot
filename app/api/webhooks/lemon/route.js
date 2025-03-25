@@ -6,7 +6,7 @@ export async function POST(req) {
     const payload = await req.json();
 
 
-  if (payload.meta.event_name === "subscription_created" || payload.meta.event_name ===  "subscription_payment_success") {
+  if (payload.meta.event_name === "subscription_created") {
     const organization = payload.meta.custom_data.organization;
     const DB_NAME = getDbName(organization);
     const client = await clientPromise;
@@ -116,6 +116,14 @@ export async function POST(req) {
           $currentDate: { lastModified: true }
         }
     );
+
+    const 
+  } else if (payload.meta.event_name ===  "subscription_payment_success") {
+    const organization = payload.meta.custom_data.organization;
+    const DB_NAME = getDbName(organization);
+    const client = await clientPromise;
+    const db = client.db(DB_NAME);
+
   }
 
   return NextResponse.json({ success: true, message: 'Payment confirmed' });
