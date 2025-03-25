@@ -27,6 +27,7 @@
     
         .my-chatbot-button {
             transition: transform .2s
+            padding: 15px;
         }
 
         .my-chatbot-button:hover {
@@ -93,7 +94,7 @@
         let isOpen = false;
     
         const chatButton = document.createElement('button');
-        chatButton.className = 'my-chatbot-button p-[15px] rounded-full';
+        chatButton.className = 'my-chatbot-button rounded-full';
         chatButton.style.backgroundColor = `#${c}`
 
         const message = document.createElement('div');
