@@ -1899,7 +1899,7 @@ export default function Dashboard() {
         } else if (section === 'Plan') {
             return (
                 <>
-                    {!data.isSubscribed ? <div className='flex flex-col'>
+                    {!data.isSubscribed || data.freeTrialEnd ? <div className='flex flex-col'>
                         <h3 className="text-[32px] font-bold text-gray-900 mb-2 text-center">Select a plan that suits your requirements</h3>
                         <div className='flex justify-center'>
                             <Tabs defaultValue="monthly" className="flex justify-center w-full mt-10">
@@ -2154,9 +2154,9 @@ export default function Dashboard() {
                             <div className='flex flex-col items-center md:flex-row justify-between items-center gap-1 p-5 rounded-md shadow-lg border-2 border-gray-100'>
                                 <div className='flex gap-1'>
                                     <h3 className=''>Current Plan:</h3>
-                                    <p className='text-purple-800 font-bold'>{data.subscriptionName}</p>
+                                    <p className='text-purple-800 font-bold'>{data.freeTrialEnd ? PLANS.ADVANCED[2] : data.subscriptionName}</p>
                                 </div>
-                                <Dialog open={unsubscribeModalOpen}>
+                                {!data.freeTrialEnd ? <Dialog open={unsubscribeModalOpen}>
                                     <DialogTrigger asChild>
                                         <button onClick={() => { setUnsubscribeModalOpen(true); }} className='bg-purple-500 mt-10 md:mt-0 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Cancel subscription</button>  
                                     </DialogTrigger>
@@ -2185,7 +2185,7 @@ export default function Dashboard() {
                                             <button onClick={() => setUnsubscribeModalOpen(false)} className='bg-white border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-purple-500 py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>No</button>  
                                         </DialogFooter>
                                     </DialogContent>
-                                </Dialog>
+                                </Dialog> : <></>}
                             </div>
                             <div className='flex flex-col gap-5 py-10'>
                                 <h3 className="text-[26px] font-bold text-gray-600 mb-2">Add-ons</h3>
