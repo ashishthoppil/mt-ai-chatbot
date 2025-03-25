@@ -27,7 +27,6 @@
     
         .my-chatbot-button {
             transition: transform .2s
-            padding: 15px;
         }
 
         .my-chatbot-button:hover {
@@ -96,6 +95,7 @@
         const chatButton = document.createElement('button');
         chatButton.className = 'my-chatbot-button rounded-full';
         chatButton.style.backgroundColor = `#${c}`
+        chatButton.style.padding = `15px`
 
         const message = document.createElement('div');
         message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
