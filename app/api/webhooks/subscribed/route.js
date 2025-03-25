@@ -112,7 +112,8 @@ export async function POST(req) {
             fileSizeLimit: selectedPlan.length > 0 ? selectedPlan[0].fileSizeLimit : 0,
             linkLimit: selectedPlan.length > 0 ? selectedPlan[0].linkLimit : 0,
             renews_at: new Date(payload.data.attributes.renews_at),
-            subscribed_at: new Date(payload.data.attributes.created_at)
+            subscribed_at: new Date(payload.data.attributes.created_at),
+            freeTrialEnd: null
           },
           $currentDate: { lastModified: true }
         }
