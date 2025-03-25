@@ -1,17 +1,10 @@
 import clientPromise from "@/lib/mongodb";
 import { getDbName } from "@/lib/utils";
 import { NextResponse } from "next/server";
-
+  
 export async function POST(req) {
     const payload = await req.json();
-
-
-  if (payload.meta.event_name === "subscription_created") {
-    const organization = payload.meta.custom_data.organization;
-    const DB_NAME = getDbName(organization);
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
-
+  
     const plans = [
       {
         name: 'Kulfi AI - Basic Monthly',
@@ -98,33 +91,32 @@ export async function POST(req) {
         linkLimit: 500
       },
     ];
-
-    const selectedPlan = plans.filter((item) => item.name === payload.data.attributes.product_name)
-
-    const result = await db.collection('account').updateOne(
-        {},
-        {
-          $set: { 
-            subscriptionId: payload.data.id,
-            subscriptionName: payload.data.attributes.product_name,
-            isSubscribed: payload.data.attributes.status === 'active',
-            chatCount: selectedPlan.length > 0 ? selectedPlan[0].count : 0,
-            fileLimit: selectedPlan.length > 0 ? selectedPlan[0].fileLimit : 0,
-            fileSizeLimit: selectedPlan.length > 0 ? selectedPlan[0].fileSizeLimit : 0,
-            linkLimit: selectedPlan.length > 0 ? selectedPlan[0].linkLimit : 0,
-          },
-          $currentDate: { lastModified: true }
-        }
-    );
-
-    // const 
-  } else if (payload.meta.event_name ===  "subscription_payment_success") {
-    const organization = payload.meta.custom_data.organization;
-    const DB_NAME = getDbName(organization);
-    const client = await clientPromise;
-    const db = client.db(DB_NAME);
-
+  
+    if (payload.meta.event_name === "subscription_payment_success") {
+    //   const organization = payload.meta.custom_data.organization;
+    //   const DB_NAME = getDbName(organization);
+    //   const client = await clientPromise;
+    //   const db = client.db(DB_NAME);
+  
+    //   const selectedPlan = plans.filter((item) => item.name === payload.data.attributes.product_name)
+  
+    //   const result = await db.collection('account').updateOne(
+    //       {},
+    //       {
+    //         $set: { 
+    //           subscriptionId: payload.data.id,
+    //           subscriptionName: payload.data.attributes.product_name,
+    //           isSubscribed: payload.data.attributes.status === 'active',
+    //           chatCount: selectedPlan.length > 0 ? selectedPlan[0].count : 0,
+    //           fileLimit: selectedPlan.length > 0 ? selectedPlan[0].fileLimit : 0,
+    //           fileSizeLimit: selectedPlan.length > 0 ? selectedPlan[0].fileSizeLimit : 0,
+    //           linkLimit: selectedPlan.length > 0 ? selectedPlan[0].linkLimit : 0,
+    //           renews_at: new Date(payload.data.attributes.renews_at)
+    //         },
+    //         $currentDate: { lastModified: true }
+    //       }
+    //   );
+  
+    }
+    return NextResponse.json({ success: true, message: 'Payment confirmed' });
   }
-
-  return NextResponse.json({ success: true, message: 'Payment confirmed' });
-}

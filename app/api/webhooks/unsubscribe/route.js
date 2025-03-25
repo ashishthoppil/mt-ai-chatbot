@@ -19,9 +19,6 @@ export async function POST(req) {
     });
 
     const payload = await lemon.json()
-    console.log('payloadpayloadpayloadpayload', account[0].subscriptionId);
-    
-    console.log('payloadpayloadpayloadpayload', payload);
     const result = await db.collection('account').updateOne(
         {},
         {

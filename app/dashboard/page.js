@@ -1917,7 +1917,7 @@ export default function Dashboard() {
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
                                             <p>Get started with essential features.</p>
                                             <p><span className='text-[28px] font-bold'>$24</span>/month</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/094f774d-5de8-4834-b29d-da3953e4ceb6?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1925,7 +1925,7 @@ export default function Dashboard() {
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
                                             <p>Unlock more power and flexibility.</p>
                                             <p><span className='text-[28px] font-bold'>$48</span>/month</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/9e494164-d821-40cf-8179-8fc2cabc21b5?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1933,7 +1933,7 @@ export default function Dashboard() {
                                             <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
                                             <p>Scale your business with advanced tools.</p>
                                             <p><span className='text-[28px] font-bold'>$99</span>/month</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/d9afd6ea-fe95-4cab-81dd-1727b616683b?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1941,7 +1941,7 @@ export default function Dashboard() {
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
                                             <p>Scale your business with advanced tools.</p>
                                             <p><span className='text-[28px] font-bold'>$249</span>/month</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/2573c17e-44a3-482b-af7a-afed9e4f9502?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1953,7 +1953,7 @@ export default function Dashboard() {
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
                                             <p>Get started with essential features.</p>
                                             <p><span className='text-[28px] font-bold'>$20</span>/month, billed yearly</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/165aa34b-b4bc-4ae4-8b9e-7358982e0f69?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1961,7 +1961,7 @@ export default function Dashboard() {
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
                                             <p>Unlock more power and flexibility.</p>
                                             <p><span className='text-[28px] font-bold'>$40</span>/month, billed yearly</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/fa0950f0-879a-4f53-ae7c-25cb19098452?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1969,7 +1969,7 @@ export default function Dashboard() {
                                             <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
                                             <p>Scale your business with advanced tools.</p>
                                             <p><span className='text-[28px] font-bold'>$82</span>/month, billed yearly</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/74b266d4-a8cf-40e3-a447-c0df569626b2?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1977,7 +1977,7 @@ export default function Dashboard() {
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
                                             <p>Scale your business with advanced tools.</p>
                                             <p><span className='text-[28px] font-bold'>$207</span>/month, billed yearly</p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/69b10044-107a-44ae-a196-86201b644136?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
@@ -1988,32 +1988,32 @@ export default function Dashboard() {
                                         <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
                                             <p>Get started with essential features.</p>
-                                            <p><span className='text-[28px] font-bold'>$599</span></p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <p><span className='text-[28px] font-bold'>$420</span></p>
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/53723a47-4e9d-4ab9-badb-17ba68b6a638?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
                                         <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
                                             <p>Unlock more power and flexibility.</p>
-                                            <p><span className='text-[28px] font-bold'>$1199</span></p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <p><span className='text-[28px] font-bold'>$840</span></p>
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/cef38478-3f70-4d1a-8b9d-a0e9526c6fec?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
                                         <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
                                             <p>Scale your business with advanced tools.</p>
-                                            <p><span className='text-[28px] font-bold'>$2499</span></p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <p><span className='text-[28px] font-bold'>$1,729</span></p>
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/67934ab3-17f4-4259-bb3d-43fc68d65daa?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
                                         <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
                                             <p>Scale your business with advanced tools.</p>
-                                            <p><span className='text-[28px] font-bold'>$6225</span></p>
-                                            <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Subscribe</button>  
+                                            <p><span className='text-[28px] font-bold'>$4,359</span></p>
+                                            <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/74ddf99f-f772-47a0-ab9f-2ce27c295662?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
                                         </div>
                                     </div>
@@ -2194,7 +2194,7 @@ export default function Dashboard() {
                                         <h3 className="text-[18px] font-bold text-gray-900 mb-2">Buy extra chats</h3>
                                         <p className='font-normal text-[14px]'>You have {data.chatCount - messageCount} chats left. Purchasing extra chats will make that {(data.chatCount - messageCount) + 500}</p>
                                         <p className='text-[16px]'><span className='text-[28px] font-bold'>$19</span> for 500 extra chats</p>
-                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Buy 500 extra chats</button>  
+                                        <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/a649564a-8347-4a97-87f0-23449008544c?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Buy 500 extra chats</a>  
                                     </div>
 
                                     <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[90%] md:w-[25%]'>
@@ -2202,7 +2202,7 @@ export default function Dashboard() {
                                         <h3 className="text-[18px] font-bold text-gray-900 mb-2">Remove Kulfi branding</h3>
                                         <p className='font-normal text-[14px]'>The option to remove Kulfi AI will be enabled to you in the settings.</p>
                                         <p className='text-[16px]'><span className='text-[28px] font-bold'>$59</span> (One time purchase)</p>
-                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Remove branding</button>  
+                                        <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/9e9a55d3-9b17-4d24-a2d7-d870fa1b4ebf?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Remove branding</a>  
                                         </> : <>
                                             <h3 className="text-[18px] font-bold text-gray-900 mb-2">Removed Kulfi AI branding</h3>
                                             <p className='font-normal text-[14px]'>The option to remove Kulfi AI has been enabled for you in the settings. You can hide the branding whenever you want.</p>
@@ -2214,8 +2214,8 @@ export default function Dashboard() {
                                         {!data.isServiced ? <>
                                         <h3 className="text-[18px] font-bold text-gray-900 mb-2">Support & Maintenance</h3>
                                         <p className='font-normal text-[14px]'>Support will be given on priority. This is a monthly fee.</p>
-                                        <p className='text-[16px]'><span className='text-[28px] font-bold'>$89</span> (One time purchase)</p>
-                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Get support</button>  
+                                        <p className='text-[16px]'><span className='text-[28px] font-bold'>$89</span>/month</p>
+                                        <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/8e57cd0b-b4e3-4a18-9632-a9c22806b5cb?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Get support</a>  
                                         </> : <>
                                             <h3 className="text-[18px] font-bold text-gray-900 mb-2">Support & Maintenance</h3>
                                             <p className='font-normal text-[14px]'>This add on has been availed by you. Please feel free to contact us on our email given below for any queries or issues. We will make sure to address your query as soon as possible.</p>
@@ -2227,7 +2227,7 @@ export default function Dashboard() {
                                         <h3 className="text-[18px] font-bold text-gray-900 mb-2">Increase URLs limit</h3>
                                         <p className='font-normal text-[14px]'>Purchasing this would make {parseInt(data.linkLimit) + 50} as your new URLs limit from which you can scrape data.</p>
                                         <p className='text-[16px]'><span className='text-[28px] font-bold'>$29</span> for 50 extra links</p>
-                                        <button className='mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Buy 50 extra link credit</button>  
+                                        <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/996b123d-c334-49fb-8f40-24c45d7a7fae?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Buy 50 extra link credit</a>  
                                     </div>
                                 </div>
                             </div>
@@ -2292,7 +2292,7 @@ export default function Dashboard() {
                         </Dialog>
                     </div>
                 </ul>
-                <div className={`p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-sm w-full shadow-md ${data ? '' : 'flex justify-center items-center'}`}>
+                <div className={`p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-sm w-full shadow-md min-h-[80vh] ${data ? '' : 'flex justify-center items-center'}`}>
                     {data ? getContent(activeSection, data) : <Loader />}
                 </div>
             </div>

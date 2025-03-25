@@ -16,16 +16,23 @@ export async function POST(req, res) {
     const salt = bcrypt.genSaltSync(10);
     const hashedpass = bcrypt.hashSync(data.password, salt);
     try {
+        const freeTrialEnd = new Date();
+        freeTrialEnd.setDate(freeTrialEnd.getDate() + 5);
+
         const formattedData = { 
           organization: data.organization,
           email: data.email,
           website: data.website,
           domain: data.domain,
           password: hashedpass,
+          createdAt: new Date(),
+          isSubscribed: true,
+          subscriptionName: 'Kulfi AI - Advanced',
           chatCount: 500,
           fileLimit: 1,
           fileSizeLimit: 100,
-          linkLimit: 10
+          linkLimit: 10,
+          freeTrialEnd
         }
         const result = await db.collection('account').insertOne(formattedData);
       
