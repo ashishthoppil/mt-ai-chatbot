@@ -1,9 +1,10 @@
 import { openai } from '@ai-sdk/openai';
 import { OpenAI } from 'openai'
-import { generateText, streamText, tool, jsonSchema } from 'ai';
+import { generateText, streamText, tool, jsonSchema, streamObject } from 'ai';
 import { NextResponse } from 'next/server';
 import { cosineSimilarity } from '@/lib/utils';
 import { z } from 'zod';
+import { PLANS } from '@/lib/constants';
 
 export const runtime = 'edge'
 
@@ -134,56 +135,64 @@ export async function POST(request) {
     }
     let myToolSet = { ...custom_workflows };
 
-    if (!PLANS.BASIC.includes(dashboard.data.subscriptionName)) {
+    if (!PLANS.BASIC.includes(dashboard.data.subscriptionName) && dashboard.data.leadForm.length && dashboard.data.leadSave) {
       myToolSet = { 
         ...myToolSet,
         create_lead: tool({
-          description: 'When user is interested in a website development. Example: I am interested in your service, I need help with a website.',
-          parameters: z.object({ message: z.string().describe('The whole user query') }),
+          description: 'When a user wants a service or a product. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
+          parameters: z.object({ service: z.string().describe('The service/product queried by user') }),
           execute: async ({ message }) =>  message,
         })
        }
     }
 
     const initialResponse = await generateText({
-      model: openai('gpt-4o'),
+      model: openai('gpt-4-turbo'),
       tools: myToolSet,
       prompt: messages[messages.length - 1].content
       // messages
     });
-
     if (initialResponse.toolCalls && initialResponse.toolResults) {
       if (initialResponse.toolCalls[0]) {
         if (initialResponse.toolCalls[0].toolName === 'create_lead') {
-          return new Response(JSON.stringify({
-            type: "lead_form",
-            title: "Lead Form",
-            fields: dashboard.data.leadForm ? dashboard.data.leadForm : [
-              {
-                id: 1,
-                type: 'text',
-                label: 'Name',
-                placeholder: 'Enter your name',
-                isRequired: true
-              },
-              {
-                id: 2,
-                type: 'tel',
-                label: 'Mobile',
-                placeholder: 'Enter your mobile number',
-                isRequired: true
-              },
-              {
-                id: 3,
-                type: 'email',
-                label: 'Email',
-                placeholder: 'Enter your email address',
-                isRequired: true
-              },
-            ]
-          }), { status: 200, headers: {
-            "Content-Type": "application/json"
-          }});
+
+          const intentResult = await streamText({
+            model: openai('gpt-4o-mini'),
+            system: `You are a helpful assistant. Just execute the command exactly as stated.`,
+            prompt: `Respond with this as it is: ${JSON.stringify(dashboard.data.leadForm)}`,
+            temperature: 0
+          });
+
+          return intentResult.toDataStreamResponse();
+          // return new Response(JSON.stringify({
+          //   type: "lead_form",
+          //   title: "Lead Form",
+          //   fields: dashboard.data.leadForm ? dashboard.data.leadForm : [
+          //     {
+          //       id: 1,
+          //       type: 'text',
+          //       label: 'Name',
+          //       placeholder: 'Enter your name',
+          //       isRequired: true
+          //     },
+          //     {
+          //       id: 2,
+          //       type: 'tel',
+          //       label: 'Mobile',
+          //       placeholder: 'Enter your mobile number',
+          //       isRequired: true
+          //     },
+          //     {
+          //       id: 3,
+          //       type: 'email',
+          //       label: 'Email',
+          //       placeholder: 'Enter your email address',
+          //       isRequired: true
+          //     },
+          //   ]
+          // }), { status: 200, headers: {
+          //   "Content-Type": "application/json"
+          // }});
         } else {
           const intentResult = await streamText({
             model: openai('gpt-4o-mini'),

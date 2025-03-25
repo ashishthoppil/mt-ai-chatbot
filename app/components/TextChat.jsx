@@ -20,6 +20,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
 
     const [section, setSection] = useState(0);
     const [sessionTracked, setSessionTracked] = useState(false);
+    const [formIncoming, setFormIncoming] = useState([]);
     const [leadForm, setLeadForm] = useState([]);
     const [leadSubmitted, setLeadSubmitted] = useState(false);
     const messageEnd = useRef();
@@ -51,6 +52,19 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     useEffect(() => {
         if (messages.length > 1) {
           messageEnd.current.scrollIntoView({ behavior: "smooth" });
+        }
+        const lastMessage = messages[messages.length - 1].content;
+        if (lastMessage[0] === '[') {
+            setFormIncoming((prev) => {
+                if (!prev.includes(messages.length - 1)) {
+                    return [...prev, messages.length - 1]
+                } else {
+                    return prev
+                }
+            });
+            if (lastMessage[lastMessage.length - 1] === ']') {
+                setLeadForm(JSON.parse(lastMessage))
+            }
         }
     }, [messages]);
 
@@ -102,15 +116,13 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg border-[1px] border-gray-100 shadow-md' style={{ backgroundColor: botInfo.mColor, color: 'white' }}>
                                 <ReactMarkdown>{msg.content}</ReactMarkdown>
                             </div>:
-                            <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md`}>
+                            !formIncoming.includes(idx) ? <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md`}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
                                 <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
-                            </div>}</>
-                        </div>
-                        ))}
-                        {
-                            leadForm.length > 0 && botInfo.leadSave === 'hubspot' ? <div style={{ border: `1px solid ${botInfo.color}` }} className='w-full rounded-md shadow-md'>
+                            </div> : <>
+                            {
+                            leadForm && leadForm.length > 0 && botInfo.leadSave === 'hubspot' ? <div style={{ border: `1px solid ${botInfo.color}` }} className='w-full rounded-md shadow-md'>
                                 <HubspotForm
                                     portalId={botInfo.hubspot.portal}
                                     formId={botInfo.hubspot.form}
@@ -118,7 +130,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                 />
                             </div> : <></>
                         }
-                        {leadForm.length > 0 && !leadSubmitted && (botInfo.leadSave === 'email' || botInfo.leadSave === 'kulfi' || botInfo.leadSave === 'webhook') ?
+                        {leadForm && leadForm.length > 0 && !leadSubmitted && (botInfo.leadSave === 'email' || botInfo.leadSave === 'kulfi' || botInfo.leadSave === 'webhook') ?
                             <div className='flex gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                 {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1 w-[25%]' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
@@ -153,7 +165,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                             alert(`Sending to the webhook`)
                                         }
                                     }}>
-                                        {leadForm.map((item) => {
+                                        {leadForm && leadForm.map((item) => {
                                             return (
                                                 <div key={item.id} className='flex flex-col gap-1'>
                                                     <label style={{ color: botInfo.color }} className='font-semibold text-[12px]'>{item.label}</label>
@@ -173,6 +185,11 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                         <CheckCircle style={{ color: botInfo.color }} />
                                         <h3 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest, our team will get back to you shortly.</h3>
                         </div> : <></>}
+                            </>
+                            }</>
+                        </div>
+                        ))}
+                        
                         {isLoading && (
                             <div className='flex gap-2 px-[20px]'>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.0" width="100px" height="64px" viewBox="0 0 512 50" xmlSpace="preserve">
@@ -195,7 +212,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                     onSubmit={(event) => {
                         if (!isLoading) {
                             handleSubmit(event);
-                            setLeadForm([]);
+                            // setLeadForm([]);
                             setLeadSubmitted(false);
                             inputRef.current.blur();
                             if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
@@ -214,7 +231,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             onKeyDown={(event) => { 
                                     if (event.key === 'Enter') { 
                                         handleSubmit(event); 
-                                        setLeadForm([]);
+                                        // setLeadForm([]);
                                         setLeadSubmitted(false);
                                         inputRef.current.blur();        
                                         if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
