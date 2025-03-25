@@ -117,7 +117,7 @@ export async function POST(req) {
         }
     );
 
-    const 
+    // const 
   } else if (payload.meta.event_name ===  "subscription_payment_success") {
     const organization = payload.meta.custom_data.organization;
     const DB_NAME = getDbName(organization);
