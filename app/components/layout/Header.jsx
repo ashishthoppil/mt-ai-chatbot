@@ -15,7 +15,7 @@ import {
 import { Inter } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
 import { Eye, HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, ShapesIcon, SquareMousePointerIcon, Tag, UserCheck, WorkflowIcon } from 'lucide-react';
-import { checkAuth, getCookie } from '@/lib/helper';
+import { getCookie } from '@/lib/helper';
 
 export const poppins = Inter({
   subsets: ['latin'],
