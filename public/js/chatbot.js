@@ -94,15 +94,18 @@
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
-        const iframeStyle = document.createElement("style");
-
-        iframeStyle.innerHTML = `
-            html {
-                overflow-y: hidden;
-            }
-        `;
-
-        iframe.head.appendChild(iframeStyle);
+        iframe.onload = function () {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const style = document.createElement("style");
+          
+            style.innerHTML = `
+                html {
+                    overflow-y: hidden;
+                }
+            `;
+          
+            iframeDoc.head.appendChild(style); // ✅ Works after loading
+        };
 
         popup.appendChild(iframe);
     
