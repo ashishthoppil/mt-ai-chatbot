@@ -46,6 +46,10 @@
             flex-direction: column;
             overflow: hidden;
         }
+
+        iframe > html {
+            overflow-y: hidden;
+        }
         `;
         var { organization, al, cw, c } = window.chatbotConfig || {};
 
