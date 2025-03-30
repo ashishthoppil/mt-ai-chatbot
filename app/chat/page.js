@@ -101,6 +101,15 @@ export default function Chat() {
     useEffect(() => {
       loadData();
     }, []);
+
+    useEffect(() => {
+      document.documentElement.style.overflow = "hidden";
+  
+      return () => {
+        document.documentElement.style.overflow = "";
+      };
+    }, []);
+
     return (
       botInfo ? 
       <div className='w-full content-center' style={{ backgroundColor: botInfo.color }}>
