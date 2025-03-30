@@ -94,6 +94,15 @@
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
+        const iframeStyle = document.createElement("style");
+
+        iframeStyle.innerHTML = `
+            html {
+                overflow-y: hidden;
+            }
+        `;
+
+        iframe.head.appendChild(iframeStyle);
 
         popup.appendChild(iframe);
     
