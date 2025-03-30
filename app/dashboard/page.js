@@ -119,7 +119,19 @@ export default function Dashboard() {
 
     const leadRef = useRef();
     const botLink = useRef();
+    const freeTrialRef = useRef();
     const router = useRouter();
+
+    useEffect(() => {
+        const pathname = window.location.href;
+        var url = new URL(pathname);
+        const trial = url.searchParams.get('free-trial');
+        if (trial) {
+            freeTrialRef.current.click();
+            url.searchParams.delete('free-trial');
+            window.history.replaceState({}, document.title, url.pathname + url.search);
+        }
+    }, [])
 
     const loadWorkflows = async () => {
         const res = await fetch('/api/get-workflows', {
@@ -1666,11 +1678,11 @@ export default function Dashboard() {
                                                     }
                                                 })
                                             });
+                                            console.log('One');
                                             linkSync();
                                         }} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-1 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'>{isLinkSynced ? <span className='flex items-center'><Loader2 className='h-3 animate-spin' /> Training AI</span> : <span className='flex items-center'><BrainCircuitIcon className='h-3' /> Start training AI</span>}</button>
                                     </div>
                                     <Table className='border-2 border-purple-200'>
-                                        {console.log('addedLinks.length', addedLinks)}
                                         {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
                                         <TableHeader className='bg-purple-200'>
                                             <TableRow>
@@ -1679,6 +1691,7 @@ export default function Dashboard() {
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
+                                            {console.log('addedLinksaddedLinks', addedLinks)}
                                             {addedLinks.length > 0 && addedLinks.map((item, index) => (
                                                 <TableRow key={index}>
                                                     <TableCell className="font-medium">{item.link}</TableCell>
@@ -2319,6 +2332,19 @@ export default function Dashboard() {
                 </ul>
                 <div className={`p-6 border-2 border-slate-200 text-medium text-gray-500 rounded-sm w-full shadow-md min-h-[80vh] ${data ? '' : 'flex justify-center items-center'}`}>
                     {data ? getContent(activeSection, data) : <Loader />}
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <button ref={freeTrialRef} className='hidden'></button>  
+                        </DialogTrigger>
+                        <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
+                        <DialogHeader className='flex flex-col gap-2'>
+                            <DialogTitle className='text-[32px]'>Free Trial Period</DialogTitle>
+                            <DialogDescription>
+                                You have been granted a 5-day free trial of the Advanced plan. It will expire automatically after 5 days. To continue using Kulfi AI after the Free Trial, please choose a plan from the 'Plan' section.
+                            </DialogDescription>
+                        </DialogHeader>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
         </main>

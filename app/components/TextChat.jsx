@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from "rehype-raw";
 import { useChat } from 'ai/react';
-import { ArrowRight, Message, QuestionAnswer } from '@mui/icons-material';
-import { Check, CheckCircle, Clock, ExternalLinkIcon, Loader2, Newspaper } from 'lucide-react';
+import { ArrowRight, Message, PowerSettingsNew, QuestionAnswer } from '@mui/icons-material';
+import { Check, CheckCircle, Clock, CloudLightning, ExternalLinkIcon, Loader2, Newspaper, Power, ZapIcon } from 'lucide-react';
 import HubspotForm from 'react-hubspot-form';
 import {
     Accordion,
@@ -31,7 +31,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
         body: {
             id: botInfo.id,
             org: botInfo.organization,
-            userId: botInfo.userId
+            userId: botInfo.userId,
         },
         initialMessages: [
             {
@@ -108,7 +108,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     return (
         <>
             {section === 0 && <>
-                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'max-h-[64vh]' : 'h-[50vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
+                <div className={`message-container ${faqList.length === 0 && articlesList.length === 0 ? 'max-h-[64vh]' : 'h-[50vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
                     <div>
                         {messages.map((msg, idx) => (
                         <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
@@ -208,7 +208,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         <div ref={messageEnd} />
                     </div>
                 </div>
-                <form className={`${articlesList.length === 0 && faqList.length === 0 ? 'fixed bottom-0' : ''} flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
+                <div className='flex justify-center bg-black'>
+                <form style={{ backgroundColor: botInfo.color }} className={`${articlesList.length === 0 && faqList.length === 0 ? 'fixed bottom-0' : ''} flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
                     onSubmit={(event) => {
                         if (!isLoading) {
                             handleSubmit(event);
@@ -254,8 +255,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </button>
                         </div>
                     </div>
-                    {!botInfo.hideBranding ? <span className='text-[14px]' style={{ color: botInfo.color }}><span className='font-semibold'>Powered by</span> <span style={{ backgroundColor: botInfo.color }} className='text-white rounded-full py-1 px-2'>Kulfi AI</span></span> : <></>}
+                    {!botInfo.hideBranding ? <span className='flex items-center justify-center gap-1 text-[14px] px-1 py-1' style={{ color: 'white' }}><ZapIcon /><span className='font-semibold'>Powered by <span className='font-black'>Kulfi AI</span></span></span> : <></>}
                 </form>
+                </div>
             </>}
             {section === 1 && 
                 <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>

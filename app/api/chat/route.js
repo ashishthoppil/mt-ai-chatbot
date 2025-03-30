@@ -135,7 +135,7 @@ export async function POST(request) {
     }
     let myToolSet = { ...custom_workflows };
 
-    if (!PLANS.BASIC.includes(dashboard.data.subscriptionName) && dashboard.data.leadForm.length && dashboard.data.leadSave) {
+    if (!PLANS.BASIC.includes(dashboard.data.subscriptionName) && dashboard.data.leadForm?.length && dashboard.data.leadSave) {
       myToolSet = { 
         ...myToolSet,
         create_lead: tool({
@@ -146,11 +146,12 @@ export async function POST(request) {
        }
     }
 
+
+
     const initialResponse = await generateText({
       model: openai('gpt-4-turbo'),
       tools: myToolSet,
       prompt: messages[messages.length - 1].content
-      // messages
     });
     if (initialResponse.toolCalls && initialResponse.toolResults) {
       if (initialResponse.toolCalls[0]) {
@@ -164,35 +165,6 @@ export async function POST(request) {
           });
 
           return intentResult.toDataStreamResponse();
-          // return new Response(JSON.stringify({
-          //   type: "lead_form",
-          //   title: "Lead Form",
-          //   fields: dashboard.data.leadForm ? dashboard.data.leadForm : [
-          //     {
-          //       id: 1,
-          //       type: 'text',
-          //       label: 'Name',
-          //       placeholder: 'Enter your name',
-          //       isRequired: true
-          //     },
-          //     {
-          //       id: 2,
-          //       type: 'tel',
-          //       label: 'Mobile',
-          //       placeholder: 'Enter your mobile number',
-          //       isRequired: true
-          //     },
-          //     {
-          //       id: 3,
-          //       type: 'email',
-          //       label: 'Email',
-          //       placeholder: 'Enter your email address',
-          //       isRequired: true
-          //     },
-          //   ]
-          // }), { status: 200, headers: {
-          //   "Content-Type": "application/json"
-          // }});
         } else {
           const intentResult = await streamText({
             model: openai('gpt-4o-mini'),
@@ -235,7 +207,15 @@ export async function POST(request) {
     const showsource = embeddingsArray.data.showsource;
 
     if (!embeddingsArray.data.embeddingsArray.length) {
-      return NextResponse.json({ success: false, data: 'No knowledge base found for this client. Please upload or scrape data first.' });
+      const intentResult = await streamText({
+        model: openai('gpt-4o-mini'),
+        system: `You are a helpful assistant. You must strictly follow the given command without deviation. 
+                DO NOT interpret, rephrase, or add additional information. Just execute the command exactly as stated.`,
+        prompt: `Respond with: The chatbot has not undergone training yet.`,
+        temperature: 0
+      });
+
+      return intentResult.toDataStreamResponse();
     }
   
     const scoredChunks = embeddingsArray.data.embeddingsArray.map((item) => {
@@ -269,13 +249,10 @@ export async function POST(request) {
       messages: instructions,
       temperature: 0
     });
-
-    let responseText = '';
-    for await (const chunk of result.textStream) {
-      responseText += chunk;
-    }
-
-    const querySaveResponse = await fetch(`${BASE_URL}/api/query-type`, {
+    
+    const responseStream = result.toDataStreamResponse();
+    
+    fetch(`${BASE_URL}/api/query-type`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -283,11 +260,28 @@ export async function POST(request) {
       body: JSON.stringify({
         id: userId,
         organization: org,
-        messages: [...messages, { role: 'assistant', content: responseText }]
+        messages: [...messages, { role: 'assistant', content: "(Streaming response...)" }] // Temporary placeholder
       }),
+    }).then(async () => {
+      let responseText = "";
+      for await (const chunk of result.textStream) {
+        responseText += chunk;
+      }
+      console.log('responseTextresponseText', responseText)
+      await fetch(`${BASE_URL}/api/query-type`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: userId,
+          organization: org,
+          messages: [...messages, { role: 'assistant', content: responseText }]
+        }),
+      });
     });
-
-    return result.toDataStreamResponse();  
+    
+    return responseStream;
   } catch (e) {
     console.log('Error has occured:', e.message);
   }

@@ -174,7 +174,7 @@ const Step3 = ({ formData, setFormData, nextStep, prevStep }) => {
         <div className='flex gap-5 items-start'>
         <button onClick={prevStep}><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></button>
             <div className='flex flex-col gap-4'>
-                <h1 className='font-semibold md:text-2xl text-purple-800'>What is your website url?</h1>
+                <h1 className='font-semibold md:text-2xl text-purple-800'>What is your website url? (Format should be https://xyz.com)</h1>
                 <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
             </div>
             </div>
@@ -281,7 +281,7 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
                                 submitForm()
                             }
                         }
-                    }} className={`flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md ${isLoading ? 'pointer-events-none bg-purple-300': ''}`}><span>{isLoading ? 'Loading..': 'Submit'}</span><ArrowCircleRightOutlined  className='text-xs md:text-md' /></button>
+                    }} className={`flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-md ${isLoading ? 'pointer-events-none bg-purple-300': ''}`}><span className='text-xs md:text-lg'>{isLoading ? 'Loading..': 'Submit'}</span><ArrowCircleRightOutlined  className='text-xs md:text-md' /></button>
                 </DialogTrigger>
                 <DialogContent className={`sm:max-w-[425px] ${poppins.className}`}>
                     <DialogHeader className='flex flex-col gap-2'>
@@ -295,7 +295,7 @@ const Step6 = ({ formData, setFormData, prevStep, submitForm, isLoading }) => {
                                 </div> : <div className='flex flex-col items-center justify-center gap-2'>
                                         <CheckCircleOutline width={150} height={150} className='text-emerald-500' />
                                         <span className='text-[22px] font-semibold mt-2'>Successfully completed!</span  >
-                                        <span className='mt-1'>Your data has been saved successfully. You will be redirected to the dasboard in 5 seconds.</span>
+                                        <span className='mt-1'>Your data has been saved successfully. You will be redirected to the dasboard in 3 seconds.</span>
                                     </div>}
                             </div>
                         </DialogDescription>
@@ -373,8 +373,8 @@ const MultiStepForm = () => {
         localStorage.setItem('al', 'r');
 
         setTimeout(() => {
-            window.location.href = `/dashboard`;   
-        }, 5000);
+            window.location.href = `/dashboard?free-trial=true`;   
+        }, 3000);
     } else {
         console.log('Error: ', data)
     }

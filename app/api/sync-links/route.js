@@ -55,14 +55,16 @@ export async function POST(req) {
             let imageUrls = 'This is a set of image urls from this page. \n'
             $('img').each((index, element) => {
                 let src = '';
-                if ($(element).attr('src').includes('https') || $(element).attr('src').includes('ftp')) {
-                    src = $(element).attr('src');
-                } else {
-                    src = link + $(element).attr('src').slice(1);
-                }
                 const alt = $(element).attr('alt'); 
-                if (src) {
-                  imageUrls += `Image url for ${alt} - ${src}\n`;
+                if (alt) {
+                    if ($(element).attr('src').includes('https') || $(element).attr('src').includes('ftp')) {
+                        src = $(element).attr('src');
+                    } else {
+                        src = link + $(element).attr('src').slice(1);
+                    }
+                    if (src) {
+                      imageUrls += `Image url for ${alt} - ${src}\n`;
+                    }
                 }
             });
 
@@ -70,6 +72,7 @@ export async function POST(req) {
             for (const ic of intermediateChunk) {
                 chunks.push(`The reference url for the following data is ${link} - ${ic} \n ${imageUrls}`);
             }
+
 
         if (chunks.length > 0) {
             const embeddings = [];
@@ -79,6 +82,7 @@ export async function POST(req) {
                     model: 'text-embedding-ada-002',
                     input: chunk,
                 })
+
         
                 if (embeddingRes) {
                     const [{ embedding }] = embeddingRes.data
@@ -92,23 +96,37 @@ export async function POST(req) {
                 const result = await db.collection('knowledge_base').insertOne({ embeddings });
                 const prevLinks = await db.collection('links').find().toArray();
 
-                const updatedLinks = prevLinks[0].links.map((item) => {
-                    if (item.link === link) {
-                        return {
+                let updatedLinks = [];
+                if (prevLinks.length > 0) {
+                    updatedLinks = prevLinks[0].links.map((item) => {
+                        if (item.link === link) {
+                            return {
+                                link,
+                                status: 'completed'
+                            }
+                        } else {
+                            return item
+                        }
+                    })
+
+                    await db.collection('links').updateOne(
+                        {},
+                        {
+                            $set: { links: updatedLinks },
+                            $currentDate: { lastModified: true }
+                        }
+                    );
+                } else {
+                    updatedLinks = [
+                        {
                             link,
                             status: 'completed'
                         }
-                    } else {
-                        return item
-                    }
-                })
-                await db.collection('links').updateOne(
-                    {},
-                    {
-                        $set: { links: updatedLinks },
-                        $currentDate: { lastModified: true }
-                    }
-                );
+                    ]
+
+                    await db.collection('links').insertOne({ links: updatedLinks });
+                }
+                console.log('updatedLinksupdatedLinks', updatedLinks)
                 return NextResponse.json({ success: true, message: updatedLinks });
             }
         }

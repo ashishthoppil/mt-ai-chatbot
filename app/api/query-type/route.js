@@ -34,7 +34,7 @@ export async function POST(req) {
       });
 
   
-      if (conversationTypeRes.text) {
+      if (conversationTypeRes.text && data.messages[data.messages.length - 1].content !== '(Streaming response...)') {
         const chatCursor = await db.collection('chats').find({ "chat_id": data.id }).toArray();
 
         if (chatCursor.length > 0) {

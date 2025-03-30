@@ -49,6 +49,8 @@
         `;
         var { organization, al, cw, c } = window.chatbotConfig || {};
 
+        const userId = Math.floor((Math.random() * 9999999) + 1);
+
         document.head.appendChild(style);
         
         const viewPortHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
@@ -83,7 +85,7 @@
         const iframe = document.createElement('iframe');
 
         iframe.style.overflow = 'none';
-        iframe.src = `https://kulfi-ai.com/chat?o=${organization}`;
+        iframe.src = `https://kulfi-ai.com/chat?o=${organization}&u=${userId}`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
