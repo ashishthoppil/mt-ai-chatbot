@@ -179,7 +179,7 @@ export async function GET(request) {
         const clickDocs = await clickCursor.toArray();
         const sessionCursor = await db.collection('analytics').find({ "event": "session" });
         const sessionDocs = await sessionCursor.toArray();
-        return NextResponse.json({ success: true, data: ((sessionDocs.length / clickDocs.length).toFixed(2) * 100) });
+        return NextResponse.json({ success: true, data: Math.round((sessionDocs.length / clickDocs.length) * 100) });
     } else {
         const queryCursor = await db.collection('analytics').find({ "event": event });
         const queryDocs = await queryCursor.toArray();

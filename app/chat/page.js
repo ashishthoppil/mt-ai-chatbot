@@ -128,7 +128,7 @@ export default function Chat() {
               <Minimize2Icon id='minimize-kulfi' className='text-white cursor-pointer h-5' />
             </div>
           </header>
-          <div className={`${section === 0 ? 'h-[75vh]' : 'h-[90vh]'} rounded-lg z-[9] bg-white mt-[75px] w-full`}>
+          <div className={`${section === 0 ? 'h-[75vh]' : 'h-[90vh]'} rounded-lg md:rounded-b-none z-[9] bg-white mt-[75px] w-full`}>
             <TextChat data={data} botInfo={botInfo} articlesList={articlesList} faqList={faqList} section={section} />
           </div>
         </main>

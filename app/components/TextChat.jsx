@@ -207,55 +207,55 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                         <div ref={messageEnd} />
                     </div>
                 </div>
-                <div className='flex justify-center bg-black'>
-                <form style={{ backgroundColor: botInfo.color }} className={`fixed bottom-0 flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
-                    onSubmit={(event) => {
-                        if (!isLoading) {
-                            handleSubmit(event);
-                            // setLeadForm([]);
-                            setLeadSubmitted(false);
-                            inputRef.current.blur();
-                            if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
-                                eventTracker();
+                <div className='flex justify-center'>
+                    <form style={{ backgroundColor: botInfo.color }} className={`fixed md:!bg-white bottom-0 flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
+                        onSubmit={(event) => {
+                            if (!isLoading) {
+                                handleSubmit(event);
+                                // setLeadForm([]);
+                                setLeadSubmitted(false);
+                                inputRef.current.blur();
+                                if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
+                                    eventTracker();
+                                }
+                                setSessionTracked(true);
                             }
-                            setSessionTracked(true);
-                        }
-                    }}>
-                    <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='flex items-center rounded-lg py-[10px] px-[10px] w-[100%]'>
-                        <textarea
-                            ref={inputRef}
-                            style={{ backgroundColor: botInfo.lColor, color: botInfo.color }}
-                            className={`w-[90%] outline-none resize-none text-[14px] ${tinycolor(botInfo.lColor).getLuminance() < 0.3 ? 'placeholder-gray-500' : 'placeholder-gray-500'}`}
-                            value={input}
-                            onChange={handleInputChange}
-                            onKeyDown={(event) => { 
-                                    if (event.key === 'Enter') { 
-                                        handleSubmit(event); 
-                                        // setLeadForm([]);
-                                        setLeadSubmitted(false);
-                                        inputRef.current.blur();        
-                                        if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
-                                            eventTracker();
+                        }}>
+                        <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='flex items-center rounded-lg py-[10px] px-[10px] w-[100%]'>
+                            <textarea
+                                ref={inputRef}
+                                style={{ backgroundColor: botInfo.lColor, color: botInfo.color }}
+                                className={`w-[90%] outline-none resize-none text-[14px] ${tinycolor(botInfo.lColor).getLuminance() < 0.3 ? 'placeholder-gray-500' : 'placeholder-gray-500'}`}
+                                value={input}
+                                onChange={handleInputChange}
+                                onKeyDown={(event) => { 
+                                        if (event.key === 'Enter') { 
+                                            handleSubmit(event); 
+                                            // setLeadForm([]);
+                                            setLeadSubmitted(false);
+                                            inputRef.current.blur();        
+                                            if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
+                                                eventTracker();
+                                            }
+                                            setSessionTracked(true);
                                         }
-                                        setSessionTracked(true);
                                     }
                                 }
-                            }
-                            placeholder={botInfo.placeholder ? botInfo.placeholder : "Ask me anything..."}
-                        />
-                        <div className='flex justify-end w-[10%]'>
-                            <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
-                                <Image
-                                    src="/icons/send.png"
-                                    width={20}
-                                    height={20}
-                                    alt="Send Message"
-                                />
-                            </button>
+                                placeholder={botInfo.placeholder ? botInfo.placeholder : "Ask me anything..."}
+                            />
+                            <div className='flex justify-end w-[10%]'>
+                                <button type='submit' style={{ backgroundColor: botInfo.color }} className={`rounded-full py-[8px] pl-[10px] pr-[6px] ${input === '' ? 'opacity-0' : 'opacity-1'} duration-500`}>
+                                    <Image
+                                        src="/icons/send.png"
+                                        width={20}
+                                        height={20}
+                                        alt="Send Message"
+                                    />
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    {!botInfo.hideBranding ? <span className='flex items-center justify-center gap-1 text-[14px] px-1 py-1' style={{ color: 'white' }}><ZapIcon /><span className='font-semibold'>Powered by <span className='font-black'>Kulfi AI</span></span></span> : <></>}
-                </form>
+                        {!botInfo.hideBranding ? <span className='flex items-center justify-center gap-1 text-[14px] px-1 py-1' style={{ color: 'white' }}><ZapIcon className='text-white md:!text-black' /><span className='font-semibold text-white md:!text-black'>Powered by <span className='font-black'>Kulfi AI</span></span></span> : <></>}
+                    </form>
                 </div>
             </>}
             {section === 1 && 
