@@ -115,8 +115,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                             <div className='text-xs w-auto my-[10px] py-[10px] px-[20px] rounded-lg border-[1px] border-gray-100 shadow-md' style={{ backgroundColor: botInfo.mColor, color: 'white' }}>
                                 <ReactMarkdown>{msg.content}</ReactMarkdown>
                             </div>:
-                            !formIncoming.includes(idx) ? <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md`}>
-                                {botInfo.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
+                            !formIncoming.includes(idx) ? <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[10px] border-[1px] border-gray-100 shadow-md`}>
+                                {botInfo.botAvatar ? <img className='h-[40px] max-w-[40px] rounded-full object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botAvatar}`} /> :
                                 <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{botInfo.botName[0]}</span>}
                                 <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
                             </div> : <>
@@ -259,7 +259,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                 </div>
             </>}
             {section === 1 && 
-                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:mt-0 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
+                <div className='articles-container max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:mt-0 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <Newspaper /><h1 className='font-bold text-[32px]'>Articles</h1>
                     </div>
@@ -284,7 +284,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
             }
 
             {section === 2 && 
-                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:mt-0 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
+                <div className='faq-container max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:mt-0 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <QuestionAnswer /><h1 className='font-bold text-[32px]'>FAQs</h1>
                     </div>
@@ -307,20 +307,6 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                     </div>
                 </div>
             }
-            {/* {articlesList.length || faqList.length ? <div className='flex fixed bottom-0 bg-white shadow-lg w-full border-t-2 border-gray-300 rounded-md'>
-                <div style={{ color: section === 0 ? botInfo.color : '' }} onClick={() => setSection(0)} className={`flex flex-col items-center gap-2 p-5 ${getWidth()} ${section === 0 ? 'bg-gray-100 font-semibold' : ''}`}>
-                    <Message />
-                    <span>Message</span>
-                </div>
-                {articlesList.length > 0 ? <div style={{ color: section === 1 ? botInfo.color : '' }} onClick={() => setSection(1)} className={`flex flex-col items-center gap-2 p-5 border-l-2 border-r-2 border-gray-300 ${getWidth()} ${section === 1 ? 'bg-gray-100 font-semibold' : ''}`}>
-                    <Newspaper />
-                    <span>Articles</span>
-                </div> : <></>}
-                {faqList.length > 0 ? <div style={{ color: section === 2 ? botInfo.color : '' }} onClick={() => setSection(2)} className={`flex flex-col items-center gap-2 p-5 ${getWidth()} ${section === 2 ? 'bg-gray-100 font-semibold' : ''}`}>
-                    <QuestionAnswer />
-                    <span>FAQs</span>
-                </div> : <></>}
-            </div> : <></>} */}
         </>
     )
 }

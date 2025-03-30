@@ -38,6 +38,52 @@ body {
   background-color: #a3a3a3;   /* color changes on hover */
 }
 
+.articles-container {
+  overflow-y: auto;
+}
+
+.articles-container::-webkit-scrollbar {
+  width: 8px;               /* width of the entire scrollbar */
+}
+
+.articles-container::-webkit-scrollbar-track {
+  background: #f0f0f0;      /* color of the background track */
+  border-radius: 10px;
+}
+
+.articles-container::-webkit-scrollbar-thumb {
+  background-color: #888;   /* color of the scrolling thumb */
+  border-radius: 10px;      
+  border: 2px solid #f0f0f0;/* creates space around thumb */
+}
+
+.articles-container::-webkit-scrollbar-thumb:hover {
+  background-color: #a3a3a3;   /* color changes on hover */
+}
+
+.faq-container {
+  overflow-y: auto;
+}
+
+.faq-container::-webkit-scrollbar {
+  width: 8px;               /* width of the entire scrollbar */
+}
+
+.faq-container::-webkit-scrollbar-track {
+  background: #f0f0f0;      /* color of the background track */
+  border-radius: 10px;
+}
+
+.faq-container::-webkit-scrollbar-thumb {
+  background-color: #888;   /* color of the scrolling thumb */
+  border-radius: 10px;      
+  border: 2px solid #f0f0f0;/* creates space around thumb */
+}
+
+.faq-container::-webkit-scrollbar-thumb:hover {
+  background-color: #a3a3a3;   /* color changes on hover */
+}
+
 .Toastify__progress-bar {
   background: rgb(107 33 168);
 }
