@@ -16,9 +16,8 @@ import tinycolor from 'tinycolor2';
 import { isMobile } from 'react-device-detect';
 import { PLANS } from '@/lib/constants';
 
-export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
+export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
 
-    const [section, setSection] = useState(0);
     const [sessionTracked, setSessionTracked] = useState(false);
     const [formIncoming, setFormIncoming] = useState([]);
     const [leadForm, setLeadForm] = useState([]);
@@ -260,12 +259,12 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                 </div>
             </>}
             {section === 1 && 
-                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
+                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:mt-0 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <Newspaper /><h1 className='font-bold text-[32px]'>Articles</h1>
                     </div>
                     <div className='flex flex-col gap-10'>
-                        {/* {articlesList.map((item, index) => (
+                        {articlesList.map((item, index) => (
                             <div key={index} className='flex flex-col gap-2 border-[2px] border-gray-100 rounded-md shadow-lg p-2'>
                                 {item.img ? <img className='h-[10rem] rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}
                                 <h1 className='text-[16px] font-bold' style={{ color: botInfo.color }}>{item.title}</h1>
@@ -276,21 +275,24 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     <a style={{ color: botInfo.mColor }} className='flex gap-1' target='_blank' href={item.link}>Read more <ExternalLinkIcon height={20} /></a>
                                 </div>
                             </div>
-                        ))} */}
+                        ))}
+                    </div>
+                    <div className='flex justify-center pb-5'>
+                        {!botInfo.hideBranding ? <span className='fixed bottom-2 flex items-center justify-center gap-1 text-[14px] px-1 py-1' style={{ color: botInfo.color }}><ZapIcon /><span className='font-semibold'>Powered by <span className='font-black'>Kulfi AI</span></span></span> : <></>}
                     </div>
                 </div>
             }
 
             {section === 2 && 
-                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-20 pt-5 md:px-4 md:pb-4 md:mt-20 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
+                <div className='max-w-screen-md mx-auto w-full flex flex-col gap-4 px-[25px] pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:mt-0 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto h-[72vh]'>
                     <div style={{ color: botInfo.color }} className='flex justify-start items-center gap-1'>
                         <QuestionAnswer /><h1 className='font-bold text-[32px]'>FAQs</h1>
                     </div>
-                    <Accordion type="single" collapsible className="w-full border-[2px] border-gray-300 p-3 rounded-md">
+                    <Accordion type="single" collapsible className={`w-full border-[2px] border-gray-300 p-3 rounded-md`}>
                         {faqList.map((item, index) => (
-                            <AccordionItem key={index} value={`item-${index}`}>
+                            <AccordionItem key={index} className={index === faqList.length - 1 ? 'border-0' : ''}  value={`item-${index}`}>
                                 <AccordionTrigger className='text-[16px] text-gray-600'>{item.question}</AccordionTrigger>
-                                <AccordionContent className='border-b-[2px] border-gray-300'>
+                                <AccordionContent className={` ${index === faqList.length - 1 ? 'border-0' : 'border-b-[2px] border-gray-300'} `}>
                                     <div className='flex justify-between items-start'>
                                         <div className='w-[90%]'>
                                         {item.answer}
@@ -300,7 +302,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                             </AccordionItem>
                         ))}
                     </Accordion>
-
+                    <div className='flex justify-center pb-5'>
+                        {!botInfo.hideBranding ? <span className='fixed bottom-2 flex items-center justify-center gap-1 text-[14px] px-1 py-1' style={{ color: botInfo.color }}><ZapIcon /><span className='font-semibold'>Powered by <span className='font-black'>Kulfi AI</span></span></span> : <></>}
+                    </div>
                 </div>
             }
             {/* {articlesList.length || faqList.length ? <div className='flex fixed bottom-0 bg-white shadow-lg w-full border-t-2 border-gray-300 rounded-md'>

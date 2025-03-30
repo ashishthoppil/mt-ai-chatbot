@@ -126,6 +126,10 @@
             }
         };  
 
+        document.getElementById('minimize-kulfi').addEventListener('click', () => {
+            popup.style.display = isOpen ? 'flex' : 'none';
+        });
+
         // 7. Put everything in the DOM
         container.appendChild(message);
         container.appendChild(popup);

@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
 import tinycolor from 'tinycolor2';
-import { Loader2 } from 'lucide-react';
+import { ArrowDown, ArrowDown10, Loader2, MessageCircle, Minimize2Icon, NewspaperIcon, ShieldQuestion, ShieldQuestionIcon } from 'lucide-react';
 
 export const poppins = Inter({
   subsets: ['latin'],
@@ -17,6 +17,7 @@ export default function Chat() {
     const [botInfo, setBotInfo] = useState();    
     const [articlesList, setArticlesList] = useState([]);
     const [faqList, setFaqList] = useState([]);
+    const [section, setSection] = useState(0);
 
     const loadData = async () => {
       const pathname = window.location.href;
@@ -100,13 +101,12 @@ export default function Chat() {
     useEffect(() => {
       loadData();
     }, []);
-// `linear-gradient(${botInfo.color}, #${tinycolor(botInfo.color).darken(10).toHexString().slice(1)})`
     return (
       botInfo ? 
       <div className='w-full content-center' style={{ backgroundColor: botInfo.color }}>
         <main className={`flex flex-col items-center justify-between gap-4 flex-grow mx-auto w-[95%] ${poppins.className}`}>
-          <header style={{ backgroundColor: botInfo.color }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px]`}>
-            <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto px-[10px]'>
+          <header style={{ backgroundColor: botInfo.color }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] px-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px]`}>
+            <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto'>
                 {
                   botInfo.botIcon ? 
                     <img className='h-[45px] w-[45px] max-w-[45px] rounded-[50%] object-top object-cover p-1' src={`data:image/jpeg;base64,${botInfo.botIcon}`} /> : 
@@ -121,9 +121,15 @@ export default function Chat() {
                 }
               <h1 className='font-bold text-[20px] text-white'>{botInfo && botInfo.botName}</h1>
             </div>
+            <div className='flex gap-3 items-center'>
+              <MessageCircle onClick={() => setSection(0)} className='text-white cursor-pointer h-5' />
+              {faqList.length > 0 ? <ShieldQuestionIcon onClick={() => setSection(2)} className='text-white cursor-pointer h-5' /> : <></>}
+              {articlesList.length > 0 ? <NewspaperIcon onClick={() => setSection(1)} className='text-white cursor-pointer h-5' /> : <></>}
+              <Minimize2Icon id='minimize-kulfi' className='text-white cursor-pointer h-5' />
+            </div>
           </header>
-          <div className='h-[75vh] rounded-lg z-[9] bg-white mt-[75px]'>
-            <TextChat data={data} botInfo={botInfo} articlesList={articlesList} faqList={faqList} />
+          <div className={`${section === 0 ? 'h-[75vh]' : 'h-[90vh]'} rounded-lg z-[9] bg-white mt-[75px] w-full`}>
+            <TextChat data={data} botInfo={botInfo} articlesList={articlesList} faqList={faqList} section={section} />
           </div>
         </main>
       </div> : <div className='flex flex-col items-center gap-3 absolute left-[42%] top-[50%]'><Loader2 className='animate-spin text-gray-400 size-10' /><span className={`text-[14px] text-gray-500 ${poppins.className}`}>LOADING</span></div>
