@@ -75,6 +75,7 @@
             popup.style.width = `85%`;
         }
         popup.className = 'my-chatbot-popup';
+        popup.id = 'kulfi-popup';
         popup.style.display = 'none'; // hide by default
         if (al === 'l') {
             popup.style.removeProperty('right');
