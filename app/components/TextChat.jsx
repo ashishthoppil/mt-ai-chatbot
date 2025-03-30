@@ -68,14 +68,14 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
         }
     }, [messages]);
 
-    const getWidth = () => {
-        if (articlesList.length > 0 && faqList.length > 0) {
-            return 'w-1/3'
-        } else if (articlesList.length > 0 || faqList.length > 0) {
-            return 'w-1/2'
-        }
-        return ''
-    }
+    // const getWidth = () => {
+    //     if (articlesList.length > 0 && faqList.length > 0) {
+    //         return 'w-1/3'
+    //     } else if (articlesList.length > 0 || faqList.length > 0) {
+    //         return 'w-1/2'
+    //     }
+    //     return ''
+    // }
 
     const eventTracker = async () => {
         await fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=session&user=${botInfo.userId}`, {
@@ -108,7 +108,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
     return (
         <>
             {section === 0 && <>
-                <div className={`message-container  ${faqList.length === 0 && articlesList.length === 0 ? 'max-h-[64vh]' : 'h-[50vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
+                <div className={`message-container ${true ? 'max-h-[64vh]' : 'h-[50vh]'} max-w-screen-md mx-auto w-full flex flex-col gap-4 px-0 pb-4 mt-0 pt-5 md:px-4 md:pb-4 md:pt-5 lg:px-4 xl:px-4 2xl:px-4 overflow-y-auto`}>
                     <div>
                         {messages.map((msg, idx) => (
                         <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
@@ -209,7 +209,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                     </div>
                 </div>
                 <div className='flex justify-center bg-black'>
-                <form style={{ backgroundColor: botInfo.color }} className={`${articlesList.length === 0 && faqList.length === 0 ? 'fixed bottom-0' : ''} flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
+                <form style={{ backgroundColor: botInfo.color }} className={`fixed bottom-0 flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
                     onSubmit={(event) => {
                         if (!isLoading) {
                             handleSubmit(event);
@@ -265,7 +265,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                         <Newspaper /><h1 className='font-bold text-[32px]'>Articles</h1>
                     </div>
                     <div className='flex flex-col gap-10'>
-                        {articlesList.map((item, index) => (
+                        {/* {articlesList.map((item, index) => (
                             <div key={index} className='flex flex-col gap-2 border-[2px] border-gray-100 rounded-md shadow-lg p-2'>
                                 {item.img ? <img className='h-[10rem] rounded-lg object-cover' src={`data:image/jpeg;base64,${item.img}`} /> : <></>}
                                 <h1 className='text-[16px] font-bold' style={{ color: botInfo.color }}>{item.title}</h1>
@@ -276,7 +276,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList }) => {
                                     <a style={{ color: botInfo.mColor }} className='flex gap-1' target='_blank' href={item.link}>Read more <ExternalLinkIcon height={20} /></a>
                                 </div>
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                 </div>
             }

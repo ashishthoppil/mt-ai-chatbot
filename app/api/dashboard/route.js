@@ -80,7 +80,7 @@ export async function POST(req, res) {
             }
         })
         if (account.length > 0 && settings.length) {
-            return NextResponse.json({ success: true, data: { ...account[0], ...settings[0] }, links: links ? links[0].links : [], fileNames, count });
+            return NextResponse.json({ success: true, data: { ...account[0], ...settings[0] }, links: links.length > 0 ? links[0].links : [], fileNames, count });
         } 
         return NextResponse.json({ success: false, message: 'Something went wrong!' });
     } catch (error) {
