@@ -134,11 +134,6 @@ export default function Chat() {
               <MessageCircle onClick={() => setSection(0)} className='text-white cursor-pointer h-5' />
               {faqList.length > 0 ? <ShieldQuestionIcon onClick={() => setSection(2)} className='text-white cursor-pointer h-5' /> : <></>}
               {articlesList.length > 0 ? <NewspaperIcon onClick={() => setSection(1)} className='text-white cursor-pointer h-5' /> : <></>}
-              <Minimize2Icon onClick={() => {
-                if (window) {
-                  console.log('Kulfi', window.parent.document.querySelector("#kulfi-popup"))
-                }
-              }} className='text-white cursor-pointer h-5' />
             </div>
           </header>
           <div className={`${section === 0 ? 'h-[75vh]' : 'h-[90vh]'} rounded-lg md:rounded-b-none z-[9] bg-white mt-[75px] w-full`}>
