@@ -1940,12 +1940,10 @@ export default function Dashboard() {
                     {!data.isSubscribed || data.freeTrialEnd ? <div className='flex flex-col'>
                         <h3 className="text-[32px] font-bold text-gray-900 mb-2 text-center">Select a plan that suits your requirements</h3>
                         <div className='flex justify-center'>
-                            <Tabs defaultValue="monthly" className="flex justify-center w-full mt-10">
+                            <Tabs defaultValue="one-time" className="flex justify-center w-full mt-10">
                                 <div className='flex flex-col gap-5'>
                                     <div className='flex justify-center w-full'>
                                         <TabsList>
-                                            <TabsTrigger value="monthly">Monthly billing</TabsTrigger>
-                                            <TabsTrigger value="yearly">Yearly billing</TabsTrigger>
                                             <TabsTrigger value="one-time">One time payment</TabsTrigger>
                                         </TabsList>  
                                     </div>
@@ -2026,7 +2024,7 @@ export default function Dashboard() {
                                         <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
                                             <p>Get started with essential features.</p>
-                                            <p><span className='text-[28px] font-bold'>$420</span></p>
+                                            <p><span className='text-[28px] font-bold'>$29</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/53723a47-4e9d-4ab9-badb-17ba68b6a638?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
@@ -2034,7 +2032,7 @@ export default function Dashboard() {
                                         <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
                                             <p>Unlock more power and flexibility.</p>
-                                            <p><span className='text-[28px] font-bold'>$840</span></p>
+                                            <p><span className='text-[28px] font-bold'>$79</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/cef38478-3f70-4d1a-8b9d-a0e9526c6fec?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
@@ -2042,7 +2040,7 @@ export default function Dashboard() {
                                         <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
                                             <p>Scale your business with advanced tools.</p>
-                                            <p><span className='text-[28px] font-bold'>$1,729</span></p>
+                                            <p><span className='text-[28px] font-bold'>$99</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/67934ab3-17f4-4259-bb3d-43fc68d65daa?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
@@ -2050,7 +2048,7 @@ export default function Dashboard() {
                                         <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
                                             <p>Scale your business with advanced tools.</p>
-                                            <p><span className='text-[28px] font-bold'>$4,359</span></p>
+                                            <p><span className='text-[28px] font-bold'>$249</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/74ddf99f-f772-47a0-ab9f-2ce27c295662?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
                                         </div>
