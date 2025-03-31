@@ -112,9 +112,9 @@ export default function Chat() {
 
     return (
       botInfo ? 
-      <div className='w-full content-center' style={{ backgroundColor: botInfo.color }}>
-        <main className={`flex flex-col items-center justify-between gap-4 flex-grow mx-auto w-[95%] ${poppins.className}`}>
-          <header style={{ backgroundColor: botInfo.color }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] px-[10px] max-w-screen mx-auto w-full gap-2 items-center h-[75px]`}>
+      <div className='w-full content-center' style={{ backgroundColor: botInfo.isSandBox ? 'white' : botInfo.color }}>
+        <main className={`flex flex-col items-center justify-between gap-4 flex-grow mx-auto ${botInfo.isSandBox ? 'w-full md:w-[28%] border-2 border-b-0 border-gray-200' : 'w-[95%]'} ${poppins.className}`}>
+          <header style={{ backgroundColor: botInfo.color }} className={`fixed top-0 z-50 flex justify-between md:px-[25px] py-[10px] px-[10px] max-w-screen mx-auto ${botInfo.isSandBox ? 'w-full md:w-[28%]' : 'w-full'} gap-2 items-center h-[75px]`}>
             <div className='flex items-center gap-3 w-full max-w-screen-md mx-auto'>
                 {
                   botInfo.botIcon ? 

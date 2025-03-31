@@ -208,7 +208,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                     </div>
                 </div>
                 <div className='flex justify-center'>
-                    <form style={{ backgroundColor: botInfo.color }} className={`fixed md:!bg-white bottom-0 flex max-w-screen-md mx-auto w-full flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
+                    <form style={{ backgroundColor: botInfo.color }} className={`fixed md:!bg-white bottom-0 flex max-w-screen-md mx-auto ${botInfo.isSandBox ? 'w-full md:w-[25%]' : 'w-full'} flex-col items-center space-y-4 p-3 pb-3 sm:px-0`}
                         onSubmit={(event) => {
                             if (!isLoading) {
                                 handleSubmit(event);
