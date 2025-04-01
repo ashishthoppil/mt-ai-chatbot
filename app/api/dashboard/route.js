@@ -38,36 +38,36 @@ export async function POST(req, res) {
         }
 
         // Check if subscription renewal is overdue
-        if (account[0].renews_at) {
-            const renewalGracePeriod = account[0].renews_at.setDate(account[0].renews_at.getDate() + 10);
-            if (renewalGracePeriod < new Date()) {
+        // if (account[0].renews_at) {
+        //     const renewalGracePeriod = account[0].renews_at.setDate(account[0].renews_at.getDate() + 10);
+        //     if (renewalGracePeriod < new Date()) {
     
-                const lemon = await fetch(`https://api.lemonsqueezy.com/v1/subscriptions/${account[0].subscriptionId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        Authorization: `Bearer ${process.env.LEMON_PRIVATE_KEY}`
-                    }
-                });
+        //         const lemon = await fetch(`https://api.lemonsqueezy.com/v1/subscriptions/${account[0].subscriptionId}`, {
+        //             method: 'DELETE',
+        //             headers: {
+        //                 Authorization: `Bearer ${process.env.LEMON_PRIVATE_KEY}`
+        //             }
+        //         });
             
-                const payload = await lemon.json()
+        //         const payload = await lemon.json()
     
-                const result = await db.collection('account').updateOne(
-                    {},
-                    {
-                      $set: { 
-                        subscriptionName: 'Kulfi AI - Basic',
-                        isSubscribed: false,
-                        chatCount: 0,
-                        fileLimit: 0,
-                        fileSizeLimit: 0,
-                        linkLimit: 0,
-                        freeTrialEnd: null
-                      },
-                      $currentDate: { lastModified: true }
-                    }
-                );
-            }
-        }
+        //         const result = await db.collection('account').updateOne(
+        //             {},
+        //             {
+        //               $set: { 
+        //                 subscriptionName: 'Kulfi AI - Basic',
+        //                 isSubscribed: false,
+        //                 chatCount: 0,
+        //                 fileLimit: 0,
+        //                 fileSizeLimit: 0,
+        //                 linkLimit: 0,
+        //                 freeTrialEnd: null
+        //               },
+        //               $currentDate: { lastModified: true }
+        //             }
+        //         );
+        //     }
+        // }
 
         const settings = await db.collection('settings').find().toArray();
         const links = await db.collection('links').find().toArray();

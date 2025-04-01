@@ -2,7 +2,7 @@
 
 import Marquee from "react-fast-marquee";
 import { AppRegistrationRounded, ContentPaste, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
-import { BrainCircuitIcon, CircleCheckBigIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
+import { BrainCircuitIcon, CircleCheckBigIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Header } from './components/layout/Header';
@@ -35,11 +35,115 @@ export default function Home() {
               </div>
             </div>
         </div>
+
+        <div id="trust" className="flex flex-col justify-center items-center gap-15 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
+            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'><span className="bg-purple-700 text-white px-2 rounded-md">Trusted</span> by <span className="font-bold text-purple-700">100+</span> Businesses. </h1>
+            <div className="flex flex-col gap-10 items-center justify-center py-10 shadow-lg border-2 border-gray-100 w-full md:w-[70%] px-10 mt-[4rem]">
+              <div className="flex flex-col md:flex-row gap-2 md:border-b-2 border-gray-200 pb-10 px-2 w-full">
+                <div className="flex flex-col gap-10 items-center justify-center pb-10 md:pb-0 border-b-2 md:border-b-0 md:border-r-2 border-gray-200 w-full md:w-[50%]">
+                  <LucideQuote className="text-purple-700" />
+                  <div className="flex flex-col items-center justify-center gap-5">
+                    <p className="font-semibold text-[18px] w-[90%] md:w-[70%] text-center">"This AI chatbot has completely transformed the way we interact with potential buyers! It instantly qualifies leads, answers property-related queries, and even schedules viewings. Our conversion rates have improved significantly!"</p>
+                    <p className="text-center w-full"><span className="w-[50%] text-purple-700 font-semibold">David T.</span> <br/> <span className="w-[50%]">Real Estate Broker at HomeView</span></p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-10 items-center justify-center  w-full md:w-[50%]">
+                  <LucideQuote className="text-purple-700" />
+                  <div className="flex flex-col items-center justify-center gap-5">
+                    <p className="font-semibold text-[18px] w-[90%] md:w-[70%] text-center">"Our tutoring platform needed a smarter way to guide students and parents. This AI chatbot answers FAQs, recommends courses, and even connects students with tutors in real time!"</p>
+                    <p className="text-center w-full"><span className="w-[50%] text-purple-700 font-semibold">Priya Kaur</span> <br/> <span className="w-[50%]">Co-founder of EduNext</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="hidden md:flex flex-row gap-2 w-full">
+                <div className="flex flex-col gap-10 items-center justify-center border-r-2 border-gray-200 w-[50%]">
+                  <LucideQuote className="text-purple-700" />
+                  <div className="flex flex-col items-center justify-center gap-5">
+                    <p className="font-semibold text-[18px] w-[90%] md:w-[70%] text-center">"Our support team used to be overwhelmed with repetitive queries. This chatbot now handles 80% of common customer questions, allowing our agents to focus on more complex issues!"</p>
+                    <p className="text-center w-full"><span className="w-[50%] text-purple-700 font-semibold">Lisa McMahon</span><br/><span className="w-[50%]">Customer Service Manager at HelpDeskPro</span></p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-10 items-center justify-center  w-[50%]">
+                  <LucideQuote className="text-purple-700" />
+                  <div className="flex flex-col items-center justify-center gap-5">
+                    <p className="font-semibold text-[18px] w-[90%] md:w-[70%] text-center">"The chatbot is like having a 24/7 virtual agent. It engages visitors, captures their details, and forwards qualified leads to our sales team. Best investment we've made for lead generation!"</p>
+                    <p className="text-center w-full"><span className="w-[50%] text-purple-700 font-semibold">Mark Lawson</span> <br/> <span className="w-[50%]">Founder of Elite Homes</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* How it works */}
+
+          <div id="how-it-works" className="flex flex-col justify-center items-center gap-16 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
+            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>How <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI</span> works.</h1>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+              <video className="w-full md:w-[50%] border-4 border-purple-800 rounded-[30px]" controls>
+                <source src="kulfi-ai.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="flex flex-col gap-2">
+                <h1 className='text-[20px] md:text-[26px] text-center md:text-left font-bold text-black'>Breaking down the procedure</h1>
+                <Accordion type="single" collapsible className="w-full border-2 border-gray-200 p-2 px-5 rounded-sm shadow-md mt-5">
+                <AccordionItem className='' key={1} value={1}>
+                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-center gap-2'><AppRegistrationRounded /> Register with Us.</div></AccordionTrigger>
+                    <AccordionContent>
+                      <div className='flex justify-between items-start'>
+                        <div className='w-[full]'>Create an account with us. It's free and does not require a credit card!</div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem className='' key={2} value={2}>
+                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><BrainCircuitIcon /> Train the AI by importing your own data.</div></AccordionTrigger>
+                    <AccordionContent>
+                      <div className='flex justify-between items-start'>
+                        <div className='w-[full]'>Upload your files or add your website links and train the AI Chatbot yourself.</div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem className='' key={3} value={3}>
+                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ShapesIcon /> Customize the Chatbot to match the theme of your website.</div></AccordionTrigger>
+                    <AccordionContent>
+                      <div className='flex justify-between items-start'>
+                        <div className='w-[full]'>Customize your chatbot from branding, colors and behaviours and much more.</div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem className='' key={4} value={4}>
+                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><Code2Icon /> Embed the code on your website.</div></AccordionTrigger>
+                    <AccordionContent>
+                      <div className='flex justify-between items-start'>
+                        <div className='w-[full]'>After customization and training the AI chatbot, copy the code snippet from the your dashboard and embed it into your website or web application.</div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem className='border-0' key={5} value={5}>
+                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ClipboardCheckIcon /> Start handling customers, monitoring insights and chats.</div></AccordionTrigger>
+                    <AccordionContent>
+                      <div className='flex justify-between items-start'>
+                        <div className='w-[full]'>Let Kulfi do it's work and efficiently handle customers and website visitors. Gain insights and track conversations.</div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+              </Accordion>
+              </div>
+              
+            </div>
+          </div>
           
           {/* Knowledge Base */}
           <div className='flex flex-col md:flex-col gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-[10rem] text-white bg-white rounded-[30px] px-[40px] md:px-[80px]'>
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
-              <h1 className='text-[30px] md:text-[42px] text-center font-bold leading-8'>AI Chatbots that run on <span className='text-purple-700 font-bold'>your own data.</span></h1>
+            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>AI Chatbots that run on <span className="bg-purple-700 text-white px-2 rounded-md">your own data.</span></h1>
+
               <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>You control what the AI understands.</p>
             </div>
 
@@ -65,7 +169,7 @@ export default function Home() {
           {/* Use cases */}
           <div id='use-cases' className='flex flex-col md:flex-col gap-10 items-center justify-center w-full  py-[2rem] md:py-[5rem] mt-5 md:mt-[5rem] text-white bg-white rounded-[30px] px-[20px] md:px-[80px]'>
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
-              <h1 className='text-[30px] md:text-[42px] text-center font-bold leading-8'>Make the Most out of <span className='text-purple-700 font-bold'>Kulfi AI.</span></h1>
+              <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>Make the Most out of <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI.</span></h1>
               <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>Leverage Kulfi AI and automate your business</p>
             </div>
 
@@ -129,7 +233,8 @@ export default function Home() {
               </div>
             </div>
             
-                <h1 className='mt-10 text-black text-[30px] md:text-[42px] text-center font-bold leading-8'><span className="text-purple-800">Kulfi AI</span>: Beyond Limits – Endless Possibilities Await!</h1>
+                <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'><span className="bg-purple-700 text-white px-2 rounded-md">Beyond Limits</span> – Endless Possibilities Await!</h1>
+
                 <Marquee className="mt-10">
                   <div className="flex gap-5 text-black text-[2rem] md:text-[3rem] font-bold opacity-25">
                     <h1>Customer Support |</h1>
@@ -144,59 +249,13 @@ export default function Home() {
               
           </div>
           {/* How it works */}
-          <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-0 rounded-[30px] px-[20px] md:px-[80px]'>
+          {/* <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-0 rounded-[30px] px-[20px] md:px-[80px]'>
             <div className='flex flex-col items-center gap-3'>
-              <h1 className='text-[30px] md:text-[42px] text-center font-bold leading-8'>How It Works: A Seamless <span className='text-purple-700 font-bold'>AI Experience.</span></h1>
-              <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>A smooth process in just 6 simple steps.</p>
+              <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'>How It Works: A Seamless <span className="bg-purple-700 text-white px-2 rounded-md">AI Experience.</span></h1>
             </div>
 
-            <Accordion type="single" collapsible className="w-full border-2 border-gray-200 p-2 px-5 rounded-sm shadow-md mt-5">
-              <AccordionItem className='' key={1} value={1}>
-                <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-center gap-2'><AppRegistrationRounded /> Register with Us.</div></AccordionTrigger>
-                  <AccordionContent>
-                    <div className='flex justify-between items-start'>
-                      <div className='w-[full]'>Create an account with us. It's free and does not require a credit card!</div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem className='' key={2} value={2}>
-                <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><BrainCircuitIcon /> Train the AI by importing your own data.</div></AccordionTrigger>
-                  <AccordionContent>
-                    <div className='flex justify-between items-start'>
-                      <div className='w-[full]'>Upload your files or add your website links and train the AI Chatbot yourself.</div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem className='' key={3} value={3}>
-                <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ShapesIcon /> Customize the Chatbot to match the theme of your website.</div></AccordionTrigger>
-                  <AccordionContent>
-                    <div className='flex justify-between items-start'>
-                      <div className='w-[full]'>Customize your chatbot from branding, colors and behaviours and much more.</div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem className='' key={4} value={4}>
-                <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><Code2Icon /> Embed the code on your website.</div></AccordionTrigger>
-                  <AccordionContent>
-                    <div className='flex justify-between items-start'>
-                      <div className='w-[full]'>After customization and training the AI chatbot, copy the code snippet from the your dashboard and embed it into your website or web application.</div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem className='border-0' key={5} value={5}>
-                <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ClipboardCheckIcon /> Start handling customers, monitoring insights and chats.</div></AccordionTrigger>
-                  <AccordionContent>
-                    <div className='flex justify-between items-start'>
-                      <div className='w-[full]'>Let Kulfi do it's work and efficiently handle customers and website visitors. Gain insights and track conversations.</div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-            </Accordion>
-          </div>
+            
+          </div> */}
 
           {/* Contact */}
           <div className='px-5'>

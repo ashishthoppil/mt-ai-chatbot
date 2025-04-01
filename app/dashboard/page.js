@@ -1512,7 +1512,7 @@ export default function Dashboard() {
                         </div>
                     </div> : <></>}
 
-                        <div className='flex items-center gap-2 w-[50%] py-10 text-[14px]'>
+                        {data.brandingRemoved ? <div className='flex items-center gap-2 w-[50%] py-10 text-[14px]'>
                             <div className="flex gap-4">
                                 <Switch 
                                     checked={data.hideBranding}
@@ -1524,7 +1524,7 @@ export default function Dashboard() {
                                     Remove 'Kulfi AI' branding
                                 </label>
                             </div>
-                        </div>
+                        </div> : <></>}
 
                     <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300'>
                         {!PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <h3 className="text-[22px] font-bold text-gray-500 mb-2">Chatbot Behaviour</h3> : <></>}
@@ -2192,7 +2192,7 @@ export default function Dashboard() {
                                     <h3 className=''>Current Plan:</h3>
                                     <p className='text-purple-800 font-bold'>{data.freeTrialEnd ? PLANS.ADVANCED[2] : data.subscriptionName}</p>
                                 </div>
-                                {!data.freeTrialEnd ? <Dialog open={unsubscribeModalOpen}>
+                                {/* {!data.freeTrialEnd ? <Dialog open={unsubscribeModalOpen}>
                                     <DialogTrigger asChild>
                                         <button onClick={() => { setUnsubscribeModalOpen(true); }} className='bg-purple-500 mt-10 md:mt-0 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>Cancel subscription</button>  
                                     </DialogTrigger>
@@ -2221,7 +2221,7 @@ export default function Dashboard() {
                                             <button onClick={() => setUnsubscribeModalOpen(false)} className='bg-white border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-purple-500 py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold'>No</button>  
                                         </DialogFooter>
                                     </DialogContent>
-                                </Dialog> : <></>}
+                                </Dialog> : <></>} */}
                             </div>
                             <div className='flex flex-col gap-5 py-10'>
                                 <h3 className="text-[26px] font-bold text-gray-600 mb-2">Add-ons</h3>
