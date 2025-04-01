@@ -1099,8 +1099,8 @@ export default function Dashboard() {
                         </div> : <></>}
                         <div className='flex flex-col justify-center md:flex-row gap-10 w-full mt-[6rem]'>
                             <Table className='border-2 border-purple-200'>
-                                <TableCaption className='mt-5'>Demographics</TableCaption>
-                                {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}
+                                
+                                {addedLinks.length === 0 ? <TableCaption className='mt-5'>No data as of now.</TableCaption> : <TableCaption className='mt-5'>Demographics</TableCaption>}
                                 <TableHeader className='bg-purple-200'>
                                     <TableRow>
                                         <TableHead>Country</TableHead>
@@ -2076,9 +2076,9 @@ export default function Dashboard() {
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Chats</TableCell>
                                         <TableCell className=''>500</TableCell>
+                                        <TableCell className=''>1000</TableCell>
                                         <TableCell className=''>2500</TableCell>
-                                        <TableCell className=''>7500</TableCell>
-                                        <TableCell className=''>Unlimited</TableCell>
+                                        <TableCell className=''>5000</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Chat logs</TableCell>

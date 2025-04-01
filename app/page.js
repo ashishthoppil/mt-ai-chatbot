@@ -1,8 +1,8 @@
 'use client';
 
 import Marquee from "react-fast-marquee";
-import { AppRegistrationRounded, ContentPaste, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
-import { BrainCircuitIcon, CircleCheckBigIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
+import { AppRegistrationRounded, ContentPaste, KeyboardDoubleArrowDown, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
+import { BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Header } from './components/layout/Header';
@@ -13,6 +13,8 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default function Home() {
 
@@ -248,6 +250,255 @@ export default function Home() {
                 </Marquee>
               
           </div>
+
+
+
+
+          <h3 className="text-[32px] font-bold text-gray-900 mb-2 text-center">Select a plan that suits your requirements</h3>
+                                  <div className='flex justify-center'>
+                                      <Tabs defaultValue="one-time" className="flex justify-center w-full mt-10">
+                                          <div className='flex flex-col gap-5'>
+                                              <div className='flex justify-center w-full'>
+                                                  <TabsList>
+                                                      <TabsTrigger value="one-time">One time payment</TabsTrigger>
+                                                  </TabsList>  
+                                              </div>
+                                          <TabsContent value='monthly'>
+                                              <div className='flex flex-col items-center md:flex-row gap-5 md:gap-2 w-full'>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
+                                                      <p>Get started with essential features.</p>
+                                                      <p><span className='text-[28px] font-bold'>$24</span>/month</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/094f774d-5de8-4834-b29d-da3953e4ceb6?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
+                                                      <p>Unlock more power and flexibility.</p>
+                                                      <p><span className='text-[28px] font-bold'>$48</span>/month</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/9e494164-d821-40cf-8179-8fc2cabc21b5?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
+                                                      <p>Scale your business with advanced tools.</p>
+                                                      <p><span className='text-[28px] font-bold'>$99</span>/month</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/d9afd6ea-fe95-4cab-81dd-1727b616683b?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
+                                                      <p>Scale your business with advanced tools.</p>
+                                                      <p><span className='text-[28px] font-bold'>$249</span>/month</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/2573c17e-44a3-482b-af7a-afed9e4f9502?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                              </div>
+                                          </TabsContent>
+                                          <TabsContent value='yearly'>
+                                          <div className='flex flex-col items-center md:flex-row gap-5 md:gap-2 w-full'>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
+                                                      <p>Get started with essential features.</p>
+                                                      <p><span className='text-[28px] font-bold'>$20</span>/month, billed yearly</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/165aa34b-b4bc-4ae4-8b9e-7358982e0f69?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
+                                                      <p>Unlock more power and flexibility.</p>
+                                                      <p><span className='text-[28px] font-bold'>$40</span>/month, billed yearly</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/fa0950f0-879a-4f53-ae7c-25cb19098452?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
+                                                      <p>Scale your business with advanced tools.</p>
+                                                      <p><span className='text-[28px] font-bold'>$82</span>/month, billed yearly</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/74b266d4-a8cf-40e3-a447-c0df569626b2?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
+                                                      <p>Scale your business with advanced tools.</p>
+                                                      <p><span className='text-[28px] font-bold'>$207</span>/month, billed yearly</p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/69b10044-107a-44ae-a196-86201b644136?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                              </div>
+                                          </TabsContent>
+                                          <TabsContent value='one-time'>
+                                              <div className='flex flex-col items-center md:flex-row gap-5 md:gap-2 w-full'>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
+                                                      <p>Get started with essential features.</p>
+                                                      <p><span className='text-[28px] font-bold'>$29</span></p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/53723a47-4e9d-4ab9-badb-17ba68b6a638?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Log-in to Purchase</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
+                                                      <p>Unlock more power and flexibility.</p>
+                                                      <p><span className='text-[28px] font-bold'>$79</span></p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/cef38478-3f70-4d1a-8b9d-a0e9526c6fec?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Log-in to Purchase</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
+                                                      <p>Scale your business with advanced tools.</p>
+                                                      <p><span className='text-[28px] font-bold'>$99</span></p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/67934ab3-17f4-4259-bb3d-43fc68d65daa?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Log-in to Purchase</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+          
+                                                  </div>
+                                                  <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                                      <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
+                                                      <p>Scale your business with advanced tools.</p>
+                                                      <p><span className='text-[28px] font-bold'>$249</span></p>
+                                                      <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/74ddf99f-f772-47a0-ab9f-2ce27c295662?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Log-in to Purchase</a>  
+                                                      <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
+                                                  </div>
+                                              </div>
+                                          </TabsContent>
+                                          </div>
+                                      </Tabs>
+          
+                                      
+                                  </div>
+                                  <div className='flex flex-col items-center justify-center gap-10 w-full mt-[6rem] px-[5px] md:px-[3rem]'>
+                                      <h3 className="text-[24px] font-bold text-gray-900 mb-2 text-center">Plan comparison</h3>
+          
+                                      <Table className='border-2 border-purple-200 w-full'>
+                                          <TableHeader className='bg-purple-200'>
+                                              <TableRow>
+                                                  <TableHead className=''></TableHead>
+                                                  <TableHead className=''>Basic</TableHead>
+                                                  <TableHead className=''>Pro</TableHead>
+                                                  <TableHead className=''>Growth</TableHead>
+                                                  <TableHead className=''>Advanced</TableHead>
+                                              </TableRow>
+                                          </TableHeader>
+                                          <TableBody>
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Chats</TableCell>
+                                                  <TableCell className=''>500</TableCell>
+                                                  <TableCell className=''>1000</TableCell>
+                                                  <TableCell className=''>2500</TableCell>
+                                                  <TableCell className=''>5000</TableCell>
+                                              </TableRow>
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Chat logs</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow>
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Lead capturing</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''>Send as Email, Lead Form Builder</TableCell>
+                                                  <TableCell className=''>Send as Email, Lead Form Builder</TableCell>
+                                                  <TableCell className=''>Send as Email, Webhooks, Hubspot integration, Lead Form Builder</TableCell>
+                                              </TableRow>
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Customized responses</TableCell>
+                                                  <TableCell className=''>3 responses</TableCell>
+                                                  <TableCell className=''>5 responses</TableCell>
+                                                  <TableCell className=''>10 responses</TableCell>
+                                                  <TableCell className=''>Unlimited</TableCell>
+                                              </TableRow>
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Show images</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow>
+                                              
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Show sources</TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Analytics</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''>Basic</TableCell>
+                                                  <TableCell className=''>Advanced</TableCell>
+                                                  <TableCell className=''>Advanced</TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Remove Kulfi AI branding</TableCell>
+                                                  <TableCell className=''>As add-on</TableCell>
+                                                  <TableCell className=''>As add-on</TableCell>
+                                                  <TableCell className=''>As add-on</TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Chatbot Customisation & Branding</TableCell>
+                                                  <TableCell className=''>Basic</TableCell>
+                                                  <TableCell className=''>Intermediate</TableCell>
+                                                  <TableCell className=''>Advanced</TableCell>
+                                                  <TableCell className=''>Advanced</TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>No. of Webpages that can be synced</TableCell>
+                                                  <TableCell className=''>10 Webpages</TableCell>
+                                                  <TableCell className=''>30 Webpages</TableCell>
+                                                  <TableCell className=''>100 Webpages</TableCell>
+                                                  <TableCell className=''>500 Webpages</TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Documents upload limit</TableCell>
+                                                  <TableCell className=''>1 Doc, Maximum 25 MB</TableCell>
+                                                  <TableCell className=''>2 Doc, Maximum 50 MB</TableCell>
+                                                  <TableCell className=''>5 Doc, Maximum 100 MB</TableCell>
+                                                  <TableCell className=''>10 Doc, Maximum 250 MB</TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Articles & FAQs</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow>
+          
+                                              <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Training session</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow>
+          
+                                              {/* <TableRow>
+                                                  <TableCell className='font-bold text-left pl-2'>Priority support</TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                              </TableRow> */}
+                                          </TableBody>
+                                      </Table>
+                                      </div>
           {/* How it works */}
           {/* <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-0 rounded-[30px] px-[20px] md:px-[80px]'>
             <div className='flex flex-col items-center gap-3'>
