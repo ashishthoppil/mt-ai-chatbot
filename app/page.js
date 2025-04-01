@@ -253,8 +253,7 @@ export default function Home() {
 
 
 
-
-          <h3 className="text-[32px] font-bold text-gray-900 mb-2 text-center">Select a plan that suits your requirements</h3>
+          <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'>Select a plan that suits <span className="bg-purple-700 text-white px-2 rounded-md">your requirements</span> </h1>
                                   <div className='flex justify-center'>
                                       <Tabs defaultValue="one-time" className="flex justify-center w-full mt-10">
                                           <div className='flex flex-col gap-5'>
