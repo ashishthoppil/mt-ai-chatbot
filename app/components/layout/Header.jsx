@@ -53,7 +53,6 @@ export const Header = () => {
         });
         const data = await response.json();
         if (data.success) {
-            setIsLoading(false);
             if (data.message._id) {
                 localStorage.setItem('objectID', data.message._id)
                 localStorage.setItem('organization', data.message.organization)
@@ -61,6 +60,7 @@ export const Header = () => {
                 localStorage.setItem('botname', data.message.botName)
                 localStorage.setItem('cw', data.message.cw)
                 localStorage.setItem('al', data.message.alignment)
+                setIsLoading(false);
                 router.push('/dashboard');
             } else {
                 setError(data.message);

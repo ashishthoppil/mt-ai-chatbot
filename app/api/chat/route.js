@@ -267,7 +267,6 @@ export async function POST(request) {
       for await (const chunk of result.textStream) {
         responseText += chunk;
       }
-      console.log('responseTextresponseText', responseText)
       await fetch(`${BASE_URL}/api/query-type`, {
         method: 'POST',
         headers: {

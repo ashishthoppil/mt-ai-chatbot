@@ -10,6 +10,7 @@ export async function POST(req) {
     const db = client.db(DB_NAME);
    
     try {
+        const deletion = await db.collection('knowledge_base').drop();
         const sanitizedLinks = []
         request.links.forEach(item => {
           if (item) {

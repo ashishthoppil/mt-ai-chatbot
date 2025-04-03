@@ -84,7 +84,7 @@ export default function Home() {
           <div id="how-it-works" className="flex flex-col justify-center items-center gap-16 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
             <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>How <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI</span> works.</h1>
             <div className="flex flex-col md:flex-row items-center justify-center gap-10">
-              <video className="w-full md:w-[50%] border-4 border-purple-800 rounded-[30px]" controls>
+              <video className="w-full md:w-[50%] border-4 border-purple-800 rounded-lg" autoPlay muted controls>
                 <source src="kulfi-ai.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>

@@ -998,7 +998,7 @@ export default function Dashboard() {
                     <div className='flex flex-col gap-3 pt-5 border-[1px] border-gray-300 p-4 pb-4 mt-4 bg-gray-50 rounded-lg text-[14px]'>
                         <div className='flex justify-between items-start'>
                             <p className='text-[14px]'>Copy and paste this code snippet inside the <span className='font-bold'>{'<head>'}</span> tag of your website.</p>
-                            <a target='_blank' href={`/chat?o=${urlParams.organization}&sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 pl-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'>Test <TestTube height={15} /></a>
+                            <a target='_blank' href={`/test?o=${urlParams.organization}&al=${urlParams.al}&cw=${urlParams.cw}&c=${urlParams.color}&sandbox=true`} className='outline-none flex items-center border-[1px] border-purple-600 shadow-sm rounded-md py-1 pl-2 text-[14px] bg-purple-500 text-white hover:bg-white hover:text-purple-500 duration-500'>Test <TestTube height={15} /></a>
                         </div>
                         
                         <div className='flex flex-col bg-gray-800 w-full p-4 rounded-md shadow-md'>
@@ -1370,8 +1370,8 @@ export default function Dashboard() {
                             <h3 className="md:text-[32px] font-bold text-gray-900 mb-2">Chats</h3>
                             <p className='text-[14px] md:text-[16px]'>Access the chats that your visitors have with your Chatbot.</p>
                         </div>
-                        <div className='flex border-[1px] border-gray-100 rounded-lg h-full w-[full]'>
-                            <div className='flex flex-col h-[75vh] w-[25%] overflow-y-auto'>
+                        <div className='flex border-[1px] border-gray-300 rounded-lg h-full w-[full]'>
+                            <div className='flex flex-col h-[75vh] w-[25%] shadow-lg overflow-y-auto border-r-[1px] border-gray-300'>
                                 {chats.map((item, index) => {
                                     return (
                                         <div onClick={() => { setSelectedChat(item.messages) }} key={index} className={`flex flex-col gap-2 justify-center cursor-pointer ${index % 2 === 0 ? 'bg-purple-50' : 'bg-purple-100'} border-[1px] border-gray-100 py-5 px-5 w-full text-[14px]`}>
@@ -1382,7 +1382,7 @@ export default function Dashboard() {
                                     )
                                 })}
                             </div>
-                            <div className='w-[75%] h-[75vh] overflow-y-auto p-5'>
+                            <div className={`w-[75%] h-[75vh] overflow-y-auto p-5 ${selectedChat.length === 0 ? 'flex justify-center items-center' : ''}`}>
                                 {selectedChat.length > 0 && selectedChat.map((msg, idx) => (
                                     <div className={`${msg.role === 'user' ? 'flex justify-end ' : 'flex'} px-[10px]`} key={idx} style={{ marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                                     <>{msg.role === 'user' ? 
@@ -1396,6 +1396,7 @@ export default function Dashboard() {
                                     </div>}</>
                                 </div>
                                 ))}
+                                {selectedChat.length === 0 ? <h1 className='m-auto'>No chats selected.</h1> : <></>}
                             </div>
                         </div>
                     </div>
@@ -1678,9 +1679,8 @@ export default function Dashboard() {
                                                     }
                                                 })
                                             });
-                                            console.log('One');
                                             linkSync();
-                                        }} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-1 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'>{isLinkSynced ? <span className='flex items-center'><Loader2 className='h-3 animate-spin' /> Training AI</span> : <span className='flex items-center'><BrainCircuitIcon className='h-3' /> Start training AI</span>}</button>
+                                        }} className='flex items-center bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-1 px-1 pr-2 duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-[12px]'>{isLinkSynced ? <span className='flex items-center'><Loader2 className='h-3 animate-spin' /> Training AI</span> : <span className='flex items-center'><BrainCircuitIcon className='h-3' /> Start training AI</span>}</button>
                                     </div>
                                     <Table className='border-2 border-purple-200'>
                                         {addedLinks.length === 0 ? <TableCaption className='mt-5'>No links have been added.</TableCaption> : <></>}

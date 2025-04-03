@@ -17,7 +17,6 @@ export async function POST(req) {
     });
 
     try {
-        const deletion = await db.collection('knowledge_base').drop();
         const link = request.link.link;
 
         let chunks = [];
@@ -95,10 +94,10 @@ export async function POST(req) {
             if (embeddings.length > 0) {
                 const result = await db.collection('knowledge_base').insertOne({ embeddings });
                 const prevLinks = await db.collection('links').find().toArray();
-
+                const workLinks = prevLinks[0].links;
                 let updatedLinks = [];
-                if (prevLinks.length > 0) {
-                    updatedLinks = prevLinks[0].links.map((item) => {
+                if (workLinks.length > 0) {
+                    updatedLinks = workLinks.map((item) => {
                         if (item.link === link) {
                             return {
                                 link,
@@ -117,16 +116,8 @@ export async function POST(req) {
                         }
                     );
                 } else {
-                    updatedLinks = [
-                        {
-                            link,
-                            status: 'completed'
-                        }
-                    ]
-
-                    await db.collection('links').insertOne({ links: updatedLinks });
+                    await db.collection('links').insertOne({ links: [] });
                 }
-                console.log('updatedLinksupdatedLinks', updatedLinks)
                 return NextResponse.json({ success: true, message: updatedLinks });
             }
         }
