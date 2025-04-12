@@ -19,7 +19,7 @@ export async function POST(req, res) {
         const account = await db.collection('account').find().toArray();
 
         // Check free trial expiry
-        if (account[0].freeTrialEnd && account[0].freeTrialEnd < new Date()) {
+        if (account[0].hasOwnProperty("freeTrialEnd") && account[0].freeTrialEnd && account[0].freeTrialEnd < new Date()) {
             const result = await db.collection('account').updateOne(
                 {},
                 {

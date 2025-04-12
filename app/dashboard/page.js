@@ -1691,7 +1691,6 @@ export default function Dashboard() {
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {console.log('addedLinksaddedLinks', addedLinks)}
                                             {addedLinks.length > 0 && addedLinks.map((item, index) => (
                                                 <TableRow key={index}>
                                                     <TableCell className="font-medium">{item.link}</TableCell>

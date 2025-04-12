@@ -21,57 +21,84 @@ export async function POST(req) {
 
         let chunks = [];
         const BROWSERLESS_TOKEN = process.env.BROWSERLESS_TOKEN;
-            const endpoint = `https://chrome.browserless.io/scrape?token=${BROWSERLESS_TOKEN}`;
+        const endpoint = `https://chrome.browserless.io/scrape?token=${BROWSERLESS_TOKEN}`;
 
-            const payload = {
-                url: link,
-                gotoOptions: { waitUntil: "networkidle2" },
-                elements: [
-                  {
-                    "selector": "html",
-                  }
-                ]
-            };
+        const payload = {
+            url: link,
+            gotoOptions: { waitUntil: "networkidle2" },
+            elements: [
+              {
+                "selector": "html",
+              }
+            ]
+        };
 
-            const resp = await fetch(endpoint, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+        const resp = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
 
-            if (!resp.ok) {
-                const scrapeErr = await resp.json();
-                throw new Error(`Browserless error: ${scrapeErr}`);
-            }
+        if (!resp.ok) {
+            const scrapeErr = await resp.json();
+            throw new Error(`Browserless error: ${scrapeErr}`);
+        }
 
-            const scrapedData = await resp.json();
+        const scrapedData = await resp.json();
 
-            const renderedHTML = scrapedData.data;
-            const html = renderedHTML[0].results[0].html;
-            const $ = load(html)
-            const text = $('body').text();
+        const renderedHTML = scrapedData.data;
+        const html = renderedHTML[0].results[0].html;
+        const $ = load(html);
+        const text = $('body').text();
 
-            let imageUrls = 'This is a set of image urls from this page. \n'
-            $('img').each((index, element) => {
-                let src = '';
-                const alt = $(element).attr('alt'); 
-                if (alt) {
-                    if ($(element).attr('src').includes('https') || $(element).attr('src').includes('ftp')) {
-                        src = $(element).attr('src');
-                    } else {
-                        src = link + $(element).attr('src').slice(1);
-                    }
-                    if (src) {
-                      imageUrls += `Image url for ${alt} - ${src}\n`;
-                    }
+        // Updated Image Processing
+        let imageEmbeddings = [];
+
+        const imagePromises = $('img').map(async (index, element) => {
+            let src = $(element).attr('src');
+            const alt = $(element).attr('alt') || "No alt text available";
+
+            if (src) {
+                // Convert relative URLs to absolute URLs
+                if (!src.startsWith('http') && !src.startsWith('ftp')) {
+                    src = new URL(src, link).href;
                 }
-            });
 
-            const intermediateChunk = chunkText(text, 5000);
-            for (const ic of intermediateChunk) {
-                chunks.push(`The reference url for the following data is ${link} - ${ic} \n ${imageUrls}`);
+                try {
+                    // Fetch image and encode in base64
+                    const imageResponse = await fetch(src);
+                    if (!imageResponse.ok) throw new Error(`Failed to fetch image: ${src}`);
+
+                    const imageBuffer = await imageResponse.arrayBuffer();
+                    const imageBase64 = Buffer.from(imageBuffer).toString('base64');
+
+                    // Generate image embedding using OpenAI CLIP model
+                    const embeddingRes = await openai.embeddings.create({
+                        model: "text-embedding-ada-002", // Use CLIP or a vision model
+                        input: imageBase64,
+                    });
+
+                    const [{ embedding }] = embeddingRes.data.data;
+
+                    // Store image details and embeddings
+                    imageEmbeddings.push({
+                        imageUrl: src,
+                        alt,
+                        embedding,
+                    });
+
+                } catch (err) {
+                    console.warn(`Error processing image: ${src}`, err);
+                }
             }
+        }).get();
 
+        await Promise.all(imagePromises);
+
+        const intermediateChunk = chunkText(text, 5000);
+        for (const ic of intermediateChunk) {
+            chunks.push(`The reference url for the following data is ${link} - ${ic}`);
+        }
 
         if (chunks.length > 0) {
             const embeddings = [];
@@ -80,19 +107,19 @@ export async function POST(req) {
                 const embeddingRes = await openai.embeddings.create({
                     model: 'text-embedding-ada-002',
                     input: chunk,
-                })
+                });
 
-        
                 if (embeddingRes) {
-                    const [{ embedding }] = embeddingRes.data
+                    const [{ embedding }] = embeddingRes.data;
                     embeddings.push({
                         chunk,
                         embedding,
                     });  
                 }
             }
-            if (embeddings.length > 0) {
-                const result = await db.collection('knowledge_base').insertOne({ embeddings });
+
+            if (embeddings.length > 0 || imageEmbeddings.length > 0) {
+                const result = await db.collection('knowledge_base').insertOne({ embeddings, imageEmbeddings });
                 const prevLinks = await db.collection('links').find().toArray();
                 const workLinks = prevLinks[0].links;
                 let updatedLinks = [];
@@ -102,11 +129,14 @@ export async function POST(req) {
                             return {
                                 link,
                                 status: 'completed'
-                            }
+                            };
                         } else {
-                            return item
+                            return {
+                                link: item.link,
+                                status: item.status === 'completed' ? 'completed' : 'pending',
+                            };
                         }
-                    })
+                    });
 
                     await db.collection('links').updateOne(
                         {},
