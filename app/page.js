@@ -38,7 +38,7 @@ export default function Home() {
             </div>
         </div>
 
-        <div id="trust" className="flex flex-col justify-center items-center gap-15 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
+        {/* <div id="trust" className="flex flex-col justify-center items-center gap-15 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
             <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'><span className="bg-purple-700 text-white px-2 rounded-md">Trusted</span> by <span className="font-bold text-purple-700">100+</span> Businesses. </h1>
             <div className="flex flex-col gap-10 items-center justify-center py-10 shadow-lg border-2 border-gray-100 w-full md:w-[70%] px-10 mt-[4rem]">
               <div className="flex flex-col md:flex-row gap-2 md:border-b-2 border-gray-200 pb-10 px-2 w-full">
@@ -77,7 +77,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* How it works */}
 
@@ -253,14 +253,14 @@ export default function Home() {
 
 
 
-          <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'>Select a plan that suits <span className="bg-purple-700 text-white px-2 rounded-md">your requirements</span> </h1>
+          <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'>Select a plan that suits <span className="bg-purple-700 text-white px-2 rounded-md">your requirements.</span> Pay just once! </h1>
                                   <div className='flex justify-center'>
                                       <Tabs defaultValue="one-time" className="flex justify-center w-full mt-10">
                                           <div className='flex flex-col gap-5'>
                                               <div className='flex justify-center w-full'>
-                                                  <TabsList>
+                                                  {/* <TabsList>
                                                       <TabsTrigger value="one-time">One time payment</TabsTrigger>
-                                                  </TabsList>  
+                                                  </TabsList>   */}
                                               </div>
                                           
                                           
