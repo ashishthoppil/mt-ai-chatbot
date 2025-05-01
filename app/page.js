@@ -82,61 +82,62 @@ export default function Home() {
           {/* How it works */}
 
           <div id="how-it-works" className="flex flex-col justify-center items-center gap-16 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
-            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>How <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI</span> works.</h1>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>How <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI</span> Works</h1>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-10 w-full">
+              <div className="flex flex-col gap-2 w-[50%]">
+                <h1 className='text-[20px] md:text-[26px] text-center md:text-left font-bold text-black'>Breaking down the procedure</h1>
+                <Accordion type="single" collapsible className="w-full border-2 border-gray-200 p-2 px-5 rounded-sm shadow-md mt-5">
+                  <AccordionItem className='' key={1} value={1}>
+                    <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-center gap-2'><AppRegistrationRounded /> Register with Us.</div></AccordionTrigger>
+                      <AccordionContent>
+                        <div className='flex justify-between items-start'>
+                          <div className='w-[full]'>Create an account with us. It's free and does not require a credit card!</div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem className='' key={2} value={2}>
+                    <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><BrainCircuitIcon /> Train the AI by importing your own data.</div></AccordionTrigger>
+                      <AccordionContent>
+                        <div className='flex justify-between items-start'>
+                          <div className='w-[full]'>Upload your files or add your website links and train the AI Chatbot yourself.</div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem className='' key={3} value={3}>
+                    <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ShapesIcon /> Customize the Chatbot to match the theme of your website.</div></AccordionTrigger>
+                      <AccordionContent>
+                        <div className='flex justify-between items-start'>
+                          <div className='w-[full]'>Customize your chatbot from branding, colors and behaviours and much more.</div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem className='' key={4} value={4}>
+                    <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><Code2Icon /> Embed the code on your website.</div></AccordionTrigger>
+                      <AccordionContent>
+                        <div className='flex justify-between items-start'>
+                          <div className='w-[full]'>After customization and training the AI chatbot, copy the code snippet from the your dashboard and embed it into your website or web application.</div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem className='border-0' key={5} value={5}>
+                    <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ClipboardCheckIcon /> Start handling customers, monitoring insights and chats.</div></AccordionTrigger>
+                      <AccordionContent>
+                        <div className='flex justify-between items-start'>
+                          <div className='w-[full]'>Let Kulfi do it's work and efficiently handle customers and website visitors. Gain insights and track conversations.</div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+              </div>
+
               <video className="w-full md:w-[50%] border-4 border-purple-800 rounded-lg" autoPlay muted controls>
                 <source src="kulfi-ai.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <div className="flex flex-col gap-2">
-                <h1 className='text-[20px] md:text-[26px] text-center md:text-left font-bold text-black'>Breaking down the procedure</h1>
-                <Accordion type="single" collapsible className="w-full border-2 border-gray-200 p-2 px-5 rounded-sm shadow-md mt-5">
-                <AccordionItem className='' key={1} value={1}>
-                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-center gap-2'><AppRegistrationRounded /> Register with Us.</div></AccordionTrigger>
-                    <AccordionContent>
-                      <div className='flex justify-between items-start'>
-                        <div className='w-[full]'>Create an account with us. It's free and does not require a credit card!</div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem className='' key={2} value={2}>
-                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><BrainCircuitIcon /> Train the AI by importing your own data.</div></AccordionTrigger>
-                    <AccordionContent>
-                      <div className='flex justify-between items-start'>
-                        <div className='w-[full]'>Upload your files or add your website links and train the AI Chatbot yourself.</div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem className='' key={3} value={3}>
-                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ShapesIcon /> Customize the Chatbot to match the theme of your website.</div></AccordionTrigger>
-                    <AccordionContent>
-                      <div className='flex justify-between items-start'>
-                        <div className='w-[full]'>Customize your chatbot from branding, colors and behaviours and much more.</div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem className='' key={4} value={4}>
-                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><Code2Icon /> Embed the code on your website.</div></AccordionTrigger>
-                    <AccordionContent>
-                      <div className='flex justify-between items-start'>
-                        <div className='w-[full]'>After customization and training the AI chatbot, copy the code snippet from the your dashboard and embed it into your website or web application.</div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem className='border-0' key={5} value={5}>
-                  <AccordionTrigger className='text-[14px] font-semibold'><div className='flex items-start gap-2'><ClipboardCheckIcon /> Start handling customers, monitoring insights and chats.</div></AccordionTrigger>
-                    <AccordionContent>
-                      <div className='flex justify-between items-start'>
-                        <div className='w-[full]'>Let Kulfi do it's work and efficiently handle customers and website visitors. Gain insights and track conversations.</div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-              </Accordion>
-              </div>
               
             </div>
           </div>
@@ -144,7 +145,7 @@ export default function Home() {
           {/* Knowledge Base */}
           <div className='flex flex-col md:flex-col gap-10 items-center justify-center w-full md:h-[88vh] py-[2rem] md:py-[5rem] mt-10 md:mt-[10rem] text-white bg-white rounded-[30px] px-[40px] md:px-[80px]'>
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
-            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>AI Chatbots that run on <span className="bg-purple-700 text-white px-2 rounded-md">your own data.</span></h1>
+            <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>AI Chatbot that runs on <span className="bg-purple-700 text-white px-2 rounded-md">your own data.</span></h1>
 
               <p className='mt-4 md:mt-5 text-[14px] md:text-[16px] font-thin text-gray-500 text-center md:text-left'>You control what the AI understands.</p>
             </div>
@@ -154,10 +155,12 @@ export default function Home() {
                 <h1 className='text-purple-800 font-bold text-[24px] md:text-[1.8rem] leading-[2.5rem]'></h1>
                 <p className='text-[16px] md:text-[26px] font-semibold text-gray-500 text-center md:text-left'>Built for Simplicity, Customization, and Scalable Interaction.</p>
                 <div className='flex flex-col gap-5 md:gap-5 text-[18px] px-[10px] mt-8 md:px-0'>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Scrape website pages.</p>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Upload multiple PDF documents.</p>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Manage your own data.</p>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Data segregated by organisation.</p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />
+                    Instantly Train Your Chatbot with Your Website.
+                  </p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Upload Multiple PDFs for Smarter Responses.</p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Full Control Over Your Knowledge Base.</p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Data Separated by Organization for Multi-Business Use.</p>
                   <div className='flex justify-center my-5 md:justify-start'>
                     <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>                
                   </div>
@@ -253,14 +256,14 @@ export default function Home() {
 
 
 
-          <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'>Select a plan that suits <span className="bg-purple-700 text-white px-2 rounded-md">your requirements.</span> Pay just once! </h1>
-                                  <div className='flex justify-center'>
+          {/* <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black mt-[5rem]'>Select a plan that suits <span className="bg-purple-700 text-white px-2 rounded-md">your requirements.</span> Pay just once! </h1> */}
+                                  {/* <div className='flex justify-center'>
                                       <Tabs defaultValue="one-time" className="flex justify-center w-full mt-10">
                                           <div className='flex flex-col gap-5'>
                                               <div className='flex justify-center w-full'>
-                                                  {/* <TabsList>
+                                                  <TabsList>
                                                       <TabsTrigger value="one-time">One time payment</TabsTrigger>
-                                                  </TabsList>   */}
+                                                  </TabsList>  
                                               </div>
                                           
                                           
@@ -301,10 +304,8 @@ export default function Home() {
                                           </TabsContent>
                                           </div>
                                       </Tabs>
-          
-                                      
-                                  </div>
-                                  <div className='flex flex-col items-center justify-center gap-10 w-full mt-[6rem] px-[5px] md:px-[3rem]'>
+                                  </div> */}
+                                  {/* <div className='flex flex-col items-center justify-center gap-10 w-full mt-[6rem] px-[5px] md:px-[3rem]'>
                                       <h3 className="text-[24px] font-bold text-gray-900 mb-2 text-center">Plan comparison</h3>
           
                                       <Table className='border-2 border-purple-200 w-full'>
@@ -418,16 +419,10 @@ export default function Home() {
                                                   <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                               </TableRow>
           
-                                              {/* <TableRow>
-                                                  <TableCell className='font-bold text-left pl-2'>Priority support</TableCell>
-                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                                  <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                                  <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                              </TableRow> */}
+                                              
                                           </TableBody>
                                       </Table>
-                                      </div>
+                                      </div> */}
           {/* How it works */}
           {/* <div className='flex flex-col gap-5 items-center justify-between w-full md:h-[88vh] py-[2rem] md:pt-[5rem] md:pb-[1rem] mt-10 md:mt-0 rounded-[30px] px-[20px] md:px-[80px]'>
             <div className='flex flex-col items-center gap-3'>

@@ -180,7 +180,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                                 </div>
                             </div>: <></>}
                             
-                        {leadSubmitted && leadForm.length > 0 ? <div className='flex flex-col justify-center items-center gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
+                        {leadSubmitted ? <div className='flex flex-col justify-center items-center gap-[15px] rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md w-[90%] md:w-[75%]' style={{ backgroundColor: botInfo.lColor }}>
                                         <CheckCircle style={{ color: botInfo.color }} />
                                         <h3 style={{ color: botInfo.color }} className='text-xs'>Thank you for your interest, our team will get back to you shortly.</h3>
                         </div> : <></>}
@@ -212,7 +212,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                         onSubmit={(event) => {
                             if (!isLoading) {
                                 handleSubmit(event);
-                                // setLeadForm([]);
+                                setLeadForm([]);
                                 setLeadSubmitted(false);
                                 inputRef.current.blur();
                                 if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
@@ -231,7 +231,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                                 onKeyDown={(event) => { 
                                         if (event.key === 'Enter') { 
                                             handleSubmit(event); 
-                                            // setLeadForm([]);
+                                            setLeadForm([]);
                                             setLeadSubmitted(false);
                                             inputRef.current.blur();        
                                             if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {

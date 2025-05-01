@@ -139,9 +139,9 @@ export async function POST(request) {
       myToolSet = { 
         ...myToolSet,
         create_lead: tool({
-          description: 'When a user wants a service or a product. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
+          description: 'Use this tool when a user wants a service, help, support or wants to buy a product. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
           parameters: z.object({ service: z.string().describe('The service/product queried by user') }),
-          execute: async ({ message }) =>  message,
+          execute: async ({ service }) =>  service,
         })
        }
     }
@@ -155,6 +155,7 @@ export async function POST(request) {
     });
     if (initialResponse.toolCalls && initialResponse.toolResults) {
       if (initialResponse.toolCalls[0]) {
+        console.log('initialResponse.toolCalls[0].toolName', initialResponse.toolCalls[0].toolName);
         if (initialResponse.toolCalls[0].toolName === 'create_lead') {
 
           const intentResult = await streamText({
