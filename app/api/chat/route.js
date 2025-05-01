@@ -155,7 +155,6 @@ export async function POST(request) {
     });
     if (initialResponse.toolCalls && initialResponse.toolResults) {
       if (initialResponse.toolCalls[0]) {
-        console.log('initialResponse.toolCalls[0].toolName', initialResponse.toolCalls[0].toolName);
         if (initialResponse.toolCalls[0].toolName === 'create_lead') {
 
           const intentResult = await streamText({
@@ -255,7 +254,6 @@ export async function POST(request) {
     
     const responseStream = result.toDataStreamResponse();
     
-    console.log('userIduserId', userId);
     fetch(`${BASE_URL}/api/query-type`, {
       method: 'POST',
       headers: {

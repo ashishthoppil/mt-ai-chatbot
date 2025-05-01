@@ -303,7 +303,6 @@ export default function Dashboard() {
         });
         const data = await res.json();
         if (data.data) {
-            console.log('data.data', data.data)
             setChats(data.data);
         } else {
             setChats([]);

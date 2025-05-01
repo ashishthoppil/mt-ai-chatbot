@@ -25,7 +25,6 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
     const messageEnd = useRef();
     const inputRef = useRef();
  
-    console.log('botInfobotInfo', botInfo);
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: `/api/chat`,
         body: {
@@ -78,6 +77,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
     // }
 
     const eventTracker = async () => {
+        setSessionTracked(true)
         await fetch(`/api/track-event?id=${botInfo.userId}&organization=${botInfo.organization}&event=session&user=${botInfo.userId}`, {
             method: 'GET'
         });
@@ -216,10 +216,9 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                                 // setLeadForm([]);
                                 // setLeadSubmitted(false);
                                 inputRef.current.blur();
-                                if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
+                                if (!sessionTracked && !botInfo.isSandBox) {
                                     eventTracker();
                                 }
-                                setSessionTracked(true);
                             }
                         }}>
                         <div style={{ backgroundColor: botInfo.lColor, color: botInfo.color }} className='flex items-center rounded-lg py-[10px] px-[10px] w-[100%]'>
@@ -229,16 +228,16 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                                 className={`w-[90%] outline-none resize-none text-[14px] ${tinycolor(botInfo.lColor).getLuminance() < 0.3 ? 'placeholder-gray-500' : 'placeholder-gray-500'}`}
                                 value={input}
                                 onChange={handleInputChange}
-                                onKeyDown={(event) => { 
+                                onKeyDown={(event) => {
                                         if (event.key === 'Enter') { 
                                             handleSubmit(event); 
                                             // setLeadForm([]);
                                             // setLeadSubmitted(false);
-                                            inputRef.current.blur();        
-                                            if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
+                                            inputRef.current.blur();  
+
+                                            if (!sessionTracked && !botInfo.isSandBox) {
                                                 eventTracker();
                                             }
-                                            setSessionTracked(true);
                                         }
                                     }
                                 }

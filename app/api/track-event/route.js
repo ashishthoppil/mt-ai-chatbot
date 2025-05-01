@@ -31,7 +31,7 @@ export async function GET(req, res) {
     const account = await db.collection('account').find().toArray();
 
 
-    if (PLANS.BASIC.includes(account[0].subscriptionName)) {
+    if (event !== 'session' && PLANS.BASIC.includes(account[0].subscriptionName)) {
       return NextResponse.json({ success: false, message: 'Not authorized, Please upgrade plan to track events' }, { headers });
     }
 

@@ -87,9 +87,10 @@
 
 
         const iframe = document.createElement('iframe');
-
+        // http://localhost:3000/test?o=A1%20Marketing&al=l&cw=400&c=1E429F
         iframe.style.overflow = 'none';
-        iframe.src = `https://kulfi-ai.com/chat?o=${organization}`;
+        // iframe.src = `https://kulfi-ai.com/chat?o=${organization}`;
+        iframe.src = `http://localhost:3000/chat?o=${organization}`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
