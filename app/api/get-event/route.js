@@ -172,7 +172,7 @@ export async function GET(request) {
       const leadsDocs = await leadsCursor.toArray();
       return NextResponse.json({ success: true, data: leadsDocs });
     } else if (event === 'count') {
-        const count = await db.collection('chats').count();
+        const count = await db.collection('analytics').find({ "event": "session" }).count();
         return NextResponse.json({ success: true, data: count });
     } else if (event === 'engagement') {
         const clickCursor = await db.collection('analytics').find({ "event": "click" });

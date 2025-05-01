@@ -25,10 +25,11 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
     const messageEnd = useRef();
     const inputRef = useRef();
  
+    console.log('botInfobotInfo', botInfo);
     const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
         api: `/api/chat`,
         body: {
-            id: botInfo.id,
+            id: botInfo.userId,
             org: botInfo.organization,
             userId: botInfo.userId,
         },
@@ -77,7 +78,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
     // }
 
     const eventTracker = async () => {
-        await fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=session&user=${botInfo.userId}`, {
+        await fetch(`/api/track-event?id=${botInfo.userId}&organization=${botInfo.organization}&event=session&user=${botInfo.userId}`, {
             method: 'GET'
         });
     }
@@ -87,7 +88,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
             method: 'GET',
         });
         const locationInfo = await response.json();
-        const track = fetch(`/api/track-event?id=${botInfo.id}&organization=${botInfo.organization}&event=location&flag=${locationInfo.flag.img}&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
+        const track = fetch(`/api/track-event?id=${botInfo.userId}&organization=${botInfo.organization}&event=location&flag=${locationInfo.flag.img}&country=${locationInfo.country}&device=${isMobile ? 'Mobile' : 'Desktop'}`, {
             method: 'GET'
         })
     }
@@ -212,8 +213,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                         onSubmit={(event) => {
                             if (!isLoading) {
                                 handleSubmit(event);
-                                setLeadForm([]);
-                                setLeadSubmitted(false);
+                                // setLeadForm([]);
+                                // setLeadSubmitted(false);
                                 inputRef.current.blur();
                                 if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
                                     eventTracker();
@@ -231,8 +232,8 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                                 onKeyDown={(event) => { 
                                         if (event.key === 'Enter') { 
                                             handleSubmit(event); 
-                                            setLeadForm([]);
-                                            setLeadSubmitted(false);
+                                            // setLeadForm([]);
+                                            // setLeadSubmitted(false);
                                             inputRef.current.blur();        
                                             if (!sessionTracked && !botInfo.isSandBox && !PLANS.BASIC.includes(botInfo.subscriptionName)) {
                                                 eventTracker();

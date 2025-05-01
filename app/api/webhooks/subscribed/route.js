@@ -90,6 +90,21 @@ export async function POST(req) {
       fileSizeLimit: 250,
       linkLimit: 500
     },
+    {
+      name: 'Kulfi AI - Starter (One Time)',
+      count: 500,
+      fileLimit: 1,
+      fileSizeLimit: 25,
+      linkLimit: 10
+    },
+    {
+      name: 'Kulfi AI - Pro (One Time)',
+      count: 2000,
+      fileLimit: 5,
+      fileSizeLimit: 150,
+      linkLimit: 30
+    },
+    
   ];
 
   const addons = [
@@ -133,7 +148,7 @@ export async function POST(req) {
               fileSizeLimit: selectedPlan.length > 0 ? selectedPlan[0].fileSizeLimit : 0,
               linkLimit: selectedPlan.length > 0 ? selectedPlan[0].linkLimit : 0,
               subscribed_at: new Date(payload.data.attributes.created_at),
-              brandingRemoved : selectedPlan[0].name === 'Kulfi AI - Advanced',
+              brandingRemoved : selectedPlan[0].name === 'Kulfi AI - Pro (One Time)',
               freeTrialEnd: null,
               isServiced: false,
               support: false

@@ -27,7 +27,7 @@ export async function POST(req, res) {
           password: hashedpass,
           createdAt: new Date(),
           isSubscribed: true,
-          subscriptionName: 'Kulfi AI - Advanced',
+          subscriptionName: 'Kulfi AI - Pro (One Time)',
           chatCount: 500,
           fileLimit: 1,
           fileSizeLimit: 100,

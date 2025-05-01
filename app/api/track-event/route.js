@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 export async function GET(req, res) {
 
   const headers = new Headers();
-  headers.set("Access-Control-Allow-Origin", "https://ashishbthoppil.netlify.app"); // Allow all origins
+  headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
   headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 

@@ -53,7 +53,6 @@
         `;
         var { organization, al, cw, c } = window.chatbotConfig || {};
 
-        const userId = Math.floor((Math.random() * 9999999) + 1);
 
         document.head.appendChild(style);
         
@@ -61,7 +60,7 @@
     
         // 2. Create the main container for the chatbot
         const container = document.createElement('div');
-        container.className = 'my-chatbot-container flex flex-col items-end';
+        container.className = `my-chatbot-container flex flex-col ${al === 'l' ? 'items-start' : 'items-end' }`;
 
         if (al === 'l') {
             container.style.left = '15px';
@@ -90,7 +89,7 @@
         const iframe = document.createElement('iframe');
 
         iframe.style.overflow = 'none';
-        iframe.src = `https://kulfi-ai.com/chat?o=${organization}&u=${userId}`;
+        iframe.src = `https://kulfi-ai.com/chat?o=${organization}`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
@@ -117,7 +116,7 @@
         chatButton.style.padding = `15px`
 
         const message = document.createElement('div');
-        message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 border-gray- rounded-lg shadow-lg animate-bounce'
+        message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 rounded-lg shadow-lg animate-bounce'
         message.innerHTML = 'Hi, how can I assist you?'
         message.style.position = 'relative';
         message.style.bottom = '10px';

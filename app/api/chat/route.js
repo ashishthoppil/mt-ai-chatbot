@@ -240,10 +240,12 @@ export async function POST(request) {
         4. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks.
         5. If the user asks for human interaction, or you are not able to resolve the user query, politely ask the user to call or email at ${escalation}.
 
-        ${!PLANS.BASIC.includes(dashboard.data.subscriptionName) && (showimg === 'true' || showimg === true) ? getImagePrompt() : ''}
         ${showsource === 'true' || showsource === true ? getSourcePrompt() : ''}
       `
     }, ...messages];
+
+    // !PLANS.BASIC.includes(dashboard.data.subscriptionName) && (showimg === 'true' || showimg === true) ? getImagePrompt() : ''
+
   
     const result = await streamText({
       model: openai('gpt-4o-mini'),
@@ -253,6 +255,7 @@ export async function POST(request) {
     
     const responseStream = result.toDataStreamResponse();
     
+    console.log('userIduserId', userId);
     fetch(`${BASE_URL}/api/query-type`, {
       method: 'POST',
       headers: {

@@ -23,7 +23,7 @@ export default function Chat() {
       const pathname = window.location.href;
       var url = new URL(pathname);
       const id = url.searchParams.get('id');
-      const userId = url.searchParams.get('u');
+      const userId = Math.floor((Math.random() * 9999999) + 1);
       const organization = url.searchParams.get('o');
       const isSandBox = url.searchParams.get('sandbox');
 

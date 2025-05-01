@@ -303,6 +303,7 @@ export default function Dashboard() {
         });
         const data = await res.json();
         if (data.data) {
+            console.log('data.data', data.data)
             setChats(data.data);
         } else {
             setChats([]);
@@ -329,11 +330,13 @@ export default function Dashboard() {
     }, [data, sessionSelector]);
 
     useEffect(() => {
-        if (data && !PLANS.BASIC.includes(data.subscriptionName)) {
-            getEngagementRate()
+        if (data) {
+            if (!PLANS.BASIC.includes(data.subscriptionName)) {
+                getEngagementRate()
+                getLocation()
+                getLeads()
+            }
             getMessageCount()
-            getLocation()
-            getLeads()
             loadChats();
         }
     }, [data])
@@ -527,7 +530,11 @@ export default function Dashboard() {
                     Icon: Code
                 },
             ];
-    
+            items.push({
+                id: 4,
+                title: 'Chats',
+                Icon: ChatBubbleOutlineOutlined
+            });
             if (!PLANS.BASIC.includes(data.subscriptionName) && data.isSubscribed) {
                 items.push({
                     id: 2,
@@ -539,24 +546,22 @@ export default function Dashboard() {
                     title: 'Leads',
                     Icon: NotebookTabsIcon
                 });
-                items.push({
-                    id: 4,
-                    title: 'Chats',
-                    Icon: ChatBubbleOutlineOutlined
-                });
 
-                if (!PLANS.PRO.includes(data.subscriptionName)) {
-                    items.push({
-                        id: 5,
-                        title: 'Articles',
-                        Icon: Newspaper
-                    });
-                    items.push({
-                        id: 6,
-                        title: 'FAQs',
-                        Icon: QuestionAnswer
-                    });
-                }
+                items.push({
+                    id: 5,
+                    title: 'Articles',
+                    Icon: Newspaper
+                });
+                items.push({
+                    id: 6,
+                    title: 'FAQs',
+                    Icon: QuestionAnswer
+                });
+                
+
+                // if (!PLANS.PRO.includes(data.subscriptionName)) {
+                    
+                // }
             }
 
             if (data.isSubscribed) {
@@ -989,6 +994,14 @@ export default function Dashboard() {
         }
     }
 
+    const getMsgContent = (message) => {
+        if (message[0] === '[') {
+            return 'Lead form was displayed here.'
+        } else {
+            return message
+        }
+    }
+
     const getContent = (section, data) => {
         if (section === 'Code') {
             return (
@@ -1249,10 +1262,10 @@ export default function Dashboard() {
                             <RadioGroupItem onClick={(e) => leadSaveHandler('webhook')} value="webhook" id="webhook" />
                             <label htmlFor="webhook">Webhook</label>
                         </div> : <></>}
-                        {data && !PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <div className="flex items-center space-x-2">
+                        {/* {data && !PLANS.BASIC.includes(data.subscriptionName) && !PLANS.PRO.includes(data.subscriptionName) && !PLANS.GROWTH.includes(data.subscriptionName) ? <div className="flex items-center space-x-2">
                             <RadioGroupItem onClick={(e) => leadSaveHandler('hubspot')} value="hubspot" id="hubspot" />
                             <label htmlFor="hubspot">Use hubspot form</label>
-                        </div> : <></>}
+                        </div> : <></>} */}
                     </RadioGroup>
                     {leadSave === 'kulfi' || leadSave === 'email' || leadSave === 'webhook' ? <div className='flex gap-5'>
                         <div ref={leadRef} className='flex flex-col gap-2 border-2 border-dashed border-gray-200 p-5 w-full rounded-md'>
@@ -1392,7 +1405,7 @@ export default function Dashboard() {
                                     <div className={`flex text-slate-900 rounded-lg gap-[15px] py-[10px] px-[20px] border-[1px] border-gray-100 shadow-md text-purple-800 bg-purple-100`}>
                                         {data.botAvatar ? <img className='h-[30px] max-w-[30px] rounded-lg object-cover p-1' src={`data:image/jpeg;base64,${data.botAvatar}`} /> :
                                         <span className='bg-white rounded-full py-[5px] px-[12px] h-[32px]'>{data.botName[0]}</span>}
-                                        <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{msg.content}</ReactMarkdown>
+                                        <ReactMarkdown rehypePlugins={[rehypeRaw]} className={`flex flex-col justify-center w-auto text-xs`}>{getMsgContent(msg.content)}</ReactMarkdown>
                                     </div>}</>
                                 </div>
                                 ))}
@@ -1566,7 +1579,7 @@ export default function Dashboard() {
                         </div> : <></>}
 
                         <div className='flex items-center gap-2 w-[50%] mt-10 text-[14px]'>
-                            {!PLANS.BASIC.includes(data.subscriptionName) ? <div className="flex gap-4 w-[50%]">
+                            {/* {!PLANS.BASIC.includes(data.subscriptionName) ? <div className="flex gap-4 w-[50%]">
                                 <Switch 
                                     checked={data.showimg}
                                     onCheckedChange={(e) => {
@@ -1576,7 +1589,7 @@ export default function Dashboard() {
                                 <label htmlFor="botname" className="text-left">
                                     Show images
                                 </label>
-                            </div> : <></>}
+                            </div> : <></>} */}
                             <div className="flex gap-4 w-[50%]">
                                 <Switch 
                                     checked={data.showsource}
@@ -1739,7 +1752,7 @@ export default function Dashboard() {
                             </TabsContent>
                         </Tabs> 
                     </div>
-                    <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300 mt-5'>
+                    {/* <div className='flex flex-col gap-4 pt-10 text-[14px] md:text-[16px] border-t-[1px] border-gray-300 mt-5'>
                         <h3 className="text-[22px] font-bold text-gray-500 mb-2">Custom Responses</h3>
                         <p className='text-[14px]'>You can add your custom responses here.</p>
                         <div className='flex flex-col gap-5 pt-10 text-[14px]'>
@@ -1824,7 +1837,7 @@ export default function Dashboard() {
                                 </Table>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </>
             )
         } else if (section === 'Articles') {
@@ -2020,34 +2033,34 @@ export default function Dashboard() {
                                 </TabsContent>
                                 <TabsContent value='one-time'>
                                     <div className='flex flex-col items-center md:flex-row gap-5 md:gap-2 w-full'>
-                                        <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                        {/* <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Basic</h3>
                                             <p>Get started with essential features.</p>
                                             <p><span className='text-[28px] font-bold'>$29</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/53723a47-4e9d-4ab9-badb-17ba68b6a638?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
-                                        </div>
-                                        <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
+                                        </div> */}
+                                        {/* <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
                                             <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro</h3>
                                             <p>Unlock more power and flexibility.</p>
                                             <p><span className='text-[28px] font-bold'>$79</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/cef38478-3f70-4d1a-8b9d-a0e9526c6fec?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
-                                        </div>
-                                        <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
-                                            <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Growth <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
-                                            <p>Scale your business with advanced tools.</p>
+                                        </div> */}
+                                        <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[50%]'>
+                                            <h3 className="flex items-center gap-2 text-[22px] font-bold text-gray-900 mb-2">Starter</h3>
+                                            <p>Get started with essential features.</p>
                                             <p><span className='text-[28px] font-bold'>$99</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/67934ab3-17f4-4259-bb3d-43fc68d65daa?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Purchase</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
 
                                         </div>
-                                        <div className='flex flex-col gap-2 border-[2px] border-gray-100 shadow-lg p-5 rounded-md w-[80%] md:w-[25%]'>
-                                            <h3 className="text-[22px] font-bold text-gray-900 mb-2">Advanced</h3>
-                                            <p>Scale your business with advanced tools.</p>
-                                            <p><span className='text-[28px] font-bold'>$249</span></p>
+                                        <div className='flex flex-col gap-2 border-[2px] border-purple-800 shadow-lg p-5 rounded-md w-[80%] md:w-[50%]'>
+                                            <h3 className="text-[22px] font-bold text-gray-900 mb-2">Pro <span className='px-2 py-1 bg-purple-800 text-white rounded-md shadow-lg text-[10px]'>Recommended</span></h3>
+                                            <p>Scale your business with our advanced tools.</p>
+                                            <p><span className='text-[28px] font-bold'>$198</span></p>
                                             <a className='flex justify-center mt-5 bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-white hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold' href={`https://kulfi.lemonsqueezy.com/buy/74ddf99f-f772-47a0-ab9f-2ce27c295662?checkout[custom][organization]=${localStorage.getItem('organization')}`}>Subscribe</a>  
                                             <button className='flex items-center text-purple-800 text-[14px] justify-center'>Compare plans <KeyboardDoubleArrowDown className='text-purple-800 h-4' /> </button>
                                         </div>
@@ -2065,112 +2078,83 @@ export default function Dashboard() {
                                 <TableHeader className='bg-purple-200'>
                                     <TableRow>
                                         <TableHead className=''></TableHead>
-                                        <TableHead className=''>Basic</TableHead>
+                                        <TableHead className=''>Starter</TableHead>
                                         <TableHead className=''>Pro</TableHead>
-                                        <TableHead className=''>Growth</TableHead>
-                                        <TableHead className=''>Advanced</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Chats</TableCell>
                                         <TableCell className=''>500</TableCell>
-                                        <TableCell className=''>1000</TableCell>
-                                        <TableCell className=''>2500</TableCell>
-                                        <TableCell className=''>5000</TableCell>
+                                        <TableCell className=''>2000</TableCell>
                                     </TableRow>
                                     <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Chat logs</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                        <TableCell className='font-bold text-left pl-2'>Show sources</TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='font-bold text-left pl-2'>Access chats</TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Lead capturing</TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''>Send as Email, Lead Form Builder</TableCell>
-                                        <TableCell className=''>Send as Email, Lead Form Builder</TableCell>
-                                        <TableCell className=''>Send as Email, Webhooks, Hubspot integration, Lead Form Builder</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Customized responses</TableCell>
-                                        <TableCell className=''>3 responses</TableCell>
-                                        <TableCell className=''>5 responses</TableCell>
-                                        <TableCell className=''>10 responses</TableCell>
-                                        <TableCell className=''>Unlimited</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Show images</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                        
                                     </TableRow>
                                     
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Show sources</TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
 
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Analytics</TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''>Basic</TableCell>
-                                        <TableCell className=''>Advanced</TableCell>
-                                        <TableCell className=''>Advanced</TableCell>
+                                        <TableCell className=''>Basic Analytics Data</TableCell>
                                     </TableRow>
 
-                                    <TableRow>
+                                    {/* <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Remove Kulfi AI branding</TableCell>
                                         <TableCell className=''>As add-on</TableCell>
                                         <TableCell className=''>As add-on</TableCell>
                                         <TableCell className=''>As add-on</TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
+                                    </TableRow> */}
 
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Chatbot Customisation & Branding</TableCell>
                                         <TableCell className=''>Basic</TableCell>
-                                        <TableCell className=''>Intermediate</TableCell>
+                                        {/* <TableCell className=''>Intermediate</TableCell> */}
                                         <TableCell className=''>Advanced</TableCell>
-                                        <TableCell className=''>Advanced</TableCell>
+                                        {/* <TableCell className=''>Advanced</TableCell> */}
                                     </TableRow>
 
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>No. of Webpages that can be synced</TableCell>
                                         <TableCell className=''>10 Webpages</TableCell>
                                         <TableCell className=''>30 Webpages</TableCell>
-                                        <TableCell className=''>100 Webpages</TableCell>
-                                        <TableCell className=''>500 Webpages</TableCell>
+                                        {/* <TableCell className=''>100 Webpages</TableCell>
+                                        <TableCell className=''>500 Webpages</TableCell> */}
                                     </TableRow>
 
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Documents upload limit</TableCell>
                                         <TableCell className=''>1 Doc, Maximum 25 MB</TableCell>
-                                        <TableCell className=''>2 Doc, Maximum 50 MB</TableCell>
-                                        <TableCell className=''>5 Doc, Maximum 100 MB</TableCell>
-                                        <TableCell className=''>10 Doc, Maximum 250 MB</TableCell>
+                                        <TableCell className=''>5 Docs, Maximum 150 MB</TableCell>
                                     </TableRow>
 
                                     <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Articles & FAQs</TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                     </TableRow>
 
-                                    <TableRow>
+                                    {/* <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Training session</TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
                                         <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                         <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
+                                    </TableRow> */}
 
                                     {/* <TableRow>
                                         <TableCell className='font-bold text-left pl-2'>Priority support</TableCell>
@@ -2189,7 +2173,7 @@ export default function Dashboard() {
                             <div className='flex flex-col items-center md:flex-row justify-between items-center gap-1 p-5 rounded-md shadow-lg border-2 border-gray-100'>
                                 <div className='flex gap-1'>
                                     <h3 className=''>Current Plan:</h3>
-                                    <p className='text-purple-800 font-bold'>{data.freeTrialEnd ? PLANS.ADVANCED[2] : data.subscriptionName}</p>
+                                    <p className='text-purple-800 font-bold'>{data.freeTrialEnd ? PLANS.ADVANCED[3] : data.subscriptionName}</p>
                                 </div>
                                 {/* {!data.freeTrialEnd ? <Dialog open={unsubscribeModalOpen}>
                                     <DialogTrigger asChild>
