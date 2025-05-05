@@ -95,51 +95,51 @@ export async function POST(request) {
     }
 
 
-    const res = await fetch(`${BASE_URL}/api/get-workflows`, {
-      method: 'POST',
-      body: JSON.stringify({
-        organization: org
-      })
-    });
-    const data = await res.json();
+    // const res = await fetch(`${BASE_URL}/api/get-workflows`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     organization: org
+    //   })
+    // });
+    // const data = await res.json();
     let custom_workflows = {};
 
-    if (data.data) {
-      data.data.forEach(element => {
-        custom_workflows = {
-          ...custom_workflows,
-          [element.title.toLowerCase().replace(/\s+/g, '_')]: tool({
-            description: element.condition + `. Example: ${element.phrases}`,
-            parameters: getBodyParams(element.parameters),
-            execute: async (args) => {
-              if (element.webhook) {
-                const response = await fetch(element.webhook, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(args)
-                });
+    // if (data.data) {
+    //   data.data.forEach(element => {
+    //     custom_workflows = {
+    //       ...custom_workflows,
+    //       [element.title.toLowerCase().replace(/\s+/g, '_')]: tool({
+    //         description: element.condition + `. Example: ${element.phrases}`,
+    //         parameters: getBodyParams(element.parameters),
+    //         execute: async (args) => {
+    //           if (element.webhook) {
+    //             const response = await fetch(element.webhook, {
+    //               method: 'POST',
+    //               headers: {
+    //                 'Content-Type': 'application/json',
+    //               },
+    //               body: JSON.stringify(args)
+    //             });
 
-                const data = response.json();
+    //             const data = response.json();
 
-                if (data) {
-                  return element.action
-                }
-              }
-              return element.action
-            }
-          })
-        }
-      });
-    }
+    //             if (data) {
+    //               return element.action
+    //             }
+    //           }
+    //           return element.action
+    //         }
+    //       })
+    //     }
+    //   });
+    // }
     let myToolSet = { ...custom_workflows };
 
     if (!PLANS.BASIC.includes(dashboard.data.subscriptionName) && dashboard.data.leadForm?.length && dashboard.data.leadSave) {
       myToolSet = { 
         ...myToolSet,
         create_lead: tool({
-          description: 'Use this tool when a user wants a service, help, support or wants to buy a product. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
+          description: 'Use this tool when a user wants a service, help, support or wants to buy a product. Do not use this tool when the user simply enquires about the product/service. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
           parameters: z.object({ service: z.string().describe('The service/product queried by user') }),
           execute: async ({ service }) =>  service,
         })

@@ -56,6 +56,7 @@ export async function POST(req) {
             result = await db.collection('chats').insertOne({
               queryType: conversationTypeRes.text,
               ip: ipData.ip,
+              chat_id: data.id,
               country: ipData.country,
               flag: ipData.flag,
               messages: data.messages
