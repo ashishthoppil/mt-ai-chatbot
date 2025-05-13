@@ -1,7 +1,7 @@
 'use client';
 
-import { ArrowCircleLeftRounded, ArrowCircleRightOutlined, ArrowLeftOutlined, ArrowLeftRounded, CheckBox, CheckCircle, CheckCircleOutline, CheckOutlined, SelectAllRounded, Timer } from '@mui/icons-material';
-import { LucideEye, LucideEyeClosed } from 'lucide-react';
+import { ArrowCircleLeftRounded, ArrowCircleRightOutlined, ArrowLeftOutlined, ArrowLeftRounded, CheckBox, CheckCircle, CheckCircleOutline, CheckOutlined, Instagram, LinkedIn, SelectAllRounded, Timer, X } from '@mui/icons-material';
+import { CopyrightIcon, LucideEye, LucideEyeClosed } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import {
@@ -32,8 +32,8 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
     }
 
     return (
-        <div className='flex flex-col gap-[5rem] justify-center w-full h-[55vh]'>
-            <div className='flex items-center justify-between w-full'>
+        <div className='flex flex-col gap-[3rem] md:gap-[5rem] justify-center w-full h-[55vh]'>
+            <div className='flex flex-col md:flex-row md:items-center items-end gap-10 md:gap-0 justify-between w-full'>
                 <div className='flex gap-5 items-start'>
                     <Link href='/'><ArrowCircleLeftRounded className='text-purple-800 mt-1' /></Link>
                     <div className='flex flex-col gap-4'>
@@ -41,7 +41,7 @@ const Step1 = ({ formData, setFormData, nextStep }) => {
                         <h1 className='font-normal text-sm md:text-md text-gray-500'>This will help us set up the infrastructure for a smooth integration experience.</h1>
                     </div> 
                 </div>
-                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-xs md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='text-xs md:text-md' /></button>
+                <button onClick={submitHandler} className='flex items-center justify-center gap-2 bg-purple-500 hover:bg-purple-400 border-2 border-purple-500 shadow-lg hover:text-white hover:text-purple-800 text-white py-3 w-[150px] duration-200 hover:cursor-pointer rounded-[30px] font-semibold text-md md:text-lg'><span>Next</span><ArrowCircleRightOutlined className='h-5' /></button>
             </div>
             <div className='flex flex-col gap-4 w-full'>
                 <input autoFocus placeholder='Example: Acme Pvt Ltd' onChange={(e) => setFormData({ ...formData, organization: e.target.value })} onKeyDown={(e) => {
@@ -404,11 +404,27 @@ const MultiStepForm = () => {
   return (
         <>
             <Header />
-            <div className='flex justify-center w-full'>            
+            <div className='flex flex-col items-center justify-center w-full'>            
                 <div className='flex flex-col items-start gap-10 bg-white rounded-[20px] md:w-[75%] px-5 py-10 h-[80vh]'>
                     <hr style={{ width: `${(currentStep / 7) * 100}%`, transitionDuration: '1s' }} className='h-1 bg-purple-800 rounded' />
                     {renderStep()}
                 </div>
+                <footer className='flex flex-col gap-5 bottom-0 text-gray-500 py-[20px] w-full'>
+                            <div className="flex justify-center gap-2">
+                              <a target="_blank" href="https://www.instagram.com/kulfi.ai/">
+                                <Instagram className="text-gray-500" />
+                              </a>
+                              <a target="_blank" href="https://www.linkedin.com/company/kulfi-ai">
+                                <LinkedIn className="text-gray-500" />
+                              </a>
+                              <a target="_blank" href="https://x.com/KulfiAi">
+                                <X className="text-gray-500" />
+                              </a>
+                            </div>
+                            <div className="flex justify-center text-xs">
+                              Copyright <CopyrightIcon className="h-4" /> 2025 Kulfi AI.
+                            </div>
+                          </footer>
             </div>
         </>
     )

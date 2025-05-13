@@ -102,7 +102,13 @@ export async function POST(request) {
     //   })
     // });
     // const data = await res.json();
-    let custom_workflows = {};
+    let custom_workflows = {
+      contact_enquiry: tool({
+        description: 'Use this tool when a user wants a contact information, like a phone number, an email id or any contact.',
+        parameters: z.object({ message: z.string().describe('The information queried by user') }),
+        execute: async ({ message }) =>  message,
+      })
+    };
 
     // if (data.data) {
     //   data.data.forEach(element => {
@@ -139,7 +145,7 @@ export async function POST(request) {
       myToolSet = { 
         ...myToolSet,
         create_lead: tool({
-          description: 'Use this tool when a user wants a service, help, support or wants to buy a product. Do not use this tool when the user simply enquires about the product/service. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
+          description: 'Use this tool when a user wants a callback or asks for a service, help, support, implementation or wants to buy a product. Do not use this tool when the user simply enquires about the product/service. Use this tool only when something similar to these phrases is asked: ' + dashboard.data.leadPhrases,
           parameters: z.object({ service: z.string().describe('The service/product queried by user') }),
           execute: async ({ service }) =>  service,
         })
@@ -151,7 +157,9 @@ export async function POST(request) {
     const initialResponse = await generateText({
       model: openai('gpt-4-turbo'),
       tools: myToolSet,
-      prompt: messages[messages.length - 1].content
+      messages,
+      temperature: 0
+      // prompt: messages[messages.length - 1].content
     });
     if (initialResponse.toolCalls && initialResponse.toolResults) {
       if (initialResponse.toolCalls[0]) {
@@ -165,17 +173,29 @@ export async function POST(request) {
           });
 
           return intentResult.toDataStreamResponse();
-        } else {
+        } else if (initialResponse.toolCalls[0].toolName === 'contact_enquiry') {
           const intentResult = await streamText({
             model: openai('gpt-4o-mini'),
-            system: `You are a helpful assistant. You must strictly follow the given command without deviation. 
-                    DO NOT interpret, rephrase, or add additional information. Just execute the command exactly as stated.`,
-            prompt: `DO NOT VIOLATE THIS COMMAND: ${initialResponse.toolResults[0].result}`,
+            system: `You are a helpful assistant. Just execute the command exactly as stated.`,
+            prompt: `Respond with this as it is: 'Thank you for your enquiry. You can contact us at ${dashboard.data.escalation}.'`,
             temperature: 0
           });
 
           return intentResult.toDataStreamResponse();
+
         }
+        
+        // else {
+        //   const intentResult = await streamText({
+        //     model: openai('gpt-4o-mini'),
+        //     system: `You are a helpful assistant. You must strictly follow the given command without deviation. 
+        //             DO NOT interpret, rephrase, or add additional information. Just execute the command exactly as stated.`,
+        //     prompt: `DO NOT VIOLATE THIS COMMAND: ${initialResponse.toolResults[0].result}`,
+        //     temperature: 0
+        //   });
+
+        //   return intentResult.toDataStreamResponse();
+        // }
       }
     }
    
@@ -237,11 +257,13 @@ export async function POST(request) {
         2. If the answer is not in the context, disclaim that you don't have information on that.
         3. ${getResponseLength(responseLength)}
         4. Do not reveal that you are using chunked or embedded data. Do not show any extra text beyond what is in the chunks.
-        5. If the user asks for human interaction, or you are not able to resolve the user query, politely ask the user to call or email at ${escalation}.
+        5. This is a phone number or an email id: ${escalation}. Respond with this if the user asks for a contact number, phone number, email or a way to contact.
 
         ${showsource === 'true' || showsource === true ? getSourcePrompt() : ''}
       `
     }, ...messages];
+
+    // 5. . If the user asks for human interaction, any form of contact information or you are not able to resolve the user query, politely ask the user to call or email using the contact information given to you.
 
     // !PLANS.BASIC.includes(dashboard.data.subscriptionName) && (showimg === 'true' || showimg === true) ? getImagePrompt() : ''
 

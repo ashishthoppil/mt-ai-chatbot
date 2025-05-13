@@ -1278,7 +1278,7 @@ export default function Dashboard() {
                                 <h3 className="font-bold text-purple-800 text-[14px]">Add new field</h3>
                             </button>
                             {leadSave === 'email' ? <div className='flex flex-col gap-2 w-[50%] mt-5'>
-                                <label>Email address to recieve the leads</label>
+                                <label>Email address to receive the leads</label>
                                 <input className='p-2 outline-none border-2 border-gray-200' type='email' placeholder='Enter email address' value={leadEmail} onChange={(e) => setLeadEmail(e.target.value)}/>
                             </div> : <></>}
                             {leadSave === 'webhook' ? <div className='flex flex-col gap-2 w-[50%] mt-5'>
@@ -1558,7 +1558,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex flex-col gap-4 w-full md:w-[50%]">
                                 <label htmlFor="tone" className="text-left text-[14px]">
-                                    Support email/contact Number
+                                    Support Email/Contact Number
                                     {/* (To be shown when the queries are not being resolved or when users ask for human interaction) */}
                                 </label>
                                 <input onChange={(e) => setData((prev) => { return { ...prev, escalation: e.target.value } })} value={data.escalation} placeholder='Example: email@domain.com, (555) 555-1234 etc.' className='p-2 outline-none border-[1px] border-gray-400 rounded-sm text-[14px]' />                            

@@ -1,7 +1,7 @@
 'use client';
 
 import Marquee from "react-fast-marquee";
-import { AppRegistrationRounded, ContentPaste, KeyboardDoubleArrowDown, NextPlanOutlined, NextPlanSharp, PartyMode, Plan } from '@mui/icons-material';
+import { AppRegistrationRounded, ContentPaste, Instagram, KeyboardDoubleArrowDown, LinkedIn, NextPlanOutlined, NextPlanSharp, PartyMode, Plan, X } from '@mui/icons-material';
 import { BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
@@ -446,7 +446,22 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <footer className={`bottom-0 flex gap-2 justify-center text-gray-500 py-[20px] w-full`}>Copyright <CopyrightIcon /> 2025 Kulfi AI.</footer> : <></>
+          <footer className='flex flex-col gap-5 bottom-0 text-gray-500 py-[20px] w-full'>
+            <div className="flex justify-center gap-2">
+              <a target="_blank" href="https://www.instagram.com/kulfi.ai/">
+                <Instagram className="text-gray-500" />
+              </a>
+              <a target="_blank" href="https://www.linkedin.com/company/kulfi-ai">
+                <LinkedIn className="text-gray-500" />
+              </a>
+              <a target="_blank" href="https://x.com/KulfiAi">
+                <X className="text-gray-500" />
+              </a>
+            </div>
+            <div className="flex justify-center text-xs">
+              Copyright <CopyrightIcon className="h-4" /> 2025 Kulfi AI.
+            </div>
+          </footer> : <></>
         </>
   );
 }

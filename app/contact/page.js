@@ -1,6 +1,6 @@
 'use client';
 
-import { BuildCircleOutlined, LocationOn } from '@mui/icons-material';
+import { BuildCircleOutlined, Instagram, LinkedIn, LocationOn, X } from '@mui/icons-material';
 import { CopyrightIcon } from 'lucide-react';
 import { Inter } from 'next/font/google'
 import { useState } from 'react';
@@ -106,7 +106,22 @@ export default function Contact() {
             </div>
             
 
-            <footer className={`bottom-0 flex gap-2 justify-center text-gray-500 py-[20px] w-full`}>Copyright <CopyrightIcon /> 2025 Kulfi AI.</footer> : <></>
+            <footer className='flex flex-col gap-5 bottom-0 text-gray-500 py-[20px] w-full'>
+                        <div className="flex justify-center gap-2">
+                          <a target="_blank" href="https://www.instagram.com/kulfi.ai/">
+                            <Instagram className="text-gray-500" />
+                          </a>
+                          <a target="_blank" href="https://www.linkedin.com/company/kulfi-ai">
+                            <LinkedIn className="text-gray-500" />
+                          </a>
+                          <a target="_blank" href="https://x.com/KulfiAi">
+                            <X className="text-gray-500" />
+                          </a>
+                        </div>
+                        <div className="flex justify-center text-xs">
+                          Copyright <CopyrightIcon className="h-4" /> 2025 Kulfi AI.
+                        </div>
+                      </footer> : <></>
         </>
     );
 }
