@@ -1388,7 +1388,7 @@ export default function Dashboard() {
                                     return (
                                         <div onClick={() => { setSelectedChat(item.messages) }} key={index} className={`flex flex-col gap-2 justify-center cursor-pointer ${index % 2 === 0 ? 'bg-purple-50' : 'bg-purple-100'} border-[1px] border-gray-100 py-5 px-5 w-full text-[14px]`}>
                                             <div>ID: {item.id}</div>
-                                            <div className='flex gap-1'><img className='h-[20px]' src={item.flag.img} /><span>{item.country}</span></div>
+                                            {/* <div className='flex gap-1'><img className='h-[20px]' src={item.flag.img} /><span>{item.country}</span></div> */}
                                             <div>IP: {item.ip}</div>
                                         </div>
                                     )
