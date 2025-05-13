@@ -1,6 +1,6 @@
 'use client'
 
-import { Cases, CasesRounded, CloseTwoTone, LoginRounded } from '@mui/icons-material';
+import { Cases, CasesRounded, CasesSharp, CloseTwoTone, Draw, FollowTheSignsTwoTone, LoginRounded } from '@mui/icons-material';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Inter } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { Eye, HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, ShapesIcon, SquareMousePointerIcon, Tag, UserCheck, WorkflowIcon } from 'lucide-react';
+import { Eye, FolderCog2Icon, HomeIcon, Loader2, LogInIcon, LucideEye, LucideEyeClosed, LucideGoal, LucidePlaneTakeoff, MenuIcon, Phone, PlaneTakeoffIcon, PlayIcon, ShapesIcon, SquareMousePointerIcon, Tag, UserCheck, WorkflowIcon } from 'lucide-react';
 import { getCookie } from '@/lib/helper';
 
 export const poppins = Inter({
@@ -99,7 +99,8 @@ export const Header = () => {
                 </div>
                 <div className='hidden md:flex items-center gap-16'>
                     {!auth ? <div className='flex items-center gap-5'>
-                        <Link onClick={(e) => scrollToUseCases(e)} className='flex gap-1 text-purple-800 font-semibold' href='#'><WorkflowIcon /> Use Cases</Link>
+                        <Link target='_blank' className='flex gap-1 text-purple-800 font-semibold' href='https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52'><WorkflowIcon /> How it Works</Link>
+                        <Link onClick={(e) => scrollToUseCases(e)} className='flex gap-1 text-purple-800 font-semibold' href='#'><FolderCog2Icon /> Use Cases</Link>
                         <button onClick={() => router.push('/contact')} className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
                         <Dialog onOpenChange={(open) => {
                             if (!open) {
@@ -147,14 +148,17 @@ export const Header = () => {
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
-                        <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Try for free!</Link>
+                        <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Try for Free!</Link>
                         </div> : auth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
                 </div></>}
             </header>
             {isOpen ?
             <div className={`absolute top-[80px] left-0 bg-white md:hidden flex flex-col w-full border-[1px] border-gray-400 ${isOpen ? 'opacity-1' : 'opacity-0'} duration-1000`}>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link onClick={(e) => scrollToUseCases(e)} href="#" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><WorkflowIcon /> Use cases</Link>
+                    <Link href="https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><WorkflowIcon /> How it Works</Link>
+                </div>
+                <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
+                    <Link onClick={(e) => scrollToUseCases(e)} href="#" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><FolderCog2Icon /> Use cases</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
                     <Link href="/contact" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
@@ -194,7 +198,7 @@ export const Header = () => {
                 </div>
 
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link href="/get-started" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><SquareMousePointerIcon /> Try for free!</Link>
+                    <Link href="/get-started" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><SquareMousePointerIcon /> Try for Free!</Link>
                 </div>
             </div> : <></>}
         </div>

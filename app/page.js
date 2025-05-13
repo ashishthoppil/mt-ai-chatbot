@@ -2,7 +2,7 @@
 
 import Marquee from "react-fast-marquee";
 import { AppRegistrationRounded, ContentPaste, Instagram, KeyboardDoubleArrowDown, LinkedIn, NextPlanOutlined, NextPlanSharp, PartyMode, Plan, X } from '@mui/icons-material';
-import { BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
+import { BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, NotebookIcon, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Header } from './components/layout/Header';
@@ -32,8 +32,10 @@ export default function Home() {
                 {/* <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1> */}
               </div>
               <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
-                <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a free demo</span></button>
-                <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
+                <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Free Demo</span></button>
+                <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI - It's Free! </span></button>
+                <button onClick={() => router.push('https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><NotebookIcon /> <span>See How it Works</span></button>
+
               </div>
             </div>
         </div>
@@ -84,7 +86,7 @@ export default function Home() {
           <div id="how-it-works" className="flex flex-col justify-center items-center gap-16 w-full mt-0 md:mt-20 py-20 px-5 md:px-10">
             <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>How <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI</span> Works</h1>
             <div className="flex flex-col md:flex-row items-center justify-center gap-10 w-full">
-              <div className="flex flex-col gap-2 w-[50%]">
+              <div className="flex flex-col gap-2 w-full md:w-[50%]">
                 <h1 className='text-[20px] md:text-[26px] text-center md:text-left font-bold text-black'>Breaking down the procedure</h1>
                 <Accordion type="single" collapsible className="w-full border-2 border-gray-200 p-2 px-5 rounded-sm shadow-md mt-5">
                   <AccordionItem className='' key={1} value={1}>
@@ -140,6 +142,9 @@ export default function Home() {
               </video>
               
             </div>
+
+            <button onClick={() => router.push('https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><NotebookIcon /> <span>See How it Works on Notion</span></button>
+
           </div>
           
           {/* Knowledge Base */}
