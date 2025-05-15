@@ -24,17 +24,18 @@ export default function Home() {
   return (
         <>
         <Header />
+        <script src='https://kulfi-ai.com/js/loader.js?o=Kulfi%20Marketing&al=r&cw=390&c=4A1D96'></script>
         <div className='px-2 md:px-10'>
           <div className='flex flex-col gap-20 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-800 rounded-[30px]'>
               <div className='flex flex-col gap-10 md:gap-10 px-1 py-5 items-center justify-center text-gray-800'>
                 <h1 className='text-[32px] md:text-[4rem] font-black text-center md:leading-[1.3] text-gray-200'>Automated Customer Support<br/>Powered by Your <span className='text-purple-400 font-bold'>"Own Data"</span></h1>
                 {/* <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1> */}
-                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Let AI handle the repetitive, <br /><span className='text-purple-400 font-bold'> while your team handles the remarkable</span></h1>
+                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Capture Leads 24/7 with an AI Chatbot.<br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees. No Credit Card Required.</span></h1>
               
               </div>
               <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
                 {/* <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Free Demo</span></button> */}
-                <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI - It's Free! </span></button>
+                <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Start 7-day trial</span></button>
                 <a href='https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52' target="_blank" className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><NotebookIcon /> <span>See How it Works</span></a>
               </div>
             </div>
@@ -60,7 +61,7 @@ export default function Home() {
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Recognizes its own knowledge limits.</p>
                   <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Data Separated by Organization for Multi-Business Use.</p>
                   <div className='flex justify-center my-5 md:justify-start'>
-                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>                
+                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Start 7-day trial</span></button>                
                   </div>
                 </div>
               </div>
@@ -91,7 +92,7 @@ export default function Home() {
                   </div>
                   <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
                     <a target="_blank" href="https://calendly.com/kulfi-ai-support/30min" className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></a>
-                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Try Kulfi AI for free! </span></button>
+                    <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Start 7-day trial</span></button>
                   </div>
                 </div>
               </div>
@@ -202,11 +203,16 @@ export default function Home() {
                                             <TableHeader className=''>
                                                 <TableRow>
                                                     <TableHead className=''></TableHead>
-                                                    <TableHead className='md:text-lg'>Starter</TableHead>
-                                                    <TableHead className='md:text-lg'>Pro</TableHead>
+                                                    <TableHead className='md:text-xl font-bold'>Starter</TableHead>
+                                                    <TableHead className='md:text-xl font-bold'>Pro</TableHead>
                                                 </TableRow>
                                             </TableHeader>
                                             <TableBody>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Plan Cost (One Time)</TableCell>
+                                                    <TableCell className='font-bold'>$99</TableCell>
+                                                    <TableCell className='font-bold'>$198</TableCell>
+                                                </TableRow>
                                                 <TableRow>
                                                     <TableCell className='font-bold text-left pl-2 py-5'>Chats</TableCell>
                                                     <TableCell className=''>500</TableCell>
@@ -262,12 +268,24 @@ export default function Home() {
             
                                                 <TableRow>
                                                     <TableCell className='font-bold text-left pl-2 py-5'>Documents upload limit</TableCell>
-                                                    <TableCell className=''>1 Doc, Maximum 25 MB</TableCell>
-                                                    <TableCell className=''>5 Docs, Maximum 150 MB</TableCell>
+                                                    <TableCell className=''>10 PDFs, Maximum 250 MB</TableCell>
+                                                    <TableCell className=''>100 PDFs, No size limit</TableCell>
                                                 </TableRow>
             
                                                 <TableRow>
                                                     <TableCell className='font-bold text-left pl-2 py-5'>Articles & FAQs</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
+
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Early access to updates</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
+
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Priority support</TableCell>
                                                     <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
                                                     <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
                                                 </TableRow>

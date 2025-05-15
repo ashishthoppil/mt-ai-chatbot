@@ -2073,97 +2073,109 @@ export default function Dashboard() {
                         <div className='flex flex-col justify-center gap-10 w-full mt-[6rem]'>
                             <h3 className="text-[24px] font-bold text-gray-900 mb-2 text-center">Plan comparison</h3>
 
-                            <Table className='border-2 border-purple-200'>
-                                <TableHeader className='bg-purple-200'>
-                                    <TableRow>
-                                        <TableHead className=''></TableHead>
-                                        <TableHead className=''>Starter</TableHead>
-                                        <TableHead className=''>Pro</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Chats</TableCell>
-                                        <TableCell className=''>500</TableCell>
-                                        <TableCell className=''>2000</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Show sources</TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Access chats</TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Lead capturing</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        
-                                    </TableRow>
-                                    
+                            <Table className=''>
+                                            <TableHeader className=''>
+                                                <TableRow>
+                                                    <TableHead className=''></TableHead>
+                                                    <TableHead className='md:text-xl font-bold'>Starter</TableHead>
+                                                    <TableHead className='md:text-xl font-bold'>Pro</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Chats</TableCell>
+                                                    <TableCell className=''>500</TableCell>
+                                                    <TableCell className=''>2000</TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Show sources</TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Access chats</TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Lead capturing</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                    
+                                                </TableRow>
+                                                
+            
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Analytics</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''>Basic Analytics Data</TableCell>
+                                                </TableRow>
+            
+                                                {/* <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2'>Remove Kulfi AI branding</TableCell>
+                                                    <TableCell className=''>As add-on</TableCell>
+                                                    <TableCell className=''>As add-on</TableCell>
+                                                    <TableCell className=''>As add-on</TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow> */}
+            
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Chatbot Customisation & Branding</TableCell>
+                                                    <TableCell className=''>Basic</TableCell>
+                                                    {/* <TableCell className=''>Intermediate</TableCell> */}
+                                                    <TableCell className=''>Advanced</TableCell>
+                                                    {/* <TableCell className=''>Advanced</TableCell> */}
+                                                </TableRow>
+            
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>No. of Webpages that can be synced</TableCell>
+                                                    <TableCell className=''>10 Webpages</TableCell>
+                                                    <TableCell className=''>30 Webpages</TableCell>
+                                                    {/* <TableCell className=''>100 Webpages</TableCell>
+                                                    <TableCell className=''>500 Webpages</TableCell> */}
+                                                </TableRow>
+            
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Documents upload limit</TableCell>
+                                                    <TableCell className=''>10 PDFs, Maximum 250 MB</TableCell>
+                                                    <TableCell className=''>100 PDFs, No size limit</TableCell>
+                                                </TableRow>
+            
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Articles & FAQs</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
 
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Analytics</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''>Basic Analytics Data</TableCell>
-                                    </TableRow>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Early access to updates</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
 
-                                    {/* <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Remove Kulfi AI branding</TableCell>
-                                        <TableCell className=''>As add-on</TableCell>
-                                        <TableCell className=''>As add-on</TableCell>
-                                        <TableCell className=''>As add-on</TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow> */}
-
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Chatbot Customisation & Branding</TableCell>
-                                        <TableCell className=''>Basic</TableCell>
-                                        {/* <TableCell className=''>Intermediate</TableCell> */}
-                                        <TableCell className=''>Advanced</TableCell>
-                                        {/* <TableCell className=''>Advanced</TableCell> */}
-                                    </TableRow>
-
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>No. of Webpages that can be synced</TableCell>
-                                        <TableCell className=''>10 Webpages</TableCell>
-                                        <TableCell className=''>30 Webpages</TableCell>
-                                        {/* <TableCell className=''>100 Webpages</TableCell>
-                                        <TableCell className=''>500 Webpages</TableCell> */}
-                                    </TableRow>
-
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Documents upload limit</TableCell>
-                                        <TableCell className=''>1 Doc, Maximum 25 MB</TableCell>
-                                        <TableCell className=''>5 Docs, Maximum 150 MB</TableCell>
-                                    </TableRow>
-
-                                    <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Articles & FAQs</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow>
-
-                                    {/* <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Training session</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow> */}
-
-                                    {/* <TableRow>
-                                        <TableCell className='font-bold text-left pl-2'>Priority support</TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                        <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
-                                    </TableRow> */}
-                                </TableBody>
-                            </Table>
+                                                <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2 py-5'>Priority support</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow>
+            
+                                                {/* <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2'>Training session</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow> */}
+            
+                                                {/* <TableRow>
+                                                    <TableCell className='font-bold text-left pl-2'>Priority support</TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CircleXIcon className='text-red-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                    <TableCell className=''><CheckCircleIcon className='text-emerald-500' /></TableCell>
+                                                </TableRow> */}
+                                            </TableBody>
+                                        </Table>
                             </div>
                     </div> : 
                     <div className='flex flex-col'>

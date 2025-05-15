@@ -17,7 +17,7 @@ export async function POST(req, res) {
     const hashedpass = bcrypt.hashSync(data.password, salt);
     try {
         const freeTrialEnd = new Date();
-        freeTrialEnd.setDate(freeTrialEnd.getDate() + 5);
+        freeTrialEnd.setDate(freeTrialEnd.getDate() + 7);
 
         const formattedData = { 
           organization: data.organization,

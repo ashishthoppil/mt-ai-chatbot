@@ -295,7 +295,7 @@ export const TextChat = ({ data, botInfo, articlesList, faqList, section }) => {
                                 <AccordionContent className={` ${index === faqList.length - 1 ? 'border-0' : 'border-b-[2px] border-gray-300'} `}>
                                     <div className='flex justify-between items-start'>
                                         <div className='w-[90%]'>
-                                        {item.answer}
+                                            {item.answer}
                                         </div>
                                     </div>
                                 </AccordionContent>

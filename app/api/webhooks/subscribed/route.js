@@ -93,16 +93,16 @@ export async function POST(req) {
     {
       name: 'Kulfi AI - Starter (One Time)',
       count: 500,
-      fileLimit: 1,
-      fileSizeLimit: 25,
-      linkLimit: 10
+      fileLimit: 10,
+      fileSizeLimit: 250,
+      linkLimit: 25
     },
     {
       name: 'Kulfi AI - Pro (One Time)',
       count: 2000,
-      fileLimit: 5,
-      fileSizeLimit: 150,
-      linkLimit: 30
+      fileLimit: 100,
+      fileSizeLimit: 99999,
+      linkLimit: 50
     },
     
   ];

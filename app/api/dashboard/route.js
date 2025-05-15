@@ -24,7 +24,7 @@ export async function POST(req, res) {
                 {},
                 {
                   $set: { 
-                    subscriptionName: 'Kulfi AI - Basic',
+                    subscriptionName: 'Kulfi AI - Starter (One Time)',
                     isSubscribed: false,
                     chatCount: 0,
                     fileLimit: 0,

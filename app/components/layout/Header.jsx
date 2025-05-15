@@ -148,7 +148,7 @@ export const Header = () => {
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
-                        <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Try for Free!</Link>
+                        <Link href="/get-started" className='bg-purple-500 border-2 border-purple-500 shadow-md hover:bg-purple-200 hover:text-purple-500 text-white py-3 px-7 duration-200 hover:cursor-pointer rounded-[30px] font-semibold hover:scale-[1.1] duration-100'>Start 7-day trial</Link>
                         </div> : auth ? <Link title='Profile' className='flex gap-1 bg-purple-200 hover:bg-purple-300 duration-300 p-2 rounded-full hover:cursor-pointer' href="/dashboard"><img style={{ width: '25px' }} src="images/user.png" alt="bot"/></Link> : <></>}                        
                 </div></>}
             </header>
