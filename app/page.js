@@ -30,7 +30,7 @@ export default function Home() {
               <div className='flex flex-col gap-10 md:gap-10 px-1 py-5 items-center justify-center text-gray-800'>
                 <h1 className='text-[32px] md:text-[4rem] font-black text-center md:leading-[1.3] text-gray-200'>Automated Customer Support<br/>Powered by Your <span className='text-purple-400 font-bold'>"Own Data"</span></h1>
                 {/* <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1> */}
-                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Capture Leads 24/7 with an AI Chatbot.<br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees. No Credit Card Required.</span></h1>
+                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Capture Leads 24/7 with an AI Chatbot.<br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees. <br/>No Credit Card Required.</span></h1>
               
               </div>
               <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
