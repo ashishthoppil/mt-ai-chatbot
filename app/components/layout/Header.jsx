@@ -101,7 +101,7 @@ export const Header = () => {
                     {!auth ? <div className='flex items-center gap-5'>
                         <Link target='_blank' className='flex gap-1 text-purple-800 font-semibold' href='https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52'><WorkflowIcon /> How it Works</Link>
                         <Link onClick={(e) => scrollToUseCases(e)} className='flex gap-1 text-purple-800 font-semibold' href='#'><FolderCog2Icon /> Use Cases</Link>
-                        <button onClick={() => router.push('/contact')} className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</button>
+                        <a target='_blank' href='https://calendly.com/kulfi-ai-support/30min' className='flex gap-1 text-purple-800 font-semibold'><ShapesIcon /> Book a Demo</a>
                         <Dialog onOpenChange={(open) => {
                             if (!open) {
                                 setCredentials({
@@ -161,7 +161,7 @@ export const Header = () => {
                     <Link onClick={(e) => scrollToUseCases(e)} href="#" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><FolderCog2Icon /> Use cases</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
-                    <Link href="/contact" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
+                    <Link target='_blank' href="https://calendly.com/kulfi-ai-support/30min" className='flex gap-1 text-purple-800 hover:cursor-pointer duration-100'><ShapesIcon /> Book a Demo</Link>
                 </div>
                 <div className='py-4 px-[10px] w-full border-b-[1px] border-gray-400'>
                     <Dialog>
