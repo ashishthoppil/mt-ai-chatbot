@@ -87,10 +87,8 @@
 
 
         const iframe = document.createElement('iframe');
-        // http://localhost:3000/test?o=A1%20Marketing&al=l&cw=400&c=1E429F
         iframe.style.overflow = 'none';
         iframe.src = `https://kulfi-ai.com/chat?o=${organization}`;
-        // iframe.src = `http://localhost:3000/chat?o=${organization}`;
 
         iframe.height = `${(0.95 * viewPortHeight)}px`;
 
@@ -112,7 +110,7 @@
         let isOpen = false;
     
         const chatButton = document.createElement('button');
-        chatButton.className = 'my-chatbot-button';
+        chatButton.className = 'my-chatbot-button rounded-full';
         chatButton.style.backgroundColor = `#${c}`
         chatButton.style.padding = `15px`
 
@@ -148,6 +146,6 @@
         container.appendChild(popup);
         container.appendChild(chatButton);
         document.body.appendChild(container);
-    }, 3000)
+    }, 2000)
   })();
   
