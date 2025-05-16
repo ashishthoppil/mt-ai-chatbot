@@ -1,6 +1,6 @@
 'use client';
 
-import { Inter, ABeeZee } from 'next/font/google'
+import { ABeeZee } from 'next/font/google'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
 import tinycolor from 'tinycolor2';
@@ -8,7 +8,7 @@ import { ArrowDown, ArrowDown10, Loader2, MessageCircle, Minimize2Icon, Newspape
 
 export const poppins = ABeeZee({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], 
+  weight: ['400'], 
 })
 
 export default function Chat() {
