@@ -13,5 +13,5 @@
       chatbotScript.src = `https://kulfi-ai.com/js/chatbot.js`;
       chatbotScript.async = true;
       document.head.appendChild(chatbotScript);
-    }, 4000)
+    }, 2000)
 })();

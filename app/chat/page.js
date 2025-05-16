@@ -1,12 +1,12 @@
 'use client';
 
-import { Inter } from 'next/font/google'
+import { Inter, ABeeZee } from 'next/font/google'
 import { TextChat } from '../components/TextChat';
 import { useEffect, useState } from 'react';
 import tinycolor from 'tinycolor2';
 import { ArrowDown, ArrowDown10, Loader2, MessageCircle, Minimize2Icon, NewspaperIcon, ShieldQuestion, ShieldQuestionIcon } from 'lucide-react';
 
-export const poppins = Inter({
+export const poppins = ABeeZee({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], 
 })

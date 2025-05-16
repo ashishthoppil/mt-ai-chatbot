@@ -112,7 +112,7 @@
         let isOpen = false;
     
         const chatButton = document.createElement('button');
-        chatButton.className = 'my-chatbot-button rounded-full';
+        chatButton.className = 'my-chatbot-button';
         chatButton.style.backgroundColor = `#${c}`
         chatButton.style.padding = `15px`
 
@@ -124,7 +124,7 @@
 
         const img = document.createElement('img');
         img.src = `https://img.icons8.com/parakeet-line/48/FFFFFF/speech-bubble-with-dots.png`;
-        img.style.width = '35px';
+        img.style.width = '25px';
         chatButton.appendChild(img);
     
         chatButton.onclick = async () => {

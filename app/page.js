@@ -26,11 +26,11 @@ export default function Home() {
         <Header />
         <script src='https://kulfi-ai.com/js/loader.js?o=Kulfi%20Marketing&al=r&cw=390&c=4A1D96'></script>
         <div className='px-2 md:px-10'>
-          <div className='flex flex-col gap-20 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-800 rounded-[30px]'>
+          <div className='flex flex-col gap-10 md:gap-10 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-800 rounded-[30px]'>
               <div className='flex flex-col gap-10 md:gap-10 px-1 py-5 items-center justify-center text-gray-800'>
-                <h1 className='text-[32px] md:text-[4rem] font-black text-center md:leading-[1.3] text-gray-200'>Automated Customer Support<br/>Powered by Your <span className='text-purple-400 font-bold'>"Own Data"</span></h1>
+                <h1 className='text-[32px] md:text-[4rem] font-black text-center md:leading-[1.3] text-gray-200'>Automate Customer Support<br/>Using Your <span className='text-purple-400 font-bold'>“Own Data”</span></h1>
                 {/* <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1> */}
-                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Capture Leads 24/7 with an AI Chatbot.<br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees.</span></h1>
+                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Capture Leads 24/7 with an AI Chatbot<br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees</span></h1>
               
               </div>
               <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
@@ -46,7 +46,7 @@ export default function Home() {
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
             <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'> Reduce repetitive support question by <span className="bg-purple-700 text-white px-2 rounded-md">80% in one week</span></h1>
 
-              <p className='mt-4 md:mt-5 text-[14px] md:text-[26px] font-thin text-gray-500 text-center md:text-left'>You control what the AI understands and what it does not.</p>
+              <p className='mt-4 md:mt-5 text-[14px] md:text-[26px] font-thin text-gray-500 text-center md:text-left'>You control what the AI understands and what it does not</p>
             </div>
 
             <div className='flex flex-col md:flex-row gap-10 md:gap-5 mt-0 md:mt-10'>
@@ -54,12 +54,12 @@ export default function Home() {
                 <h1 className='text-purple-800 font-bold text-[24px] md:text-[1.8rem] leading-[2.5rem]'></h1>
                 <p className='text-[16px] md:text-[26px] font-semibold text-gray-500 text-center md:text-left'>Built for Simplicity, Customization, and Scalable Interaction.</p>
                 <div className='flex flex-col gap-5 md:gap-5 text-[18px] px-[10px] mt-8 md:px-0'>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[18px]'><CircleCheckBigIcon className='h-4' />
                   Immediate, precise responses.
                   </p>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Eliminate redundant inquiries.</p>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Recognizes its own knowledge limits.</p>
-                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[16px]'><CircleCheckBigIcon className='h-4' />Data Separated by Organization for Multi-Business Use.</p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[18px]'><CircleCheckBigIcon className='h-4' />Eliminate redundant inquiries.</p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[18px]'><CircleCheckBigIcon className='h-4' />Recognizes its own knowledge limits.</p>
+                  <p className='flex gap-2 items-start md:items-center text-purple-800 text-[14px] md:text-[18px]'><CircleCheckBigIcon className='h-4' />Data Separated by Organization for Multi-Business Use.</p>
                   <div className='flex justify-center my-5 md:justify-start'>
                     <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Start 7-day trial</span></button>                
                   </div>
@@ -73,7 +73,7 @@ export default function Home() {
           {/* Use cases */}
           <div id='use-cases' className='flex flex-col md:flex-col gap-10 items-center justify-center w-full  py-[2rem] md:py-[5rem] mt-5 md:mt-[5rem] text-white bg-white rounded-[30px] px-[20px] md:px-[80px]'>
             <div className='flex flex-col items-center justify-center text-gray-800 min-w-[5rem]'>
-              <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>Capture leads like never before with <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI.</span></h1>
+              <h1 className='text-[24px] md:text-[46px] text-center font-bold text-black'>Capture leads like never before with <span className="bg-purple-700 text-white px-2 rounded-md">Kulfi AI</span></h1>
               <p className='mt-4 md:mt-5 text-[14px] md:text-[26px] font-thin text-gray-500 text-center md:text-left'>Leverage Kulfi AI and automate your business, instantly</p>
             </div>
 
@@ -83,12 +83,12 @@ export default function Home() {
                   <img className='w-full h-[80%] object-contain' src='/images/customer-care.gif' />
                 </div>
                 <div className='flex flex-col gap-5 justify-center md:w-[40%]'>
-                  <h1 className='text-[22px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Streamline Customer Support & Lead Capturing with <span className='text-purple-700 font-bold'>Kulfi AI </span>, Instantly.</h1>
+                  <h1 className='text-[22px] md:text-[22px] text-center md:text-left font-bold leading-8 text-gray-700'>Streamline Customer Support & Lead Capturing with <span className='text-purple-700 font-bold'>Kulfi AI,</span> Instantly.</h1>
                   <div className='flex flex-col gap-5'>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Provide quick and accurate responses to customer inquiries 24/7.</span></p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Understand user preferences and past interactions to deliver tailored support.</span></p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Let AI convert vistors to potential leads automatically.</span></p>
-                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[14px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Analyze conversations to improve customer experience and business decisions.</span></p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[18px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Provide quick and accurate responses to customer inquiries 24/7.</span></p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[18px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Understand user preferences and past interactions to deliver tailored support.</span></p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[18px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Let AI convert vistors to potential leads automatically.</span></p>
+                    <p className='flex gap-2 items-start text-purple-800 text-[14px] md:text-[18px] w-full'><CircleCheckBigIcon className='h-4 w-[5%] mt-1' /><span className='w-[90%]'>Analyze conversations to improve customer experience and business decisions.</span></p>
                   </div>
                   <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
                     <a target="_blank" href="https://calendly.com/kulfi-ai-support/30min" className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Demo</span></a>

@@ -1,4 +1,4 @@
-import { Inter } from "next/font/google";
+import { Inter, ABeeZee, Albert_Sans } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -31,9 +31,11 @@ export const metadata = {
   },
 };
 
-export const poppins = Inter({
+// ABeeZee
+// Albert_Sans
+export const poppins = ABeeZee({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], 
+  weight: ['400'], 
 })
 
 export default function RootLayout({ children }) {
