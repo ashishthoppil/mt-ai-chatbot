@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee";
 import { AppRegistrationRounded, ContentPaste, Instagram, KeyboardDoubleArrowDown, LinkedIn, NextPlanOutlined, NextPlanSharp, PartyMode, Plan, X } from '@mui/icons-material';
 import { ArrowRight, BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, NotebookIcon, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Header } from './components/layout/Header';
 import { useRouter } from 'next/navigation';
 import {
@@ -20,6 +20,7 @@ export default function Home() {
 
   const router = useRouter()
   const workRef = useRef();
+  const [email, setEmail] = useState('');
 
   return (
         <>
@@ -41,18 +42,38 @@ export default function Home() {
                 </div>
                 <div className="md:hidden flex flex-col gap-5 items-center justify-center w-full bg-purple-900 rounded-lg py-[2rem] px-[2rem]">
                   <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'>No<span className='text-purple-400 font-bold'> Credit Card </span>Required. We’ll Drop You an Email — No Pressure!</h1>
-                  <div className="flex justify-center gap-0 w-[100%] shadow-sm">
-                    <input className="px-[15px] py-[10px] w-[84%] rounded-l-md text-black" type="email" placeholder="Enter your email address" />
-                    <button className="flex justify-center items-center w-[16%] bg-purple-500 rounded-r-md"><ArrowRight className="text-white" /></button>
-                  </div>
+                  <form onSubmit={async (e) => {
+                    e.preventDefault();
+                    const response = await fetch('/api/send-email', {
+                      method: 'POST',
+                      body: JSON.stringify({
+                        email
+                      })
+                    });
+                    const data = await response.json();
+                    console.log('datadata', data);
+                  }} className="flex justify-center gap-0 w-[100%] shadow-sm">
+                    <input onChange={(e) => setEmail(e.target.value)} className="px-[15px] py-[10px] w-[84%] rounded-l-md text-black" type="email" placeholder="Enter your email address" />
+                    <button type="submit" className="flex justify-center items-center w-[16%] bg-purple-500 rounded-r-md"><ArrowRight className="text-white" /></button>
+                  </form>
                 </div>
                 
               </div>
               <div className="md:w-[40%]">
                 <div className="hidden md:flex flex-col gap-5 justify-center w-full bg-purple-900 rounded-lg py-[2rem] px-[2rem]">
                   <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'> No<span className='text-purple-400 font-bold'> Credit Card </span>Required. We’ll Drop You an Email — No Pressure!</h1>
-                  <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5 justify-center gap-0 w-full shadow-sm">
-                    <input className="px-[15px] py-[10px] w-full rounded-sm text-black" type="email" placeholder="Enter your email address" />
+                  <form onSubmit={async (e) => {
+                    e.preventDefault();
+                    const response = await fetch('/api/send-email', {
+                      method: 'POST',
+                      body: JSON.stringify({
+                        email
+                      })
+                    });
+                    const data = await response.json();
+                    console.log('datadata', data);
+                  }} className="flex flex-col gap-5 justify-center gap-0 w-full shadow-sm">
+                    <input onChange={(e) => setEmail(e.target.value)} className="px-[15px] py-[10px] w-full rounded-sm text-black" type="email" placeholder="Enter your email address" />
                     <button type="submit" className="flex justify-center items-center gap-1 py-[10px] bg-purple-500 hover:bg-purple-600 rounded-sm">Sign Up<ArrowRight className="text-white" /></button>
                   </form>
                 </div>
