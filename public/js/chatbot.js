@@ -40,6 +40,9 @@
     
         .my-chatbot-button {
             transition: transform .2s
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
             box-shadow: 
                 inset 0 0 5px #fff,
                 inset 20px 0 60px #ee82ee,
