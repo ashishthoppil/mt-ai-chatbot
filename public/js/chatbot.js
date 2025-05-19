@@ -47,12 +47,12 @@
             border-radius: 50%;
             box-shadow: 
                 inset 0 0 5px #fff,
-                inset 20px 0 60px #${c},
+                inset 20px 0 60px #ee82ee,
                 inset -20px 0 60px #0ff,
-                inset 20px 0 300px #${c},
+                inset 20px 0 300px #ee82ee,
                 inset -20px 0 300px #0ff,
                 0 0 5px #fff,
-                -10px 0 60px #${c},
+                -10px 0 60px #ee82ee,
                 10px 0 60px #0ff;
             animation: load 2s infinite;
         }
