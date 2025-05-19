@@ -1,6 +1,107 @@
 
-<script type="module"> import tinycolor2 from https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/+esm </script>
 (function () {
+
+    function lightenHex(hex, pct = 20) {
+        // expand 3-digit shorthand like "4af"
+        if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+
+        // HEX → RGB
+        const r = parseInt(hex.slice(0, 2), 16) / 255;
+        const g = parseInt(hex.slice(2, 4), 16) / 255;
+        const b = parseInt(hex.slice(4, 6), 16) / 255;
+
+        // RGB → HSL
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        const d = max - min;
+
+        if (d === 0) {
+            h = s = 0; // achromatic
+        } else {
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            default: h = (r - g) / d + 4;
+            }
+            h /= 6;
+        }
+
+        // bump lightness
+        l = Math.min(l + pct / 100, 1);
+
+        // HSL → RGB
+        function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        }
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+
+        const r2 = hue2rgb(p, q, h + 1 / 3);
+        const g2 = hue2rgb(p, q, h);
+        const b2 = hue2rgb(p, q, h - 1 / 3);
+
+        // RGB → HEX
+        const toHex = x => Math.round(x * 255).toString(16).padStart(2, '0');
+        return `#${toHex(r2)}${toHex(g2)}${toHex(b2)}`;
+    }
+
+
+    function darkenHex(hex, pct = 20) {
+        // 1) expand 3-digit shorthand like "4af"
+        if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+
+        // 2) HEX → RGB  [0-1]
+        const r = parseInt(hex.slice(0, 2), 16) / 255;
+        const g = parseInt(hex.slice(2, 4), 16) / 255;
+        const b = parseInt(hex.slice(4, 6), 16) / 255;
+
+        // 3) RGB → HSL
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        const d = max - min;
+
+        if (d === 0) {
+            h = s = 0;
+        } else {
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            default: h = (r - g) / d + 4;
+            }
+            h /= 6;
+        }
+
+        // 4) reduce lightness
+        l = Math.max(l - pct / 100, 0);
+
+        // 5) HSL → RGB
+        const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+
+        const r2 = hue2rgb(p, q, h + 1 / 3);
+        const g2 = hue2rgb(p, q, h);
+        const b2 = hue2rgb(p, q, h - 1 / 3);
+
+        // 6) RGB → HEX
+        const toHex = v => Math.round(v * 255).toString(16).padStart(2, '0');
+        return `#${toHex(r2)}${toHex(g2)}${toHex(b2)}`;
+    }
+
     setTimeout(() => {
         const style = document.createElement('style');
         var { organization, al, cw, c } = window.chatbotConfig || {};
@@ -51,8 +152,8 @@
             background: radial-gradient(circle at 50% 40%, 
                 #${c} 0%, 
                 #${c} 30%, 
-                #${tinycolor(`#${color}`).lighten(30).toHexString()} 70%, 
-                #${tinycolor(`#${color}`).darken(40).toHexString()} 100%);
+                ${lightenHex(c)} 70%, 
+                ${darkenHex(c)} 100%);
             box-shadow: 
                 0 0 30px rgba(0, 255, 224, 0.5), 
                 inset 0 0 25px rgba(16, 21, 20, 0.4);
