@@ -134,8 +134,8 @@
     
         const chatButton = document.createElement('button');
         chatButton.className = 'my-chatbot-button rounded-full';
-        chatButton.style.backgroundColor = `#${c}`
-        chatButton.style.padding = `15px`
+        // chatButton.style.backgroundColor = `#${c}`
+        // chatButton.style.padding = `15px`
 
         const message = document.createElement('div');
         message.className = 'kulfi-greetings flex items-center gap-2 justify-between bg-white border-2 px-4 py-1 rounded-sm shadow-lg animate-bounce'
@@ -146,7 +146,7 @@
         const img = document.createElement('img');
         img.src = `https://img.icons8.com/parakeet-line/48/FFFFFF/speech-bubble-with-dots.png`;
         img.style.width = '25px';
-        chatButton.appendChild(img);
+        // chatButton.appendChild(img);
     
         chatButton.onclick = async () => {
             message.style.display = 'none';
