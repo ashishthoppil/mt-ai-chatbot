@@ -30,13 +30,13 @@
          @keyframes load {
                 0%, 100% {
                     box-shadow: 
-                    0 0 30px rgba(0, 255, 224, 0.5), 
-                    inset 0 0 25px rgba(0, 255, 224, 0.4);
+                    0 0 30px rgba(204, 0, 255, 0.5), 
+                    inset 0 0 25px rgba(204, 0, 255, 0.4);
                 }
                 50% {
                     box-shadow: 
-                    0 0 50px rgba(0, 255, 224, 0.6), 
-                    inset 0 0 40px rgba(0, 255, 224, 0.5);
+                    0 0 50px rgba(204, 0, 255, 0.6), 
+                    inset 0 0 40px rgba(204, 0, 255, 0.5);
                 }
         }
         .my-chatbot-button {
