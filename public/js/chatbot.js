@@ -28,34 +28,31 @@
         }
     
          @keyframes load {
-            0% {
-                transform: rotate(0deg);
-                filter: hue-rotate(0deg);
-            }
-            50% {
-                filter: hue-rotate(20deg); /* Subtle shift within purple range */
-            }
-            100% {
-                transform: rotate(360deg);
-                filter: hue-rotate(0deg);
-            }
+                0%, 100% {
+                    box-shadow: 
+                    0 0 30px rgba(0, 255, 224, 0.5), 
+                    inset 0 0 25px rgba(0, 255, 224, 0.4);
+                }
+                50% {
+                    box-shadow: 
+                    0 0 50px rgba(0, 255, 224, 0.6), 
+                    inset 0 0 40px rgba(0, 255, 224, 0.5);
+                }
         }
         .my-chatbot-button {
             transition: transform .2s;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: #4A1D96;
+            background: radial-gradient(circle at 50% 40%, 
+                #00ffe0 0%, 
+                #00ccaa 30%, 
+                #004d4d 70%, 
+                #002222 100%);
             box-shadow: 
-                inset 0 0 10px #fff,
-                inset 20px 0 60px #6B28C7,  /* Lighter purple */
-                inset -20px 0 60px #381172, /* Darker purple */
-                inset 20px 0 120px #6B28C7,
-                inset -20px 0 120px #381172,
-                0 0 10px #fff,
-                -10px 0 60px #6B28C7,
-                10px 0 60px #381172;
-            animation: load 3s linear infinite;
+                0 0 30px rgba(0, 255, 224, 0.5), 
+                inset 0 0 25px rgba(0, 255, 224, 0.4);
+            animation: load 3s infinite;
         }
 
         .my-chatbot-button:hover {
