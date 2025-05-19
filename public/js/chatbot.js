@@ -1,5 +1,6 @@
-import tinycolor from "tinycolor2";
-
+<html>
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/cjs/tinycolor.min.js"></script>
+</html>
 (function () {
     setTimeout(() => {
         const style = document.createElement('style');
