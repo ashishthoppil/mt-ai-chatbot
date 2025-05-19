@@ -22,10 +22,10 @@
                 filter: hue-rotate(0deg);
             }
             50% {
-                filter: hue-rotate(100deg);
+                filter: hue-rotate(90deg);
             }
             100% {
-                transform: rotate(360deg);
+                transform: rotate(180deg);
             }
         }
 
@@ -39,9 +39,9 @@
         }
     
         .my-chatbot-button {
-            transition: transform .2s
-            width: 350px;
-            height: 350px;
+            transition: transform .2s;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             box-shadow: 
                 inset 0 0 5px #fff,
