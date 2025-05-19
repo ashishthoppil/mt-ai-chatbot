@@ -15,6 +15,7 @@ import {
   } from "@/components/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "react-toastify";
 
 export default function Home() {
 
@@ -51,7 +52,9 @@ export default function Home() {
                       })
                     });
                     const data = await response.json();
-                    console.log('datadata', data);
+                    if (data.success) {
+                      toast.success('Thank you for your interest. We will get back to you soon!')
+                    }
                   }} className="flex justify-center gap-0 w-[100%] shadow-sm">
                     <input onChange={(e) => setEmail(e.target.value)} className="px-[15px] py-[10px] w-[84%] rounded-l-md text-black" type="email" placeholder="Enter your email address" />
                     <button type="submit" className="flex justify-center items-center w-[16%] bg-purple-500 rounded-r-md"><ArrowRight className="text-white" /></button>
@@ -71,7 +74,9 @@ export default function Home() {
                       })
                     });
                     const data = await response.json();
-                    console.log('datadata', data);
+                    if (data.success) {
+                      toast.success('Thank you for your interest. We will get back to you soon!')
+                    }
                   }} className="flex flex-col gap-5 justify-center gap-0 w-full shadow-sm">
                     <input onChange={(e) => setEmail(e.target.value)} className="px-[15px] py-[10px] w-full rounded-sm text-black" type="email" placeholder="Enter your email address" />
                     <button type="submit" className="flex justify-center items-center gap-1 py-[10px] bg-purple-500 hover:bg-purple-600 rounded-sm">Sign Up<ArrowRight className="text-white" /></button>

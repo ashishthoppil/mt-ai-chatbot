@@ -15,10 +15,10 @@ export async function POST(req) {
 
   const mailOptions = {
     from: process.env.ZOHO_USER,
-    email,
-    subject,
-    text: message,
-    html: `<p>Testing</p>`,
+    to: 'support@kulfi-ai.com',
+    subject: 'You have a new lead!',
+    text: 'New Lead',
+    html: `<div>You have a new lead! The email is ${email}. Revert back ASAP.<div>`,
   };
 
   try {
