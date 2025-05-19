@@ -1,3 +1,5 @@
+import tinycolor from "tinycolor2";
+
 (function () {
     setTimeout(() => {
         const style = document.createElement('style');
@@ -41,14 +43,16 @@
         }
         .my-chatbot-button {
             transition: transform .2s;
+            color: white;
+            font-size: 22px;
             width: 50px;
             height: 50px;
             border-radius: 50%;
             background: radial-gradient(circle at 50% 40%, 
-                #6B28C7 0%, 
-rgb(77, 35, 141) 30%, 
-                #381172 70%, 
-rgb(41, 8, 91) 100%);
+                #${c} 0%, 
+                #${c} 30%, 
+                #${tinycolor(`#${color}`).lighten(30).toHexString()} 70%, 
+                #${tinycolor(`#${color}`).darken(40).toHexString()} 100%);
             box-shadow: 
                 0 0 30px rgba(0, 255, 224, 0.5), 
                 inset 0 0 25px rgba(16, 21, 20, 0.4);
@@ -127,7 +131,7 @@ rgb(41, 8, 91) 100%);
                 }
             `;
           
-            iframeDoc.head.appendChild(style); // ✅ Works after loading
+            iframeDoc.head.appendChild(style);
         };
 
         popup.appendChild(iframe);
@@ -136,6 +140,7 @@ rgb(41, 8, 91) 100%);
     
         const chatButton = document.createElement('button');
         chatButton.className = 'my-chatbot-button rounded-full';
+        chatButton.innerHTML = 'क';
         // chatButton.style.backgroundColor = `#${c}`
         // chatButton.style.padding = `15px`
 
