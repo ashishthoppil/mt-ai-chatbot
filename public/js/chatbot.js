@@ -45,13 +45,13 @@
             height: 50px;
             border-radius: 50%;
             background: radial-gradient(circle at 50% 40%, 
-                #00ffe0 0%, 
-                #00ccaa 30%, 
-                #004d4d 70%, 
-                #002222 100%);
+                #6B28C7 0%, 
+rgb(77, 35, 141) 30%, 
+                #381172 70%, 
+rgb(41, 8, 91) 100%);
             box-shadow: 
                 0 0 30px rgba(0, 255, 224, 0.5), 
-                inset 0 0 25px rgba(0, 255, 224, 0.4);
+                inset 0 0 25px rgba(16, 21, 20, 0.4);
             animation: load 3s infinite;
         }
 
