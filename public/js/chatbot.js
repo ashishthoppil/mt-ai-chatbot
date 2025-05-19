@@ -1,6 +1,5 @@
-<html>
-    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/cjs/tinycolor.min.js"></script>
-</html>
+
+<script type="module"> import tinycolor2 from https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/+esm </script>
 (function () {
     setTimeout(() => {
         const style = document.createElement('style');
