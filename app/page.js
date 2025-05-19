@@ -33,7 +33,7 @@ export default function Home() {
           <div className='flex flex-col md:flex-row gap-10 md:gap-10 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[15px] md:px-[75px] bg-purple-800 rounded-[30px]'>
               <div className="flex flex-col items-center md:items-start gap-2 md:gap-10 w-full md:w-[60%]">
                 <div className='flex flex-col gap-10 md:gap-10 px-1 py-5  justify-center text-gray-800'>
-                  <h1 className='text-[32px] md:text-[3rem] font-black text-center md:text-left md:leading-[1.3] text-gray-200'>Automate Customer Support Using Your <span className='text-purple-400 font-bold'>“Own Data”</span></h1>
+                  <h1 className='text-[30px] md:text-[3rem] font-black text-center md:text-left md:leading-[1.3] text-gray-200'>Automate Customer Support Using Your <span className='text-purple-400 font-bold'>“Own Data”</span></h1>
                   <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'>Capture Leads 24/7 with AI <span className="hidden md:inline-block">Agents</span><br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees</span></h1>
                 </div>
                 <div className='hidden md:flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
@@ -42,7 +42,7 @@ export default function Home() {
                   <a href='https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52' target="_blank" className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><NotebookIcon /> <span>See How it Works</span></a>
                 </div>
                 <div className="md:hidden flex flex-col gap-5 items-center justify-center w-full bg-purple-900 rounded-lg py-[2rem] px-[2rem]">
-                  <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'>No<span className='text-purple-400 font-bold'> Credit Card </span>Required. We’ll Drop You an Email — No Pressure!</h1>
+                  <h1 className='text-[20px] md:text-[26px] text-center md:text-left font-normal text-white'>No<span className='text-purple-400 font-bold'> Credit Card </span>Required. We’ll Drop You an Email — No Pressure!</h1>
                   <form onSubmit={async (e) => {
                     e.preventDefault();
                     const response = await fetch('/api/send-email', {

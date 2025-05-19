@@ -18,19 +18,6 @@
             animation: bounce 1s infinite;
         }
 
-        @keyframes load {
-            0% {
-                transform: rotate(0);
-                filter: hue-rotate(0deg);
-            }
-            50% {
-                filter: hue-rotate(100deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
         .my-chatbot-container {
             display: flex;
             justify-content: end;
@@ -40,21 +27,35 @@
             font-family: sans-serif; /* Basic font family */
         }
     
+         @keyframes load {
+            0% {
+                transform: rotate(0deg);
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                filter: hue-rotate(20deg); /* Subtle shift within purple range */
+            }
+            100% {
+                transform: rotate(360deg);
+                filter: hue-rotate(0deg);
+            }
+        }
         .my-chatbot-button {
             transition: transform .2s;
             width: 50px;
             height: 50px;
             border-radius: 50%;
+            background: #4A1D96;
             box-shadow: 
-                inset 0 0 5px #fff,
-                inset 20px 0 60px #ee82ee,
-                inset -20px 0 60px #0ff,
-                inset 20px 0 300px #ee82ee,
-                inset -20px 0 300px #0ff,
-                0 0 5px #fff,
-                -10px 0 60px #ee82ee,
-                10px 0 60px #0ff;
-            animation: load 2s infinite;
+                inset 0 0 10px #fff,
+                inset 20px 0 60px #6B28C7,  /* Lighter purple */
+                inset -20px 0 60px #381172, /* Darker purple */
+                inset 20px 0 120px #6B28C7,
+                inset -20px 0 120px #381172,
+                0 0 10px #fff,
+                -10px 0 60px #6B28C7,
+                10px 0 60px #381172;
+            animation: load 3s linear infinite;
         }
 
         .my-chatbot-button:hover {
