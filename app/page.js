@@ -260,8 +260,8 @@ export default function Home() {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell className='font-bold text-left pl-2 py-5'>Chats</TableCell>
-                                                    <TableCell className=''>500</TableCell>
-                                                    <TableCell className=''>2000</TableCell>
+                                                    <TableCell className=''>500/Month</TableCell>
+                                                    <TableCell className=''>2000/Month</TableCell>
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell className='font-bold text-left pl-2 py-5'>Show sources</TableCell>
