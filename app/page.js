@@ -2,7 +2,7 @@
 
 import Marquee from "react-fast-marquee";
 import { AppRegistrationRounded, ContentPaste, Instagram, KeyboardDoubleArrowDown, LinkedIn, NextPlanOutlined, NextPlanSharp, PartyMode, Plan, X } from '@mui/icons-material';
-import { BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, NotebookIcon, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
+import { ArrowRight, BrainCircuitIcon, CheckCircleIcon, CircleCheckBigIcon, CircleXIcon, ClipboardCheckIcon, Code2Icon, Copy, CopyrightIcon, Database, LucidePartyPopper, LucideQuote, NotebookIcon, ShapesIcon, SquareMousePointerIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Header } from './components/layout/Header';
@@ -24,19 +24,38 @@ export default function Home() {
   return (
         <>
         <Header />
+        {/* <script src='http://localhost:3000/js/loader.js?o=Kulfi%20Marketing&al=r&cw=390&c=4A1D96'></script> */}
+
         <script src='https://kulfi-ai.com/js/loader.js?o=Kulfi%20Marketing&al=r&cw=390&c=4A1D96'></script>
         <div className='px-2 md:px-10'>
-          <div className='flex flex-col gap-10 md:gap-10 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[10px] md:px-[25px] bg-purple-800 rounded-[30px]'>
-              <div className='flex flex-col gap-10 md:gap-10 px-1 py-5 items-center justify-center text-gray-800'>
-                <h1 className='text-[32px] md:text-[4rem] font-black text-center md:leading-[1.3] text-gray-200'>Automate Customer Support<br/>Using Your <span className='text-purple-400 font-bold'>“Own Data”</span></h1>
-                {/* <h1 className='text-[18px] md:text-[22px] text-center text-white font-semibold mt-5'>Enhance customer engagement with our intelligent AI chatbot.</h1> */}
-                <h1 className='text-[22px] md:text-[36px] text-center font-normal text-white'>Capture Leads 24/7 with an AI Chatbot<br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees</span></h1>
-              
+          <div className='flex flex-col md:flex-row gap-10 md:gap-10 items-center justify-center w-full md:h-[88vh] py-[3rem] text-white px-[15px] md:px-[75px] bg-purple-800 rounded-[30px]'>
+              <div className="flex flex-col items-center md:items-start gap-2 md:gap-10 w-full md:w-[60%]">
+                <div className='flex flex-col gap-10 md:gap-10 px-1 py-5  justify-center text-gray-800'>
+                  <h1 className='text-[32px] md:text-[3rem] font-black text-center md:text-left md:leading-[1.3] text-gray-200'>Automate Customer Support Using Your <span className='text-purple-400 font-bold'>“Own Data”</span></h1>
+                  <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'>Capture Leads 24/7 with AI <span className="hidden md:inline-block">Agents</span><br /><span className='text-purple-400 font-bold'> One-Time Payment. No Monthly Fees</span></h1>
+                </div>
+                <div className='hidden md:flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
+                  {/* <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Free Demo</span></button> */}
+                  <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Start 7-day trial</span></button>
+                  <a href='https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52' target="_blank" className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><NotebookIcon /> <span>See How it Works</span></a>
+                </div>
+                <div className="md:hidden flex flex-col gap-5 items-center justify-center w-full bg-purple-900 rounded-lg py-[2rem] px-[2rem]">
+                  <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'>No<span className='text-purple-400 font-bold'> Credit Card </span>Required. We’ll Drop You an Email — No Pressure!</h1>
+                  <div className="flex justify-center gap-0 w-[100%] shadow-sm">
+                    <input className="px-[15px] py-[10px] w-[84%] rounded-l-md text-black" type="email" placeholder="Enter your email address" />
+                    <button className="flex justify-center items-center w-[16%] bg-purple-500 rounded-r-md"><ArrowRight className="text-white" /></button>
+                  </div>
+                </div>
+                
               </div>
-              <div className='flex flex-col md:flex-row gap-5 md:gap-2 pb-5'>
-                {/* <button onClick={() => router.push('/contact')} className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><ShapesIcon /> <span>Book a Free Demo</span></button> */}
-                <button onClick={() => router.push('/get-started')} className='flex justify-center gap-1 bg-purple-400 hover:bg-purple-700 border-2 border-purple-400 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><SquareMousePointerIcon /> <span>Start 7-day trial</span></button>
-                <a href='https://scandalous-wave-784.notion.site/Kulfi-AI-Your-Smart-AI-Chatbot-for-Marketing-Agencies-1f22d7c72344800b9d7be9a527aa6e52' target="_blank" className='flex justify-center gap-1 bg-purple-500 hover:bg-purple-700 border-2 border-purple-500 shadow-md hover:text-white hover:text-purple-800 text-white py-3 px-3 md:px-7 duration-200 hover:cursor-pointer rounded-sm font-semibold duration-100 text-[14px] md:text-[16px]'><NotebookIcon /> <span>See How it Works</span></a>
+              <div className="md:w-[40%]">
+                <div className="hidden md:flex flex-col gap-5 justify-center w-full bg-purple-900 rounded-lg py-[2rem] px-[2rem]">
+                  <h1 className='text-[22px] md:text-[26px] text-center md:text-left font-normal text-white'> No<span className='text-purple-400 font-bold'> Credit Card </span>Required. We’ll Drop You an Email — No Pressure!</h1>
+                  <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5 justify-center gap-0 w-full shadow-sm">
+                    <input className="px-[15px] py-[10px] w-full rounded-sm text-black" type="email" placeholder="Enter your email address" />
+                    <button type="submit" className="flex justify-center items-center gap-1 py-[10px] bg-purple-500 hover:bg-purple-600 rounded-sm">Sign Up<ArrowRight className="text-white" /></button>
+                  </form>
+                </div>
               </div>
             </div>
         </div>

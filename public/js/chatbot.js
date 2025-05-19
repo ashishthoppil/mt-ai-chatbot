@@ -16,6 +16,19 @@
             animation: bounce 1s infinite;
         }
 
+        @keyframes load {
+            0% {
+                transform: rotate(0);
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                filter: hue-rotate(100deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
         .my-chatbot-container {
             display: flex;
             justify-content: end;
@@ -27,6 +40,16 @@
     
         .my-chatbot-button {
             transition: transform .2s
+            box-shadow: 
+                inset 0 0 5px #fff,
+                inset 20px 0 60px #ee82ee,
+                inset -20px 0 60px #0ff,
+                inset 20px 0 300px #ee82ee,
+                inset -20px 0 300px #0ff,
+                0 0 5px #fff,
+                -10px 0 60px #ee82ee,
+                10px 0 60px #0ff;
+            animation: load 2s infinite;
         }
 
         .my-chatbot-button:hover {
@@ -115,7 +138,7 @@
         chatButton.style.padding = `15px`
 
         const message = document.createElement('div');
-        message.className = 'kulfi-greetings flex items-center bg-white border-2 px-4 py-2 rounded-lg shadow-lg animate-bounce'
+        message.className = 'kulfi-greetings flex items-center gap-2 justify-between bg-white border-2 px-4 py-1 rounded-sm shadow-lg animate-bounce'
         message.innerHTML = 'Hi, how can I assist you?'
         message.style.position = 'relative';
         message.style.bottom = '10px';
